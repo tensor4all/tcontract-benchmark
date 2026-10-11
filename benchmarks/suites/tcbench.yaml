@@ -20,9 +20,9 @@ description: >-
 # `benchmarks/**`: a README or AGENTS.md edit does not make a measurement stale,
 # and a rule that could not tell the difference would be ignored in practice.
 invalidated_by:
-  - crates/tprims-kernel/**
-  - crates/tprims-contract/**
-  - crates/tprims-exec/**
+  - crates/tcontract-kernel/**
+  - crates/tcontract/**
+  - crates/tcontract-exec/**
   - benchmarks/benchmarks/tcbench/**
   - benchmarks/src/**
   - Cargo.toml
@@ -56,7 +56,7 @@ engines_doc:
       This library, with its planner choosing the route per case: the packed
       driver, or the copy-free faer path, or the elementwise path for an
       all-batch case.
-    identity: tprims-rs (this repository's pinned revision)
+    identity: tcontract-rs (this repository's pinned revision)
   packed:
     label: tprims [packed]
     provider: tprims
@@ -64,7 +64,7 @@ engines_doc:
       This library with the packed driver forced instead of chosen. A
       diagnostic arm: it shows what the planner's non-packed routes buy or cost
       on the same inputs.
-    identity: tprims-rs (this repository's pinned revision)
+    identity: tcontract-rs (this repository's pinned revision)
   tblis:
     label: tblis
     provider: tblis

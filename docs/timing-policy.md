@@ -40,13 +40,13 @@ Every measurement runs through `benchmarks/scripts/pinned.sh` of the measured
 checkout: `taskset` to the declared CPU set, a 3-second `/proc/stat` idle window,
 at most 5% busy before and after, 3 attempts. A spoiled run is discarded, not
 published. The check covers the declared CPUs **and the SMT siblings their
-physical cores share** (tprims-rs#79): a busy sibling contends with the core
+physical cores share** (tcontract-rs#79): a busy sibling contends with the core
 being measured and is invisible in that core's own counters, so a run can
 otherwise pass the gate while sharing a core with someone else's work. The guard
 log says which CPUs it expanded to.
 
 The manifest states the priming the *harness* reported, not the value the
-recorder asked for (`run` echoes it; tprims-rs#78), and the harness's stdout is
+recorder asked for (`run` echoes it; tcontract-rs#78), and the harness's stdout is
 kept next to the guard log so a reader can check the claim.
 
 ## What a report may and may not claim

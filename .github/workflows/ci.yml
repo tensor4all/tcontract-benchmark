@@ -42,4 +42,4 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - run: ./scripts/setup_extern_deps.sh
       - name: The pinned harness builds
-        run: CARGO_BUILD_JOBS=4 ./scripts/build_for_tprims_rev.sh "$PWD/extern/tprims-rs" /tmp/pin.env tcbench lukbench
+        run: CARGO_BUILD_JOBS=4 ./scripts/build_for_tprims_rev.sh "$PWD/extern/tcontract-rs" /tmp/pin.env tcbench lukbench

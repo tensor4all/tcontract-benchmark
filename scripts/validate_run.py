@@ -103,7 +103,7 @@ def validate(path, check_git=True):
         # Resolve in a checkout that exists *here*, never in the path recorded
         # by the measuring host: a committed manifest has to be verifiable in
         # any checkout, or it is not evidence.
-        candidates = [ROOT / "extern/tprims-rs"]
+        candidates = [ROOT / "extern/tcontract-rs"]
         measured = manifest["tprims"].get("measured_path")
         if measured and pathlib.Path(measured, ".git").exists():
             candidates.insert(0, pathlib.Path(measured))

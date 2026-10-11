@@ -11,9 +11,9 @@ features:
   - tblis
 # Same rule as the tcbench suite: only paths whose change can alter a measured result.
 invalidated_by:
-  - crates/tprims-kernel/**
-  - crates/tprims-contract/**
-  - crates/tprims-exec/**
+  - crates/tcontract-kernel/**
+  - crates/tcontract/**
+  - crates/tcontract-exec/**
   - benchmarks/benchmarks/lukbench/**
   - benchmarks/src/**
   - Cargo.toml
@@ -32,7 +32,7 @@ corpus:
     whole chain. They range from an overhead-dominated 0.9 us to a 4.8 ms chain,
     which is the point of the set: the ranking of engines changes across it.
   source: >-
-    Reconstructed from the transcribed figure of tprims-rs#61, which Lukas Devos
+    Reconstructed from the transcribed figure of tcontract-rs#61, which Lukas Devos
     measured on Rusty worker5252 (exclusive node, 2026-09-23, single-threaded,
     median of three repeat arms). His script is not in any public tree, so the
     case definitions are the working assumptions recorded in
@@ -61,14 +61,14 @@ engines_doc:
       This library with its planner choosing the route per case: the packed
       driver, or the copy-free faer path, or the elementwise pass for an
       all-batch case.
-    identity: tprims-rs (this repository's pinned revision)
+    identity: tcontract-rs (this repository's pinned revision)
   packed:
     label: tprims [packed]
     provider: tprims
     summary: >-
       This library with the packed driver forced. A diagnostic arm: it shows what
       the planner's other routes buy or cost on the same inputs.
-    identity: tprims-rs (this repository's pinned revision)
+    identity: tcontract-rs (this repository's pinned revision)
   tblis:
     label: tblis
     provider: tblis

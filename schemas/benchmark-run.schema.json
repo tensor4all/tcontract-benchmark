@@ -82,7 +82,7 @@
             "string",
             "null"
           ],
-          "description": "Release version of the measured revision, when the measured project has one. tprims-rs is unpublished, so it records null; a versioned project records both this and the commit."
+          "description": "Release version of the measured revision, when the measured project has one. tcontract-rs is unpublished, so it records null; a versioned project records both this and the commit."
         }
       }
     },

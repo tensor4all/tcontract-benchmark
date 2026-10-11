@@ -37,7 +37,7 @@
       }
     },
     "stale_after": {
-      "description": "Number of invalidating commits between the measured revision and pins/tprims-rs.rev at which the cell becomes stale.",
+      "description": "Number of invalidating commits between the measured revision and pins/tcontract-rs.rev at which the cell becomes stale.",
       "type": "integer",
       "minimum": 1
     },

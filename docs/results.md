@@ -59,7 +59,7 @@ was not: with one tracked file per cell, a cell that has
 not been re-measured keeps an old file, and a reader sees a commit hash and a
 table without being able to tell whether that cell reflects the current library.
 
-`status` is computed against `pins/tprims-rs.rev`:
+`status` is computed against `pins/tcontract-rs.rev`:
 
 | status | meaning |
 |---|---|

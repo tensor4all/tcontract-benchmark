@@ -161,11 +161,11 @@ def harness_policy(stdout: str, stderr: str, label: str) -> dict:
     priming = PRIMING_RE.search(stdout)
     if not priming:
         sys.exit(f"ERROR: {label}: no priming banner in the timing output. The measured\n"
-                 "checkout predates tprims-rs#78; bump pins/tprims-rs.rev.")
+                 "checkout predates tcontract-rs#78; bump pins/tcontract-rs.rev.")
     guard = GUARD_POLICY_RE.search(stderr)
     if not guard:
         sys.exit(f"ERROR: {label}: no guard policy line in the guard log. The measured\n"
-                 "checkout predates tprims-rs#79; bump pins/tprims-rs.rev.")
+                 "checkout predates tcontract-rs#79; bump pins/tcontract-rs.rev.")
     return {
         "prime_ms": int(priming.group(1)),
         "idle_window_seconds": int(guard.group(1)),
@@ -178,7 +178,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("profile")
     ap.add_argument("suite_id")
-    ap.add_argument("--checkout", default=str(ROOT / "extern/tprims-rs"))
+    ap.add_argument("--checkout", default=str(ROOT / "extern/tcontract-rs"))
     ap.add_argument("--reps", type=int, default=5)
     ap.add_argument("--prime-ms", type=int, default=1500,
                     help="untimed time-based priming per arm; recorded as the harness reports it")
@@ -218,7 +218,7 @@ def main():
         return "fixed" if size is None else f"{size:g}m"
 
     checkout = pathlib.Path(args.checkout)
-    if (checkout / ".git").exists() and checkout.resolve() != (ROOT / "extern/tprims-rs").resolve():
+    if (checkout / ".git").exists() and checkout.resolve() != (ROOT / "extern/tcontract-rs").resolve():
         pass
     # The harness the suite runs, built from the same checkout as the library it
     # measures. `tcbench` unless the suite says otherwise.
@@ -309,7 +309,7 @@ def main():
         "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00", "Z"),
         "command": " ".join(sys.argv),
         "tprims": {
-            "url": "https://github.com/tensor4all/tprims-rs",
+            "url": "https://github.com/tensor4all/tcontract-rs",
             "commit": rev,
             "dirty": dirty,
             # build_for_tprims_rev.sh writes this with `printf %q`, which escapes

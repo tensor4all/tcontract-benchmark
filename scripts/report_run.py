@@ -51,7 +51,7 @@ def render(manifest, suite, rows, run_dir, root, providers):
     out = [
         f"# `{manifest['suite_id']}` on `{manifest['target_profile']}`",
         "",
-        f"- tprims-rs commit: `{manifest['tprims']['commit']}`"
+        f"- tcontract-rs commit: `{manifest['tprims']['commit']}`"
         + (" **(dirty)**" if manifest["tprims"]["dirty"] else ""),
         f"- features: `{', '.join(manifest['tprims']['features']) or 'default'}`",
         f"- harness commit: `{manifest['harness']['commit']}`",

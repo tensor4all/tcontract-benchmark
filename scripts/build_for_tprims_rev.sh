@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Build the campaign harness out of one tprims-rs checkout, into a target
+# Build the campaign harness out of one tcontract-rs checkout, into a target
 # directory keyed by that checkout's commit.
 #
-#   build_for_tprims_rev.sh <tprims-rs-dir> <out-var-file> [bin...]
+#   build_for_tprims_rev.sh <tcontract-rs-dir> <out-var-file> [bin...]
 #
 # Writes shell assignments to <out-var-file>:
 #   TPRIMS_REV, TPRIMS_DIRTY, TPRIMS_DIR, BIN_DIR, BUILD_FEATURES
@@ -10,7 +10,7 @@
 # Two things this deliberately does *not* do.
 #
 # It does not build the harness from this repository. The harness is part of
-# tprims-rs (`benchmarks/benchmarks/tcbench`) and is compiled out of the same
+# tcontract-rs (`benchmarks/benchmarks/tcbench`) and is compiled out of the same
 # checkout as the library it measures, so `run.yaml`'s commit describes both.
 # A harness built elsewhere could silently measure a different revision of the
 # library than the one it was written against.
@@ -21,13 +21,13 @@
 # did not contain the change under test once reached a measurement.
 set -euo pipefail
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-TPRIMS_DIR="$(cd "${1:?tprims-rs checkout required}" && pwd -P)"
+TPRIMS_DIR="$(cd "${1:?tcontract-rs checkout required}" && pwd -P)"
 OUT_FILE="${2:?output variable file required}"
 shift 2
 BINS=("$@")
 [[ ${#BINS[@]} -gt 0 ]] || BINS=(tcbench)
 
-[[ -d "$TPRIMS_DIR/crates/tprims-contract" ]] || { echo "ERROR: $TPRIMS_DIR is not a tprims-rs checkout" >&2; exit 1; }
+[[ -d "$TPRIMS_DIR/crates/tcontract" ]] || { echo "ERROR: $TPRIMS_DIR is not a tcontract-rs checkout" >&2; exit 1; }
 MANIFEST="$TPRIMS_DIR/benchmarks/Cargo.toml"
 [[ -f "$MANIFEST" ]] || { echo "ERROR: $MANIFEST not found" >&2; exit 1; }
 
@@ -35,7 +35,7 @@ rev="$(git -C "$TPRIMS_DIR" rev-parse HEAD)"
 dirty=false
 [[ -z "$(git -C "$TPRIMS_DIR" status --porcelain --untracked-files=no)" ]] || dirty=true
 suffix=""; [[ $dirty == true ]] && suffix="-dirty"
-target="$PROJECT_DIR/target/tprims-rev/${rev:0:12}${suffix}"
+target="$PROJECT_DIR/target/tcontract-rev/${rev:0:12}${suffix}"
 profile="${BENCH_BUILD_PROFILE:-release}"
 
 bin_args=(); for bin in "${BINS[@]}"; do bin_args+=(--bin "$bin"); done
@@ -58,4 +58,4 @@ bin_dir="$target/$subdir"
     # backslash in front of every comma the manifest has to split on.
     printf 'BUILD_FEATURES=%s\n' "$FEATURES"
 } > "$OUT_FILE"
-echo "built ${BINS[*]} for tprims-rs $rev (dirty=$dirty) in $bin_dir" >&2
+echo "built ${BINS[*]} for tcontract-rs $rev (dirty=$dirty) in $bin_dir" >&2
