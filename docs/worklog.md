@@ -3,6 +3,26 @@
 Design decisions, what was rejected, and what is still open. Measurements live
 in `result/`; this file holds the reasoning.
 
+## 2026-10-13 — the gate is content only, and the smoke build is gone
+
+**What CI did.** Every PR ran `index` (the declarations, every recorded manifest, the generated
+index) and `smoke`, which built the pinned harness the way the recorder does -- `tcbench` and
+`lukbench` out of `tprims-rs` -- ten to sixteen minutes, twice per push of a recording branch because
+the workflow fires on `push` as well as `pull_request`. It duplicated work that has already happened
+by the time a PR exists: `scripts/record_run.py` builds, verifies and times that same revision on the
+host that owns the numbers, and publishes nothing unless all three succeed. The harness is also a
+workspace member of `tprims-rs`, whose own CI builds it for every PR there.
+
+**What replaces it.** One job, `index`, on `ubuntu-slim`: the suites and profiles against their
+schemas, every `data/results/*/*/*/run.yaml` against `validate_run.py`, and `gen_index.py --check`.
+It is the only required status check on `main`, and auto-merge is enabled, so a recording or
+documentation PR merges by itself once the content is consistent. Superseded runs on the same branch
+are cancelled instead of queued.
+
+**What this repository no longer checks.** That the pin builds -- see the argument above: a recording
+cannot exist without that build, and a pin moved by hand still shows up as a stale or missing cell in
+the index, which is the check that stays.
+
 ## Why the campaign is a separate repository
 
 `tprims-rs` had one tracked report per `(profile, suite)` under a results

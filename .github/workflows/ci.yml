@@ -1,8 +1,14 @@
 name: ci
 on: [push, pull_request]
+# The measurement itself runs locally: `scripts/record_run.py` builds, verifies and times the
+# pinned checkout on the host that owns the numbers, and refuses to publish otherwise, so the
+# harness's buildability is proven where it matters (and gated again in the source repository's
+# own CI, which builds the harness target on every PR there). What is left for this repository is
+# content: the declarations, every recorded manifest, and the generated index. That is one small
+# job on the smallest runner, and it is the only required check on `main`.
 jobs:
   index:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - uses: actions/checkout@v4
       - name: Python deps
@@ -34,12 +40,3 @@ jobs:
           python3 scripts/validate_run.py "${files[@]}"
       - name: Index is current, required cells present
         run: python3 scripts/gen_index.py --check
-  smoke:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
-      - run: ./scripts/setup_extern_deps.sh
-      - name: The pinned harness builds
-        run: CARGO_BUILD_JOBS=4 ./scripts/build_for_tprims_rev.sh "$PWD/extern/tcontract-rs" /tmp/pin.env tcbench lukbench
