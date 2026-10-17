@@ -1,0 +1,176 @@
+schema_version: 1
+target_profile: zen5-cpu
+suite_id: per-shape
+suite_file: benchmarks/suites-v2/per-shape.yaml
+suite_sha256: 1ec31e7f70fdc837c7aebeb623b4a7db1b7026cb28156fb9797888bb4dc009d2
+timestamp: '2026-10-17T11:28:55.260628Z'
+command: scripts/v2/record_run.py per-shape zen5-cpu per-shape --external-provider-json
+  target/tblis-providers.json --label v2-smoke --reps 2 --aa 3 --prime-ms 50 --no-publish
+library:
+  url: https://github.com/tensor4all/tcontract-rs
+  commit: 7738bf43a0684e7d6f0769444e846f215fec86ab
+  dirty: false
+  features:
+  - tblis
+  measured_path: /home/shinaoka/projects/tensor4all/tcontract-benchmark/extern/tcontract-rs-v2
+  version: null
+harness:
+  commit: 7190738b796c5c78f0375141b093a8d2f4a20a2e
+  dirty: false
+toolkit:
+  commit: 5a3ae9a644a64c9ad86ead088d7696839991375f
+  dirty: false
+  measured_path: /home/shinaoka/projects/tensor4all/campaign-toolkit
+verification_files:
+- verify-per-shape-1t.csv
+- verify-per-shape-4t.csv
+binary:
+  path: /home/shinaoka/projects/tensor4all/tcontract-benchmark/target/tcontract-rev/7738bf43a068/release/lukbench
+  sha256: 5dbc239a2db44622d5c9e868af14b68b803589cc24d1a3fb8539ac2d0c35771b
+host:
+  power:
+    cpufreq_boost: '0'
+    amd_pstate_status: active
+    governor: performance
+    energy_performance_preference: performance
+    scaling_max_freq_khz: '2000000'
+  role: development
+  hostname: shinaoka-EVO-X1Pro
+  cpu: AMD Ryzen AI 9 HX 470
+  os: Linux 7.0.0-38-generic
+  arch: x86_64
+  logical_cpus: 24
+  l3: 24 MiB (2 instances)
+  l3_domains: '0-3: 16 MiB shared; 4-11: 8 MiB shared'
+  notes: 'AMD Ryzen AI 9 HX 470 (Zen5 mobile APU), 12 physical / 24 logical cores.
+    Heterogeneous L3: CPUs 0-3 share 16 MiB, CPUs 4-11 share 8 MiB, so a thread set
+    must be stated together with the domain it sits in.'
+threads:
+  counts:
+  - 1
+  - 4
+  cpu_sets:
+    '1': '4'
+    '4': 4-7
+  env:
+    OMP_NUM_THREADS: null
+    RAYON_NUM_THREADS: null
+    OPENBLAS_NUM_THREADS: null
+    VECLIB_MAXIMUM_THREADS: null
+    MKL_NUM_THREADS: null
+  note: the vendor's budget is set by the harness from the row's thread count and
+    read back before each measurement; these variables were removed from the measured
+    process's environment so it cannot inherit a different one
+timing_policy:
+  version: 2
+  minimum_untimed_priming_ms: 50
+  statistic: median
+  row_rotation_step: 1
+  repetitions: 2
+  notes: descriptive process medians under a rotating engine-order schedule; raw samples
+    and the verification census are retained
+guards:
+  idle_window_seconds: 3
+  max_busy_percent: 5.0
+  attempts: 3
+  sibling_aware: true
+  logs:
+  - run0-per-shape-1t.guard
+  - run0-per-shape-4t.guard
+  - run1-per-shape-1t.guard
+  - run1-per-shape-4t.guard
+  - run2-per-shape-1t.guard
+  - run2-per-shape-4t.guard
+  - verify-per-shape-1t.guard
+  - verify-per-shape-4t.guard
+providers:
+- name: tprims
+  version: null
+  commit: null
+  path: null
+  note: the provider in the measured revision; see library above
+- name: tblis
+  version: '2.0'
+  commit: b16a732939d8454021e0a0f0097cf1cc1dd3ab19
+  path: /home/shinaoka/projects/tensor4all/tcontract-benchmark/target/tblis-v2.0-beta2
+  note: TBLIS 2.0, configuration zen3; bundled BLIS 358e689cadd6757f564a2992cf46a2f7d6fa6bb0;
+    built with ./configure --prefix=/home/shinaoka/projects/tensor4all/tcontract-benchmark/target/tblis-v2.0-beta2
+    --with-blis-config-family=zen3 (cmake, Unix Makefiles, Release); libtblis.so sha256
+    de00bf1552c15f9c
+  tag: v2.0-beta2
+  sha256: de00bf1552c15f9c4a5d3157f02c149b81aef0909107c51cbb54ba4b8e9b5827
+invalidated_by:
+- crates/tcontract-kernel/**
+- crates/tcontract/**
+- crates/tcontract-exec/**
+- benchmarks/benchmarks/lukbench/**
+- benchmarks/src/**
+- Cargo.toml
+- Cargo.lock
+result_files:
+- run0-per-shape-1t.csv
+- run0-per-shape-4t.csv
+- run1-per-shape-1t.csv
+- run1-per-shape-4t.csv
+- run2-per-shape-1t.csv
+- run2-per-shape-4t.csv
+run_spec:
+  populations:
+  - regime: per-shape
+    families:
+    - ij_jk_ik_c64_n32
+    - ij_jk_ik_f64_n64
+    - ij_jk_kl_il_n64
+    - ijk_jkl_il_8x16x8
+    - ikb_knb_inb_n16_b16
+    - ikb_knb_inb_n16_b256
+    - ikb_knb_inb_n16_b64
+    - ikb_knb_inb_n2_b16
+    - ikb_knb_inb_n2_b256
+    - ikb_knb_inb_n2_b64
+    - ikb_knb_inb_n4_b16
+    - ikb_knb_inb_n4_b256
+    - ikb_knb_inb_n4_b64
+    - ikb_knb_inb_n8_b16
+    - ikb_knb_inb_n8_b256
+    - ikb_knb_inb_n8_b64
+    - mps_chain_L32_chi16
+    - mps_chain_L32_chi32
+    - mps_chain_L32_chi4
+    - mps_chain_L32_chi64
+    - mps_chain_L32_chi8
+    n:
+    - '1'
+    batch:
+    - 1
+    skipped:
+    - ij_jk_ik_c64_n32/1
+    - ij_jk_ik_f64_n64/1
+    - ij_jk_kl_il_n64/1
+    - ijk_jkl_il_8x16x8/1
+    - ikb_knb_inb_n16_b16/1
+    - ikb_knb_inb_n16_b256/1
+    - ikb_knb_inb_n16_b64/1
+    - ikb_knb_inb_n2_b16/1
+    - ikb_knb_inb_n2_b256/1
+    - ikb_knb_inb_n2_b64/1
+    - ikb_knb_inb_n4_b16/1
+    - ikb_knb_inb_n4_b256/1
+    - ikb_knb_inb_n4_b64/1
+    - ikb_knb_inb_n8_b16/1
+    - ikb_knb_inb_n8_b256/1
+    - ikb_knb_inb_n8_b64/1
+    - mps_chain_L32_chi16/1
+    - mps_chain_L32_chi32/1
+    - mps_chain_L32_chi4/1
+    - mps_chain_L32_chi64/1
+    - mps_chain_L32_chi8/1
+  dtypes:
+  - f64
+  - c64
+  engines:
+  - plan
+  - packed
+  - tblis
+  aa: 3
+  covers_declared_suite: true
