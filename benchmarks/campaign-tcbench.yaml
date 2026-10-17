@@ -38,19 +38,23 @@ result_dir: result-v2/tcbench
 
 # Engine row -> provider. `plan` and `packed` are the measured library's own routes;
 # `ttgt` is the OpenBLAS-backed transpose-transpose-GEMM-transpose baseline, an engine,
-# not a vendor arm. `tblis`, the independent external reference, is declared as an
-# external provider (below) and is not among the rows measured here yet.
+# not a vendor arm. `tblis`, the independent external reference, is linked from its own
+# prefix and is declared as an external provider (below), so its revision comes from the
+# campaign's TBLIS collector (`scripts/tblis_providers_json.py`) rather than from this
+# checkout.
 engines:
   plan: tprims
   packed: tprims
   ttgt: openblas
+  tblis: tblis
 
 # No BLAS/LAPACK vendor arm is selected: the measured library's rows and the OpenBLAS
 # engine are not mutually exclusive vendor arms of this campaign.
 vendor_providers: []
 
 # A separately built native baseline whose revision is collected by the campaign's own
-# TBLIS collector, never inferred from the measured checkout.
+# TBLIS collector (`scripts/tblis_providers_json.py`), never inferred from the measured
+# checkout.
 external_providers: [tblis]
 
 # The directories a measured process loads TBLIS from, so the harness can link the

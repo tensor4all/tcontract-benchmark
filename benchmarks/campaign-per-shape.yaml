@@ -30,13 +30,17 @@ suites_dir: benchmarks/suites-v2
 data_dir: data/v2-results/per-shape
 result_dir: result-v2/per-shape
 
-# Engine rows measurable here: the measured library's planner and forced-packed routes.
-# `tblis` is declared as an external provider for the independent reference; it is not
-# among the rows measured on this machine yet.
+# Engine rows measurable here: the measured library's planner and forced-packed routes,
+# plus the independent `tblis` reference. `tblis` is linked from its own prefix and is
+# declared as an external provider, so its revision comes from the campaign's TBLIS
+# collector (`scripts/tblis_providers_json.py`) rather than from this checkout. (`ttgt` is
+# the same OpenBLAS-backed engine as in the tcbench descriptor; the per-shape suite does
+# not select it.)
 engines:
   plan: tprims
   packed: tprims
   ttgt: openblas
+  tblis: tblis
 
 vendor_providers: []
 external_providers: [tblis]

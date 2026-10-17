@@ -51,8 +51,11 @@ HARNESSES = {
     "tcbench": dict(
         suite_id="tcbench",
         regime="tcbench",
-        rows=["plan", "packed", "ttgt"],
-        features=["tblis"],
+        rows=["plan", "packed", "ttgt", "tblis"],
+        # `blas` builds the OpenBLAS-backed `ttgt` engine and `tblis` the external
+        # baseline; the suite's `features` is what the recorder exports as
+        # `BENCH_FEATURES`, so both have to be named or the harness refuses the row.
+        features=["blas", "tblis"],
         description=(
             "The TCCG 49-case tensor-contraction corpus, measured by `tcbench` out of the pinned "
             "`tcontract-rs` checkout. One family per case id. The declared identity shape is the "
@@ -87,8 +90,9 @@ HARNESSES = {
                 "Every case is a full tensor contraction, not a matrix multiply; the declared "
                 "`n` is a tensor-size spec, not a matrix dimension.",
                 "Every case has unit batch, so a cost proportional to batch elements is invisible.",
-                "`tblis` is declared as an external provider and via `features: [tblis]`, but it is "
-                "not among the engine rows measured on this machine yet.",
+                "`tblis` is an external baseline linked from its own prefix (`TBLIS_ROOT`, see "
+                "`docs/v2-layout.md`), not the measured checkout; its revision is recorded through "
+                "the campaign TBLIS collector (`scripts/tblis_providers_json.py`).",
                 "The harness's census CSV carries no corpus `group` column and no resolved extents, "
                 "so the corpus's own group labels and its resolved geometry are not part of this "
                 "declaration; they remain facts of the recorded revision's `corpus.rs`.",
@@ -119,12 +123,24 @@ HARNESSES = {
                 caveat="The transposition is the naive gather, so this is an upper bound on TTGT's "
                        "cost rather than a tuned HPTT implementation.",
             ),
+            "tblis": dict(
+                provider="tblis",
+                summary="Actual C++ TBLIS through the direct FFI adapter, as the independent "
+                        "third-party reference implementation. Pinned by release tag, not by a local "
+                        "revision: `benchmarks/scripts/build_tblis.sh` of the measured checkout "
+                        "builds it from the tag and writes the PROVENANCE this repository records.",
+                identity="TBLIS v2.0-beta2 (the only tagged 2.0; its commit and the bundled BLIS "
+                         "revision are recorded per run, from `scripts/tblis_providers_json.py`)",
+                caveat="Needs an install prefix (`TBLIS_ROOT`), and TBLIS 2.x builds through CMake, "
+                       "so the prefix cannot be made inside a bare checkout. The page repeats the "
+                       "tag, commit, bundled BLIS revision and artifact hash the manifest recorded.",
+            ),
         },
     ),
     "per-shape": dict(
         suite_id="per-shape",
         regime="per-shape",
-        rows=["plan", "packed"],
+        rows=["plan", "packed", "tblis"],
         features=["tblis"],
         description=(
             "The 21-case per-shape contraction corpus, measured by `lukbench` out of the pinned "
@@ -163,8 +179,9 @@ HARNESSES = {
                 "are the harness's own report, not the toolkit's identity.",
                 "One size per case: a ratio here says nothing about a neighbouring size, and the set "
                 "is not a sweep.",
-                "`tblis` is declared as an external provider and via `features: [tblis]`, but it is "
-                "not among the engine rows measured on this machine yet.",
+                "`tblis` is an external baseline linked from its own prefix (`TBLIS_ROOT`, see "
+                "`docs/v2-layout.md`), not the measured checkout; its revision is recorded through "
+                "the campaign TBLIS collector (`scripts/tblis_providers_json.py`).",
                 "The harness's census CSV carries no corpus `group` column, so the corpus's own "
                 "group labels and each case's native dtype and final-step extents are not part of "
                 "this declaration; they remain facts of the recorded revision's `corpus.rs`.",
@@ -183,6 +200,18 @@ HARNESSES = {
                         "the planner's other routes buy or cost on the same inputs.",
                 identity="the measured tcontract-rs revision in this run's manifest "
                          "(`library.commit`), pinned by `pins/tcontract-rs-v2.rev`",
+            ),
+            "tblis": dict(
+                provider="tblis",
+                summary="Actual C++ TBLIS through the direct FFI adapter, as the independent "
+                        "third-party reference implementation. Pinned by release tag, not by a local "
+                        "revision: `benchmarks/scripts/build_tblis.sh` of the measured checkout "
+                        "builds it from the tag and writes the PROVENANCE this repository records.",
+                identity="TBLIS v2.0-beta2 (the only tagged 2.0; its commit and the bundled BLIS "
+                         "revision are recorded per run, from `scripts/tblis_providers_json.py`)",
+                caveat="Needs an install prefix (`TBLIS_ROOT`), and TBLIS 2.x builds through CMake, "
+                       "so the prefix cannot be made inside a bare checkout. The page repeats the "
+                       "tag, commit, bundled BLIS revision and artifact hash the manifest recorded.",
             ),
         },
     ),
