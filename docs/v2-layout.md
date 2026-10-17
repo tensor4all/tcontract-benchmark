@@ -99,8 +99,9 @@ drop it for the real measurement. `result-v2/<campaign>/INDEX.md` is regenerated
 
 ## Regenerating a suite
 
-Build the pinned harness without TBLIS (the `blas` feature is what makes the `ttgt` row
-measurable), then run the generator:
+Build the pinned harness with the features the suite declares (`blas` for tcbench's
+`ttgt` row and `tblis` for the external baseline; the census links its results against
+the same rows the recorder will), then run the generator:
 
 ```sh
 scripts/setup_v2_extern_deps.sh
