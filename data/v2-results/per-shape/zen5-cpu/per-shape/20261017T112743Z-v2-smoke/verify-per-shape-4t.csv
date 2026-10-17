@@ -1,0 +1,127 @@
+regime,family,dtype,order,m,n,k,batch,row,threads,status,note
+per-shape,ikb_knb_inb_n2_b16,f64,,1,1,,1,plan,4,ok,
+per-shape,ikb_knb_inb_n2_b16,f64,,1,1,,1,packed,4,ok,
+per-shape,ikb_knb_inb_n2_b16,f64,,1,1,,1,tblis,4,ok,
+per-shape,ikb_knb_inb_n2_b16,c64,,1,1,,1,plan,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n2_b16,c64,,1,1,,1,packed,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n2_b16,c64,,1,1,,1,tblis,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n4_b16,f64,,1,1,,1,plan,4,ok,
+per-shape,ikb_knb_inb_n4_b16,f64,,1,1,,1,packed,4,ok,
+per-shape,ikb_knb_inb_n4_b16,f64,,1,1,,1,tblis,4,ok,
+per-shape,ikb_knb_inb_n4_b16,c64,,1,1,,1,plan,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n4_b16,c64,,1,1,,1,packed,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n4_b16,c64,,1,1,,1,tblis,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n8_b16,f64,,1,1,,1,plan,4,ok,
+per-shape,ikb_knb_inb_n8_b16,f64,,1,1,,1,packed,4,ok,
+per-shape,ikb_knb_inb_n8_b16,f64,,1,1,,1,tblis,4,ok,
+per-shape,ikb_knb_inb_n8_b16,c64,,1,1,,1,plan,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n8_b16,c64,,1,1,,1,packed,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n8_b16,c64,,1,1,,1,tblis,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n16_b16,f64,,1,1,,1,plan,4,ok,
+per-shape,ikb_knb_inb_n16_b16,f64,,1,1,,1,packed,4,ok,
+per-shape,ikb_knb_inb_n16_b16,f64,,1,1,,1,tblis,4,ok,
+per-shape,ikb_knb_inb_n16_b16,c64,,1,1,,1,plan,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n16_b16,c64,,1,1,,1,packed,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n16_b16,c64,,1,1,,1,tblis,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n2_b64,f64,,1,1,,1,plan,4,ok,
+per-shape,ikb_knb_inb_n2_b64,f64,,1,1,,1,packed,4,ok,
+per-shape,ikb_knb_inb_n2_b64,f64,,1,1,,1,tblis,4,ok,
+per-shape,ikb_knb_inb_n2_b64,c64,,1,1,,1,plan,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n2_b64,c64,,1,1,,1,packed,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n2_b64,c64,,1,1,,1,tblis,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n4_b64,f64,,1,1,,1,plan,4,ok,
+per-shape,ikb_knb_inb_n4_b64,f64,,1,1,,1,packed,4,ok,
+per-shape,ikb_knb_inb_n4_b64,f64,,1,1,,1,tblis,4,ok,
+per-shape,ikb_knb_inb_n4_b64,c64,,1,1,,1,plan,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n4_b64,c64,,1,1,,1,packed,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n4_b64,c64,,1,1,,1,tblis,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n8_b64,f64,,1,1,,1,plan,4,ok,
+per-shape,ikb_knb_inb_n8_b64,f64,,1,1,,1,packed,4,ok,
+per-shape,ikb_knb_inb_n8_b64,f64,,1,1,,1,tblis,4,ok,
+per-shape,ikb_knb_inb_n8_b64,c64,,1,1,,1,plan,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n8_b64,c64,,1,1,,1,packed,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n8_b64,c64,,1,1,,1,tblis,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n16_b64,f64,,1,1,,1,plan,4,ok,
+per-shape,ikb_knb_inb_n16_b64,f64,,1,1,,1,packed,4,ok,
+per-shape,ikb_knb_inb_n16_b64,f64,,1,1,,1,tblis,4,ok,
+per-shape,ikb_knb_inb_n16_b64,c64,,1,1,,1,plan,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n16_b64,c64,,1,1,,1,packed,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n16_b64,c64,,1,1,,1,tblis,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n2_b256,f64,,1,1,,1,plan,4,ok,
+per-shape,ikb_knb_inb_n2_b256,f64,,1,1,,1,packed,4,ok,
+per-shape,ikb_knb_inb_n2_b256,f64,,1,1,,1,tblis,4,ok,
+per-shape,ikb_knb_inb_n2_b256,c64,,1,1,,1,plan,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n2_b256,c64,,1,1,,1,packed,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n2_b256,c64,,1,1,,1,tblis,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n4_b256,f64,,1,1,,1,plan,4,ok,
+per-shape,ikb_knb_inb_n4_b256,f64,,1,1,,1,packed,4,ok,
+per-shape,ikb_knb_inb_n4_b256,f64,,1,1,,1,tblis,4,ok,
+per-shape,ikb_knb_inb_n4_b256,c64,,1,1,,1,plan,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n4_b256,c64,,1,1,,1,packed,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n4_b256,c64,,1,1,,1,tblis,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n8_b256,f64,,1,1,,1,plan,4,ok,
+per-shape,ikb_knb_inb_n8_b256,f64,,1,1,,1,packed,4,ok,
+per-shape,ikb_knb_inb_n8_b256,f64,,1,1,,1,tblis,4,ok,
+per-shape,ikb_knb_inb_n8_b256,c64,,1,1,,1,plan,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n8_b256,c64,,1,1,,1,packed,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n8_b256,c64,,1,1,,1,tblis,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n16_b256,f64,,1,1,,1,plan,4,ok,
+per-shape,ikb_knb_inb_n16_b256,f64,,1,1,,1,packed,4,ok,
+per-shape,ikb_knb_inb_n16_b256,f64,,1,1,,1,tblis,4,ok,
+per-shape,ikb_knb_inb_n16_b256,c64,,1,1,,1,plan,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n16_b256,c64,,1,1,,1,packed,4,skipped,case dtype is f64
+per-shape,ikb_knb_inb_n16_b256,c64,,1,1,,1,tblis,4,skipped,case dtype is f64
+per-shape,ijk_jkl_il_8x16x8,f64,,1,1,,1,plan,4,ok,
+per-shape,ijk_jkl_il_8x16x8,f64,,1,1,,1,packed,4,ok,
+per-shape,ijk_jkl_il_8x16x8,f64,,1,1,,1,tblis,4,ok,
+per-shape,ijk_jkl_il_8x16x8,c64,,1,1,,1,plan,4,skipped,case dtype is f64
+per-shape,ijk_jkl_il_8x16x8,c64,,1,1,,1,packed,4,skipped,case dtype is f64
+per-shape,ijk_jkl_il_8x16x8,c64,,1,1,,1,tblis,4,skipped,case dtype is f64
+per-shape,ij_jk_ik_c64_n32,f64,,1,1,,1,plan,4,skipped,case dtype is c64
+per-shape,ij_jk_ik_c64_n32,f64,,1,1,,1,packed,4,skipped,case dtype is c64
+per-shape,ij_jk_ik_c64_n32,f64,,1,1,,1,tblis,4,skipped,case dtype is c64
+per-shape,ij_jk_ik_c64_n32,c64,,1,1,,1,plan,4,ok,
+per-shape,ij_jk_ik_c64_n32,c64,,1,1,,1,packed,4,ok,
+per-shape,ij_jk_ik_c64_n32,c64,,1,1,,1,tblis,4,ok,
+per-shape,ij_jk_ik_f64_n64,f64,,1,1,,1,plan,4,ok,
+per-shape,ij_jk_ik_f64_n64,f64,,1,1,,1,packed,4,ok,
+per-shape,ij_jk_ik_f64_n64,f64,,1,1,,1,tblis,4,ok,
+per-shape,ij_jk_ik_f64_n64,c64,,1,1,,1,plan,4,skipped,case dtype is f64
+per-shape,ij_jk_ik_f64_n64,c64,,1,1,,1,packed,4,skipped,case dtype is f64
+per-shape,ij_jk_ik_f64_n64,c64,,1,1,,1,tblis,4,skipped,case dtype is f64
+per-shape,ij_jk_kl_il_n64,f64,,1,1,,1,plan,4,ok,
+per-shape,ij_jk_kl_il_n64,f64,,1,1,,1,packed,4,ok,
+per-shape,ij_jk_kl_il_n64,f64,,1,1,,1,tblis,4,ok,
+per-shape,ij_jk_kl_il_n64,c64,,1,1,,1,plan,4,skipped,case dtype is f64
+per-shape,ij_jk_kl_il_n64,c64,,1,1,,1,packed,4,skipped,case dtype is f64
+per-shape,ij_jk_kl_il_n64,c64,,1,1,,1,tblis,4,skipped,case dtype is f64
+per-shape,mps_chain_L32_chi4,f64,,1,1,,1,plan,4,skipped,case dtype is c64
+per-shape,mps_chain_L32_chi4,f64,,1,1,,1,packed,4,skipped,case dtype is c64
+per-shape,mps_chain_L32_chi4,f64,,1,1,,1,tblis,4,skipped,case dtype is c64
+per-shape,mps_chain_L32_chi4,c64,,1,1,,1,plan,4,ok,
+per-shape,mps_chain_L32_chi4,c64,,1,1,,1,packed,4,ok,
+per-shape,mps_chain_L32_chi4,c64,,1,1,,1,tblis,4,ok,
+per-shape,mps_chain_L32_chi8,f64,,1,1,,1,plan,4,skipped,case dtype is c64
+per-shape,mps_chain_L32_chi8,f64,,1,1,,1,packed,4,skipped,case dtype is c64
+per-shape,mps_chain_L32_chi8,f64,,1,1,,1,tblis,4,skipped,case dtype is c64
+per-shape,mps_chain_L32_chi8,c64,,1,1,,1,plan,4,ok,
+per-shape,mps_chain_L32_chi8,c64,,1,1,,1,packed,4,ok,
+per-shape,mps_chain_L32_chi8,c64,,1,1,,1,tblis,4,ok,
+per-shape,mps_chain_L32_chi16,f64,,1,1,,1,plan,4,skipped,case dtype is c64
+per-shape,mps_chain_L32_chi16,f64,,1,1,,1,packed,4,skipped,case dtype is c64
+per-shape,mps_chain_L32_chi16,f64,,1,1,,1,tblis,4,skipped,case dtype is c64
+per-shape,mps_chain_L32_chi16,c64,,1,1,,1,plan,4,ok,
+per-shape,mps_chain_L32_chi16,c64,,1,1,,1,packed,4,ok,
+per-shape,mps_chain_L32_chi16,c64,,1,1,,1,tblis,4,ok,
+per-shape,mps_chain_L32_chi32,f64,,1,1,,1,plan,4,skipped,case dtype is c64
+per-shape,mps_chain_L32_chi32,f64,,1,1,,1,packed,4,skipped,case dtype is c64
+per-shape,mps_chain_L32_chi32,f64,,1,1,,1,tblis,4,skipped,case dtype is c64
+per-shape,mps_chain_L32_chi32,c64,,1,1,,1,plan,4,ok,
+per-shape,mps_chain_L32_chi32,c64,,1,1,,1,packed,4,ok,
+per-shape,mps_chain_L32_chi32,c64,,1,1,,1,tblis,4,ok,
+per-shape,mps_chain_L32_chi64,f64,,1,1,,1,plan,4,skipped,case dtype is c64
+per-shape,mps_chain_L32_chi64,f64,,1,1,,1,packed,4,skipped,case dtype is c64
+per-shape,mps_chain_L32_chi64,f64,,1,1,,1,tblis,4,skipped,case dtype is c64
+per-shape,mps_chain_L32_chi64,c64,,1,1,,1,plan,4,ok,
+per-shape,mps_chain_L32_chi64,c64,,1,1,,1,packed,4,ok,
+per-shape,mps_chain_L32_chi64,c64,,1,1,,1,tblis,4,ok,
