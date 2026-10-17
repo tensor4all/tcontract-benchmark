@@ -1,0 +1,128 @@
+schema_version: 1
+id: tcbench
+
+# The first of this repository's two timing-v2 campaigns. The measured repository is
+# `tcontract-rs`, and the harness (`tcbench`) is built out of the same checkout as the
+# library it measures, so the recorded commit describes both. The legacy timing-v1
+# campaign keeps its own descriptor-free scripts and `pins/tcontract-rs.rev`; this
+# descriptor and `campaign-per-shape.yaml` pin the v2 revision separately.
+measured:
+  name: tcontract-rs
+  url: https://github.com/tensor4all/tcontract-rs
+  pin_file: pins/tcontract-rs-v2.rev
+  extern_dir: extern/tcontract-rs-v2
+  build_script: scripts/build_for_tprims_rev.sh
+  binary: tcbench
+  # The variable names scripts/build_for_tprims_rev.sh writes. It is a plain build
+  # script: the vendor arm (there is none here) reaches it through BENCH_VENDOR and the
+  # suite's `features` through BENCH_FEATURES, both exported by the recorder.
+  pin_env:
+    rev: TPRIMS_REV
+    dirty: TPRIMS_DIRTY
+    dir: TPRIMS_DIR
+    features: BUILD_FEATURES
+    bin_dir: BIN_DIR
+  # The timing protocol belongs to the measured checkout.
+  protocol: measured
+
+# One measured revision: the library commit. No upstream baseline is recorded.
+identities: [library]
+
+profiles_file: benchmarks/profiles.yaml
+# Both v2 suites live in one suites_dir, and the toolkit validates every suite against
+# the active descriptor, so `engines` below is the union of the rows either suite may
+# select. Which rows a suite actually measures is declared by the suite itself.
+suites_dir: benchmarks/suites-v2
+data_dir: data/v2-results/tcbench
+result_dir: result-v2/tcbench
+
+# Engine row -> provider. `plan` and `packed` are the measured library's own routes;
+# `ttgt` is the OpenBLAS-backed transpose-transpose-GEMM-transpose baseline, an engine,
+# not a vendor arm. `tblis`, the independent external reference, is declared as an
+# external provider (below) and is not among the rows measured here yet.
+engines:
+  plan: tprims
+  packed: tprims
+  ttgt: openblas
+
+# No BLAS/LAPACK vendor arm is selected: the measured library's rows and the OpenBLAS
+# engine are not mutually exclusive vendor arms of this campaign.
+vendor_providers: []
+
+# A separately built native baseline whose revision is collected by the campaign's own
+# TBLIS collector, never inferred from the measured checkout.
+external_providers: [tblis]
+
+# The directories a measured process loads TBLIS from, so the harness can link the
+# `tblis` row without rebuilding the measured checkout. Expanded from the environment.
+loader_paths:
+  - "$TBLIS_ROOT/lib"
+  - "$TBLIS_ROOT/lib64"
+
+# Thread-budget and tuning variables that belong to a linked library, not to the
+# measurement. The harness sets the budget from the row's thread count and reads it
+# back, so an inherited value must not reach the measured process.
+vendor_env:
+  - OMP_NUM_THREADS
+  - RAYON_NUM_THREADS
+  - OPENBLAS_NUM_THREADS
+  - VECLIB_MAXIMUM_THREADS
+  - MKL_NUM_THREADS
+
+# The columns the harness's CSV carries, as the report and the comparison read them.
+# The harness itself writes a wider header; these are the ones the toolkit consumes.
+csv_columns:
+  - regime
+  - family
+  - dtype
+  - order
+  - m
+  - n
+  - k
+  - batch
+  - row
+  - threads
+  - total_ms
+  - per_item_us
+  - status
+  - note
+  - samples_ms
+  - rayon_threads
+  - vendor_threads
+  - case_m
+  - case_n
+  - case_k
+
+# `{timing}` is empty for v1 and `-timing-v2` for this contract, so a v2 page never
+# overwrites a legacy one.
+page_name: "{library12}{version}{dirty}{timing}"
+
+default_invalidated_by:
+  - crates/tcontract-kernel/**
+  - crates/tcontract/**
+  - crates/tcontract-exec/**
+  - benchmarks/benchmarks/tcbench/**
+  - benchmarks/src/**
+  - Cargo.toml
+  - Cargo.lock
+
+# Explicit timing-v2 opt-in.
+timing:
+  version: 2
+
+report:
+  library_label: tcontract-rs commit
+  provider_label: tprims rows
+  harness_label: harness commit
+  index_generator: python3 -m campaign_toolkit.gen_index
+  setup_script: scripts/setup_v2_extern_deps.sh
+  verify_note: |
+    Every row below passed `{binary} verify` on the same grid before timing: the
+    measured library's routes and the TTGT/OpenBLAS baseline are checked against the
+    corpus's own reference, never against each other's floating-point output. Times are
+    milliseconds, the median of the chronological calls per case and engine row; with
+    more than one complete set repeat the table shows the best repeat, and the A/A
+    spread is reported at its foot. The declared identity shape is the numeric sentinel
+    `n = 1`: tcbench resolves its extents from a tensor-size target with rank-dependent
+    rounding, so the resolved extents are reported beside the declared spec rather than
+    presented as geometry.

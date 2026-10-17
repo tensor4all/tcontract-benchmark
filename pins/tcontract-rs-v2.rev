@@ -1,0 +1,11 @@
+# The measured revision of the timing-v2 campaigns (`benchmarks/campaign-tcbench.yaml`
+# and `benchmarks/campaign-per-shape.yaml`).
+#
+# `tcontract-rs` main at the revision that carries the timing-v2 evidence contract for
+# both harnesses: 953a2ff9 landed the `tcbench` contract (tensor4all/tcontract-rs#127)
+# and 7738bf43 the `lukbench` one (tensor4all/tcontract-rs#128), which is this commit.
+#
+# Kept apart from `pins/tcontract-rs.rev` (the legacy timing-v1 reference) on purpose:
+# moving that pin would make the committed legacy `result/INDEX.md` stale, and the
+# historical evidence and pages stay where they are.
+7738bf43a0684e7d6f0769444e846f215fec86ab
