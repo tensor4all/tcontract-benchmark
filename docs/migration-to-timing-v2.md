@@ -1,8 +1,76 @@
 # Migrating this campaign to the timing-v2 system
 
-Status: **proposal** (2026-10-17). This is the plan the independent pre-review reads; nothing here is
-implemented yet. The harness side is already done: `tcontract-rs` main `953a2ff9` (PR #127) carries the
-v2 evidence contract, so the campaign no longer needs to invent one.
+Status: **revised after an independent pre-review (2026-10-17); nothing implemented.** The review
+(`docs/reviews/20261017-migration-pre-review.md`) rejected the plan below as too small by half and named
+five blockers. Read this section first; the reviewed plan is kept underneath as the record.
+
+## Revised plan (what actually has to happen)
+
+The migration is three workstreams, in this order. Each one is finished and merged before the next
+starts, because the later ones are only meaningful once the earlier ones hold.
+
+**A. Toolkit prerequisites (nothing in this repository can be recorded without them).**
+
+1. **A no-BLAS-vendor recording path.** Both suites measure `plan`/`packed` plus the external `tblis`
+   baseline (and `ttgt`, an OpenBLAS-backed *engine*, not a vendor arm). The recorder today requires a
+   selected vendor, requires `info` to name it, and serializes a `vendor` block the schema only accepts
+   as an object; with no vendor arm there is nothing to select. `blas` is a *feature*, not an engine row,
+   so it cannot serve as the vendor either. The recorder must admit a vendor-less campaign and omit the
+   block, and TBLIS must be recorded as an *external provider* rather than mislabelled as a mutually
+   exclusive BLAS vendor.
+2. **External-provider ingestion.** The toolkit currently manufactures every non-vendor provider as "the
+   provider in the measured revision" with a null commit; this campaign's `tblis_identity()` collector
+   (commit, bundled BLIS revision, artifact hash) would be discarded, together with the refusal to
+   publish an arm whose revision cannot be stated. The collector has to feed the manifest, `tag`/`sha256`
+   have to be accepted by both schema copies, and the page has to print the external provider's identity
+   independently of Cargo-dependency provenance.
+3. **Build features and the loader.** The old recorder exports `BENCH_FEATURES=tblis` for the build and
+   puts `$TBLIS_ROOT/{lib,lib64}` on `LD_LIBRARY_PATH`; the toolkit exports only `BENCH_VENDOR` and marks
+   `measured.features` unused, while its suite schema rejects the old top-level `features`. A
+   deterministic build invocation with the suite's features and the loader path has to be part of the
+   campaign contract, or the `tblis` row fails admission or the binary cannot load.
+4. **Legacy evidence compatibility.** The historical manifests (`library: tprims`, `sizes_mib`,
+   legacy guard fields) are validated by CI and read by the index, and the toolkit's schema rejects
+   unknown properties and requires `library`; validation fails at schema checking before any
+   declaration-drift handling. Historical evidence and pages stay untouched, so the repository needs an
+   explicit read-only legacy route (or compatibility reader) instead of replacing the scripts blindly.
+
+**B. The measured repository: `lukbench`'s v2 contract.** Half of this deliverable is the `per-shape`
+suite, and its harness has none of the v2 contract yet: it ignores unknown options, warns (rather than
+refuses) about unavailable engines, keeps best/scatter instead of samples, hard-codes the execution order
+plan/packed/tblis with no rotation, and writes no census, no status and no thread-budget columns. That is
+the same work that landed for `tcbench` in `953a2ff9` and it lands as its own reviewed change, before any
+declaration is generated.
+
+**C. This campaign.** Then, and only then:
+
+5. **Declaration.** Generate the suite once from the pinned corpus's census and freeze it, with the
+   corrections the review established: **omit `order` entirely** (a literal `''` is invalid in the run
+   schema, and the evidence already supplies the empty identity value when the axis is absent); keep
+   **singleton size populations** with unique regime labels (the recorder joins `n` values with commas
+   while `tcbench` parses a single numeric spec); and emit the **entire rectangular dtype product** for
+   `lukbench`, whose cases fix their dtype, marking wrong-dtype cells *skipped* in both the verification
+   and the timed census - a suite-level skip summary or silently filtered cases is not enough, because
+   validation compares the census to the whole declared grid and then requires identical timed cells,
+   statuses and notes. Declaring only native-dtype cells would need dtype-separated suites or an explicit
+   toolkit contract change; that is not part of this plan.
+6. **Layout and naming.** Two descriptors (one per runner) are supported through `CAMPAIGN_DESCRIPTOR`,
+   but a descriptor id does not create a namespace: the raw directory, the page and the index all key off
+   the *active* descriptor's `suites_dir`/`result_dir`. So the second campaign gets its own explicitly
+   selected descriptor, its own suite directory and its own result/index directory, sharing the
+   repository-level admission lock; the top-level index links both rather than trying to union them.
+7. **Frozen engine lists and rotation.** `tcbench` exposes `plan,packed[,ttgt][,tblis]` and `lukbench`
+   exposes `plan,packed[,tblis]`; the suites select three rows. Validation requires the process-set count
+   to be a multiple of the engine-row count, so these campaigns take **3, 6, ...** sets, not two, and the
+   rotation must be a complete cycle. `lukbench`'s engine order has to become a real rotated execution
+   order as part of workstream B.
+8. **`lukbench`'s shape identity** is still undefined: `per-shape` declares no size axis, and the harness
+   reports actual/final-step dimensions. The numeric sentinel and its echoing semantics have to be chosen
+   and documented in this plan before the declaration is generated.
+9. **Then** the records and the pages: `validate_run.py` passing per arm before anything is published,
+   fresh v2 pages named for the measured revision, historical pages untouched.
+
+## The reviewed plan (kept as the record)
 
 ## What exists today
 
