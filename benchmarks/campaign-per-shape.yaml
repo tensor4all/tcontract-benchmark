@@ -1,0 +1,106 @@
+schema_version: 1
+id: per-shape
+
+# The second timing-v2 campaign. The per-shape corpus is run by `lukbench`, the other
+# harness in the same `tcontract-rs` checkout, so this campaign has its own descriptor,
+# its own suite directory view and its own data/result roots and index. The legacy
+# timing-v1 `per-shape` suite and `result/` tree stay where they are.
+measured:
+  name: tcontract-rs
+  url: https://github.com/tensor4all/tcontract-rs
+  pin_file: pins/tcontract-rs-v2.rev
+  extern_dir: extern/tcontract-rs-v2
+  build_script: scripts/build_for_tprims_rev.sh
+  binary: lukbench
+  pin_env:
+    rev: TPRIMS_REV
+    dirty: TPRIMS_DIRTY
+    dir: TPRIMS_DIR
+    features: BUILD_FEATURES
+    bin_dir: BIN_DIR
+  # The timing protocol belongs to the measured checkout.
+  protocol: measured
+
+identities: [library]
+
+profiles_file: benchmarks/profiles.yaml
+# One suites_dir shared with the tcbench campaign, so the declaration check sees both
+# suites and `engines` names the union of the rows either suite may select.
+suites_dir: benchmarks/suites-v2
+data_dir: data/v2-results/per-shape
+result_dir: result-v2/per-shape
+
+# Engine rows measurable here: the measured library's planner and forced-packed routes.
+# `tblis` is declared as an external provider for the independent reference; it is not
+# among the rows measured on this machine yet.
+engines:
+  plan: tprims
+  packed: tprims
+  ttgt: openblas
+
+vendor_providers: []
+external_providers: [tblis]
+
+loader_paths:
+  - "$TBLIS_ROOT/lib"
+  - "$TBLIS_ROOT/lib64"
+
+vendor_env:
+  - OMP_NUM_THREADS
+  - RAYON_NUM_THREADS
+  - OPENBLAS_NUM_THREADS
+  - VECLIB_MAXIMUM_THREADS
+  - MKL_NUM_THREADS
+
+csv_columns:
+  - regime
+  - family
+  - dtype
+  - order
+  - m
+  - n
+  - k
+  - batch
+  - row
+  - threads
+  - total_ms
+  - per_item_us
+  - status
+  - note
+  - samples_ms
+  - rayon_threads
+  - vendor_threads
+  - case_m
+  - case_n
+  - case_k
+
+page_name: "{library12}{version}{dirty}{timing}"
+
+default_invalidated_by:
+  - crates/tcontract-kernel/**
+  - crates/tcontract/**
+  - crates/tcontract-exec/**
+  - benchmarks/benchmarks/lukbench/**
+  - benchmarks/src/**
+  - Cargo.toml
+  - Cargo.lock
+
+timing:
+  version: 2
+
+report:
+  library_label: tcontract-rs commit
+  provider_label: tprims rows
+  harness_label: harness commit
+  index_generator: python3 -m campaign_toolkit.gen_index
+  setup_script: scripts/setup_v2_extern_deps.sh
+  verify_note: |
+    Every row below passed `{binary} verify` on the same grid before timing, against the
+    corpus's naive label-loop reference and never against another engine's floating-point
+    output. Times are milliseconds, the median of the chronological calls per case and
+    engine row; with more than one complete set repeat the table shows the best repeat,
+    and the A/A spread is reported at its foot. Each case fixes its own dtype, so the
+    suite declares the whole rectangular f64 x c64 product and the wrong-dtype cells are
+    reported as skipped. A multi-step program (the MPS chain) has no equivalent matrix
+    shape: its declared identity is the numeric sentinel `n = 1`, and the final step's
+    real extents travel in the harness's own `case_m`/`case_n`/`case_k` columns.
