@@ -1,0 +1,10 @@
+pinned.sh: cpus=4 idle_window=3s max_busy=0.05 retries=3
+cpu4 busy=0.110
+cpu16 busy=0.000 (sibling)
+idle_cpus: busy CPUs [4]
+pinned.sh: cpus 4 busy before run (attempt 1); waiting
+cpu4 busy=0.000
+cpu16 busy=0.000 (sibling)
+cpu4 busy=0.000
+cpu16 busy=0.000 (sibling)
+pinned.sh: cpus 4 idle before and after (attempt 2)
