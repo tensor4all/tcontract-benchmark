@@ -5,4 +5,4 @@
 # carries the two prerequisites workstream A needed here: the vendor-less recording
 # path with external providers (389710d) and the suite `features` / campaign
 # `loader_paths` build/loader contract (46c3c7c).
-5a3ae9a644a64c9ad86ead088d7696839991375f
+95caeefa9ae7c8461ccdf75d3b65455d4ed799b0
