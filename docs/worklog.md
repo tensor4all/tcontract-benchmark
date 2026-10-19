@@ -3,6 +3,30 @@
 Design decisions, what was rejected, and what is still open. Measurements live
 in `result/`; this file holds the reasoning.
 
+## 2026-10-19 — the v2 campaign runs on the shared toolkit
+
+The toolkit pin moves from a feature-branch revision to its main (`95caeef`), which carries the
+control decision on the unchanged row's median, the observer's affinity recorded in
+`threads.observer`, the ancestor pin check and the shared merge procedure. `scripts/v2/` was already
+a set of thin shims selecting one of this repository's two descriptors by campaign id, so the pin was
+the only thing left between this campaign and the rest.
+
+Dry run, `--no-publish`, one thread, `f64`, four process sets (four engines need a multiple of four),
+`target/tblis-v2.0-beta2` as `TBLIS_ROOT` for the external provider's identity:
+
+```
+scripts/v2/record_run.py tcbench zen5-cpu tcbench --threads 1 --dtypes f64 \
+    --aa 4 --reps 2 --prime-ms 250 --external-provider-json <tblis.json> --no-publish
+```
+
+Built `tcbench` out of `extern/tcontract-rs-v2` at the pinned revision, verified the grid, timed 784
+rows across `plan`/`packed`/`ttgt`/`tblis`, wrote and validated `run.yaml`, and produced a report
+without publishing it: `data/v2-results/tcbench/zen5-cpu/tcbench/20261019T091003Z-v2-dry-run/`.
+
+The recorder refused the first attempt with "v2 requires clean, committed toolkit and harness source"
+because the pin edit was uncommitted - the same check that guards every other campaign. No timing
+was published from either attempt.
+
 ## 2026-10-13 — the gate is content only, and the smoke build is gone
 
 **What CI did.** Every PR ran `index` (the declarations, every recorded manifest, the generated
