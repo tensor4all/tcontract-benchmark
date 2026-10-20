@@ -8,4 +8,7 @@
 # Kept apart from `pins/tcontract-rs.rev` (the legacy timing-v1 reference) on purpose:
 # moving that pin would make the committed legacy `result/INDEX.md` stale, and the
 # historical evidence and pages stay where they are.
-7738bf43a0684e7d6f0769444e846f215fec86ab
+# main (61a04eb) from 2026-10-19: the newest revision, five commits past the previous
+# pin. The last release tag v0.2.1 (eff101a) is seven commits *behind* the previous
+# pin, so pinning the tag would have been a downgrade.
+61a04eb1562c671775d1ce254212a598334d3dbb
