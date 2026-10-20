@@ -1,0 +1,43 @@
+{
+  "pin": {
+    "TPRIMS_REV": "61a04eb1562c671775d1ce254212a598334d3dbb",
+    "TPRIMS_DIRTY": "false",
+    "TPRIMS_DIR": "/home/shinaoka/projects/tensor4all/tcontract-benchmark/extern/tcontract-rs-v2",
+    "BIN_DIR": "/home/shinaoka/projects/tensor4all/tcontract-benchmark/target/tcontract-rev/61a04eb1562c/release",
+    "BUILD_FEATURES": "blas,tblis"
+  },
+  "admission": {
+    "harness": {
+      "commit": "e309ae9e2e9f501facb0176e458b78492603bcac",
+      "dirty": false
+    },
+    "toolkit": {
+      "commit": "90fbeeb3dd2389b8a5d9bc63679f5e2bf3fc1741",
+      "dirty": false,
+      "measured_path": "/home/shinaoka/projects/tensor4all/campaign-toolkit"
+    },
+    "argv": [
+      "scripts/v2/record_run.py",
+      "tcbench",
+      "zen5-cpu",
+      "tcbench",
+      "--aa",
+      "4",
+      "--reps",
+      "5",
+      "--prime-ms",
+      "250",
+      "--external-provider-json",
+      "/tmp/tblis-v2.json",
+      "--label",
+      "pub-61a04eb-tcbench"
+    ]
+  },
+  "binary": {
+    "path": "/home/shinaoka/projects/tensor4all/tcontract-benchmark/target/tcontract-rev/61a04eb1562c/release/tcbench",
+    "sha256": "49a506769c3b6f4eb7fb15051e8eda22b937e38ce1b44d35a589002221058212"
+  },
+  "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.0\nLLVM version: 23.1.1\n",
+  "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)\nrelease: 1.99.0\ncommit-hash: 5f94df4789f005f9a352888e8355ffc645b7ed0e\ncommit-date: 2026-08-27\nhost: x86_64-unknown-linux-gnu\nlibgit2: 1.9.6 (sys:0.21.0 vendored)\nlibcurl: 8.21.0-DEV (sys:0.4.90+curl-8.21.0 vendored ssl:OpenSSL/3.6.3)\nssl: OpenSSL 3.6.3 9 Jun 2026\nos: Ubuntu 24.4.0 (noble) [64-bit]\n",
+  "env": {}
+}
