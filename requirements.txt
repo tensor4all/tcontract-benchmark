@@ -2,4 +2,4 @@ jsonschema>=4
 pyyaml>=6
 # The shared timing-v2 toolkit, pinned to the revision in `pins/campaign-toolkit.rev`.
 # The two must name the same commit; keep them in step.
--e git+https://github.com/tensor4all/campaign-toolkit@90fbeeb3dd2389b8a5d9bc63679f5e2bf3fc1741#egg=campaign-toolkit
+-e git+https://github.com/tensor4all/campaign-toolkit@3056614cb9584b21a290edb8e338362d5c892829#egg=campaign-toolkit
