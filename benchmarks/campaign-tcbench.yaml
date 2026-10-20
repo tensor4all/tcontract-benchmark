@@ -114,6 +114,7 @@ timing:
   version: 2
 
 report:
+  subject: tcontract
   library_label: tcontract-rs commit
   provider_label: tprims rows
   harness_label: harness commit
