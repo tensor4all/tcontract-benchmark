@@ -17,7 +17,7 @@ if [[ $# -ge 1 ]]; then
     echo "extern/tcontract-rs -> $DIR ($(git -C "$DIR" rev-parse --short HEAD), dirty=$( [[ -n "$(git -C "$DIR" status --porcelain --untracked-files=no)" ]] && echo true || echo false ))"
     exit 0
 fi
-REV="$(tr -d '[:space:]' < "$PROJECT_DIR/pins/tcontract-rs.rev")"
+REV="$(grep -v '^#' "$PROJECT_DIR/pins/tcontract-rs.rev" | tr -d '[:space:]')"
 [[ -n "$REV" ]] || { echo "ERROR: pins/tcontract-rs.rev is empty" >&2; exit 1; }
 if [[ -d "$LINK/.git" ]]; then
     git -C "$LINK" fetch -q origin
