@@ -1,4 +1,4 @@
-<!-- generated from data/v2-results/per-shape/zen5-cpu/per-shape/20261020T084358Z-pub-61a04eb-per-shape/report.md by scripts/publish_report.py; the report below is the source of truth -->
+<!-- generated from data/v2-results/per-shape/zen5-cpu/per-shape/20261020T131729Z-split-per-shape/report.md by scripts/publish_report.py; the report below is the source of truth -->
 
 # `per-shape` on `zen5-cpu`
 
@@ -6,16 +6,16 @@
 - features: `tblis`
 - tprims rows: `tprims` (the provider in the measured revision; see library above)
 - external providers: `tblis` 2.0 @ `b16a732939d8454021e0a0f0097cf1cc1dd3ab19` tag `v2.0-beta2` sha256 `de00bf1552c15f9c4a5d3157f02c149b81aef0909107c51cbb54ba4b8e9b5827` (TBLIS 2.0, configuration zen3; bundled BLIS 358e689cadd6757f564a2992cf46a2f7d6fa6bb0; built with ./configure --prefix=/home/shinaoka/projects/tensor4all/tcontract-benchmark/target/tblis-v2.0-beta2 --with-blis-config-family=zen3 (cmake, Unix Makefiles, Release); libtblis.so sha256 de00bf1552c15f9c)
-- harness commit: `5eed415394a40c6b281b58e0d2c88080b81631d2`
-- toolkit commit: `90fbeeb3dd2389b8a5d9bc63679f5e2bf3fc1741`
+- harness commit: `667c5b5cd90f6ca06b9dbaad754c51642c0df244`
+- toolkit commit: `40e7e11c031788543163d3251b51ee24af72162c`
 - measured binary SHA-256: `16d0d462f2cc4e607e1d6e7ff579c4f191dfc23835a7b6452ded8ef75b5e2568`
 - hardware profile: `zen5-cpu`
 - host role: `development` — **provisional**: recorded on a development host, superseded by the measurement host's dataset
-- timestamp: `2026-10-20T08:46:27.455164Z`
+- timestamp: `2026-10-20T13:18:52.003536Z`
 - timing policy: v2, median of 5 reps, priming 250 ms (time-based, identical on every row)
 - guards: idle window 3 s, max busy 5.0% including SMT siblings, 3 attempts
-- command: `scripts/v2/record_run.py per-shape zen5-cpu per-shape --aa 3 --reps 5 --prime-ms 250 --external-provider-json /tmp/tblis-v2.json --label pub-61a04eb-per-shape`
-- raw data: `data/v2-results/per-shape/zen5-cpu/per-shape/20261020T084358Z-pub-61a04eb-per-shape/`
+- command: `scripts/v2/record_run.py per-shape zen5-cpu per-shape --aa 2 --reps 5 --prime-ms 250 --external-provider-json /tmp/tblis-v2.json --label split-per-shape`
+- raw data: `data/v2-results/per-shape/zen5-cpu/per-shape/20261020T131729Z-split-per-shape/`
 
 ## What was measured
 
@@ -28,9 +28,6 @@
   Known blind spot: The harness's census CSV carries no corpus `group` column, so the corpus's own group labels and each case's native dtype and final-step extents are not part of this declaration; they remain facts of the recorded revision's `corpus.rs`.
 - **Rows** — one row per engine in every table below:
   - `plan` — This library with its planner choosing the route per case.
-    Identity: the measured tcontract-rs revision in this run's manifest (`library.commit`), pinned by `pins/tcontract-rs-v2.rev`
-    As measured: `tprims` (the provider in the measured revision; see library above)
-  - `packed` — This library with the packed driver forced. A diagnostic arm: it shows what the planner's other routes buy or cost on the same inputs.
     Identity: the measured tcontract-rs revision in this run's manifest (`library.commit`), pinned by `pins/tcontract-rs-v2.rev`
     As measured: `tprims` (the provider in the measured revision; see library above)
   - `tblis` — Actual C++ TBLIS through the direct FFI adapter, as the independent third-party reference implementation. Pinned by release tag, not by a local revision: `benchmarks/scripts/build_tblis.sh` of the measured checkout builds it from the tag and writes the PROVENANCE this repository records.
@@ -52,8 +49,8 @@ Every timed cell matches a successful verification census, including operation v
 Each cell is median of process medians ± sample SD of those medians; W is the median
 within-process sample SD. All values are milliseconds. These are descriptive spreads,
 not confidence intervals. The between-process spread includes the rotating-order schedule.
-Each process retains 5 chronological calls; 3 complete process sets are recorded.
-Spread guide (computed from this run's own rows): per-engine between-start range median 2.79%, worst 117.17% among cells of 1 us or more (a sub-microsecond row is timer and scheduler jitter, not kernel time); 37 of 126 engine cells exceed 5% and carry `!`; median within-process relative SD 0.56%. A cell whose `±`, `!` or `p` is as large as the difference you are reading is not evidence of a regression.
+Each process retains 5 chronological calls; 2 complete process sets are recorded.
+Spread guide (computed from this run's own rows): per-engine between-start range median 1.47%, worst 15.77% among cells of 1 us or more (a sub-microsecond row is timer and scheduler jitter, not kernel time); 8 of 84 engine cells exceed 5% and carry `!`; median within-process relative SD 0.48%. A cell whose `±`, `!` or `p` is as large as the difference you are reading is not evidence of a regression.
 The `vs plan` column is the rotation-averaged ratio exp(mean over starts of
 log(engine median / plan median)), with the per-start ratios beside it: `R > 1`
 means the engine was slower than that first-declared row in that start. It removes a
@@ -65,7 +62,7 @@ per-start median range exceeds 5% of its median, and `p` a balanced cell whose e
 position-effect ratio exceeds 1.05. Flagged cells are retained, not discarded; the
 between-start variation can exceed the difference being compared.
 The `vs` columns mark only differences larger than the spread this run recorded for those
-two rows (combined between-start SD, floored at 5%), always with the fork as the subject:
+two rows (combined between-start SD, floored at 5%), always with the measured library as the subject:
 `🔵 fork X faster than <row>` / `🔴 fork X slower than <row>` (the compared row is named in
 the cell, not only in the column header), `·` inside the band, `-` that row is not
 measured in this arm. `notes` carries the cell warnings (`*` a declared row has no measurement,
@@ -76,65 +73,65 @@ These describe the recorded revisions; they are not a regression claim.
 
 ## per-shape, f64, 1T (CPU 4)
 
-| case | plan (ms) | packed (ms) | tblis (ms) | vs `packed` | vs `tblis` | notes |
-|---|---|---|---|---|---|---|
-| `ij_jk_ik_f64_n64/n1/b1` | 0.017212 ± 1.0504e-05 (W 2.18701e-05) | 0.024986 ± 0.000347253 (W 6.68453e-05) | 0.04851 ± 0.000501189 (W 0.000289723) | 🔵 fork 1.45× faster than `packed` | 🔵 fork 2.82× faster than `tblis` | dispatch-dominated (row under 20 us) |
-| `ij_jk_kl_il_n64/n1/b1` | 0.034475 ± 4.7085e-05 (W 6.42651e-05) | 0.049181 ± 0.000536347 (W 0.000338377) | 0.09678 ± 0.000216419 (W 0.000567273) | 🔵 fork 1.43× faster than `packed` | 🔵 fork 2.81× faster than `tblis` |  |
-| `ijk_jkl_il_8x16x8/n1/b1` | 0.000832 ± 1.00167e-05 (W 6.73053e-06) | 0.005049 ± 0.00012741 (W 1.83112e-05) | 0.01622 ± 0.000135769 (W 9.6464e-05) | 🔵 fork 6.07× faster than `packed` | 🔵 fork 19.50× faster than `tblis` | dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n16_b16/n1/b1` | 0.006152 ± 6.28517e-05 (W 1.66523e-05) | 0.016781 ± 0.000651154 (W 5.72713e-05) | 0.120754 ± 0.000873948 (W 0.000274671) | 🔵 fork 2.73× faster than `packed` | 🔵 fork 19.63× faster than `tblis` | `!` between-start range over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n16_b256/n1/b1` | 0.101008 ± 0.00123852 (W 0.000650722) | 0.261307 ± 0.0135546 (W 0.00703863) | 1.87751 ± 0.0162998 (W 0.0024538) | 🔵 fork 2.59× faster than `packed` | 🔵 fork 18.59× faster than `tblis` | `!` between-start range over 5% |
-| `ikb_knb_inb_n16_b64/n1/b1` | 0.023774 ± 0.000112398 (W 2.37318e-05) | 0.064821 ± 0.00522663 (W 0.00180958) | 0.470586 ± 0.00476291 (W 0.00188406) | 🔵 fork 2.73× faster than `packed` | 🔵 fork 19.79× faster than `tblis` | `!` between-start range over 5%; `p` position effect over 5% |
-| `ikb_knb_inb_n2_b16/n1/b1` | 0.000721 ± 1.70392e-05 (W 8.78635e-06) | 0.003096 ± 0.00129042 (W 1.64317e-05) | 0.087844 ± 0.00106659 (W 8.74643e-05) | 🔵 fork 4.29× faster than `packed` | 🔵 fork 121.84× faster than `tblis` | `!` between-start range over 5%; `p` position effect over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n2_b256/n1/b1` | 0.008166 ± 0.000260743 (W 1.41527e-05) | 0.040636 ± 0.0197545 (W 0.000191959) | 1.35029 ± 0.0264972 (W 0.00174416) | 🔵 fork 4.98× faster than `packed` | 🔵 fork 165.36× faster than `tblis` | `!` between-start range over 5%; `p` position effect over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n2_b64/n1/b1` | 0.002214 ± 7.02377e-05 (W 8.61394e-06) | 0.010279 ± 0.0057081 (W 0.000125492) | 0.339662 ± 0.00636403 (W 0.00193058) | 🔵 fork 4.64× faster than `packed` | 🔵 fork 153.42× faster than `tblis` | `!` between-start range over 5%; `p` position effect over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n4_b16/n1/b1` | 0.000952 ± 1.1547e-05 (W 8.61394e-06) | 0.004037 ± 0.00138572 (W 1.89816e-05) | 0.089196 ± 0.00164837 (W 0.00135697) | 🔵 fork 4.24× faster than `packed` | 🔵 fork 93.69× faster than `tblis` | `!` between-start range over 5%; `p` position effect over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n4_b256/n1/b1` | 0.012563 ± 0.00030568 (W 4.90337e-05) | 0.056425 ± 0.0225295 (W 0.000722626) | 1.38873 ± 0.0198095 (W 0.00492288) | 🔵 fork 4.49× faster than `packed` | 🔵 fork 110.54× faster than `tblis` | `!` between-start range over 5%; `p` position effect over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n4_b64/n1/b1` | 0.003296 ± 8.62168e-05 (W 1.48324e-05) | 0.014016 ± 0.00582035 (W 0.000141669) | 0.348509 ± 0.00254233 (W 0.00195116) | 🔵 fork 4.25× faster than `packed` | 🔵 fork 105.74× faster than `tblis` | `!` between-start range over 5%; `p` position effect over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n8_b16/n1/b1` | 0.001402 ± 1.00167e-05 (W 8.43801e-06) | 0.006692 ± 0.00101528 (W 6.62216e-05) | 0.096349 ± 0.00150411 (W 0.00126342) | 🔵 fork 4.77× faster than `packed` | 🔵 fork 68.72× faster than `tblis` | `!` between-start range over 5%; `p` position effect over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n8_b256/n1/b1` | 0.019165 ± 0.000252114 (W 3.60042e-05) | 0.09641 ± 0.016714 (W 0.00186199) | 1.51412 ± 0.0141234 (W 0.00389914) | 🔵 fork 5.03× faster than `packed` | 🔵 fork 79.00× faster than `tblis` | `!` between-start range over 5%; `p` position effect over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n8_b64/n1/b1` | 0.005139 ± 4.04145e-05 (W 1.96036e-05) | 0.025077 ± 0.00378281 (W 0.000216455) | 0.374988 ± 0.00472845 (W 0.00146563) | 🔵 fork 4.88× faster than `packed` | 🔵 fork 72.97× faster than `tblis` | `!` between-start range over 5%; `p` position effect over 5%; dispatch-dominated (row under 20 us) |
+| case | plan (ms) | tblis (ms) | vs `tblis` | notes |
+|---|---|---|---|---|
+| `ij_jk_ik_f64_n64/n1/b1` | 0.017392 ± 0.000240416 (W 1.9383e-05) | 0.048315 ± 0.000362039 (W 0.000712029) | 🔵 fork 2.78× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ij_jk_kl_il_n64/n1/b1` | 0.0345895 ± 0.000120915 (W 5.55944e-05) | 0.096905 ± 0.000473762 (W 0.00117263) | 🔵 fork 2.80× faster than `tblis` |  |
+| `ijk_jkl_il_8x16x8/n1/b1` | 0.000827 ± 7.07107e-06 (W 7.421e-06) | 0.01611 ± 4.24264e-05 (W 6.48689e-05) | 🔵 fork 19.48× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n16_b16/n1/b1` | 0.005961 ± 1.41421e-05 (W 9.88418e-06) | 0.122082 ± 0.00116885 (W 0.00020941) | 🔵 fork 20.48× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n16_b256/n1/b1` | 0.0995955 ± 0.000226981 (W 0.00189542) | 1.90101 ± 0.0182921 (W 0.00151165) | 🔵 fork 19.09× faster than `tblis` |  |
+| `ikb_knb_inb_n16_b64/n1/b1` | 0.0236895 ± 0.000135057 (W 0.00071655) | 0.476469 ± 0.00529199 (W 0.00245011) | 🔵 fork 20.11× faster than `tblis` |  |
+| `ikb_knb_inb_n2_b16/n1/b1` | 0.000706 ± 7.07107e-06 (W 2.17621e-05) | 0.088945 ± 0.00128976 (W 0.000889009) | 🔵 fork 125.98× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n2_b256/n1/b1` | 0.007995 ± 5.65685e-05 (W 2.59806e-05) | 1.37765 ± 0.0354847 (W 0.00212261) | 🔵 fork 172.31× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n2_b64/n1/b1` | 0.002194 ± 4.24264e-05 (W 0.000525887) | 0.343272 ± 0.00543412 (W 0.00138063) | 🔵 fork 156.46× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n4_b16/n1/b1` | 0.0009615 ± 1.48492e-05 (W 7.78054e-06) | 0.090633 ± 0.00157968 (W 0.000117547) | 🔵 fork 94.26× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n4_b256/n1/b1` | 0.012388 ± 0.000446891 (W 4.29094e-05) | 1.41102 ± 0.0275149 (W 0.00193358) | 🔵 fork 113.90× faster than `tblis` | `!` between-start range over 5%; dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n4_b64/n1/b1` | 0.0032415 ± 9.2631e-05 (W 1.68657e-05) | 0.353882 ± 0.00636891 (W 0.00150267) | 🔵 fork 109.17× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n8_b16/n1/b1` | 0.0013525 ± 1.48492e-05 (W 1.13898e-05) | 0.0981975 ± 0.00115471 (W 0.0017477) | 🔵 fork 72.60× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n8_b256/n1/b1` | 0.0187245 ± 0.000255266 (W 4.62826e-05) | 1.51725 ± 0.0276288 (W 0.00440746) | 🔵 fork 81.03× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n8_b64/n1/b1` | 0.00523 ± 5.65685e-05 (W 1.94379e-05) | 0.381018 ± 0.00393929 (W 0.001424) | 🔵 fork 72.85× faster than `tblis` | dispatch-dominated (row under 20 us) |
 
 ## per-shape, f64, 4T (CPU 4-7)
 
-| case | plan (ms) | packed (ms) | tblis (ms) | vs `packed` | vs `tblis` | notes |
-|---|---|---|---|---|---|---|
-| `ij_jk_ik_f64_n64/n1/b1` | 0.017392 ± 0.000146936 (W 2.21427e-05) | 0.024866 ± 0.000219955 (W 0.000297628) | 0.031158 ± 0.000902208 (W 0.00302558) | 🔵 fork 1.43× faster than `packed` | 🔵 fork 1.79× faster than `tblis` | `!` between-start range over 5%; dispatch-dominated (row under 20 us) |
-| `ij_jk_kl_il_n64/n1/b1` | 0.034554 ± 0.000295603 (W 4.71169e-05) | 0.049703 ± 0.000842751 (W 0.0003786) | 0.067546 ± 0.00306139 (W 0.00196146) | 🔵 fork 1.44× faster than `packed` | 🔵 fork 1.95× faster than `tblis` | `!` between-start range over 5% |
-| `ijk_jkl_il_8x16x8/n1/b1` | 0.000821 ± 2.60832e-05 (W 5.85662e-06) | 0.00511 ± 4.38216e-05 (W 3.36051e-05) | 0.02171 ± 0.000926266 (W 0.000421392) | 🔵 fork 6.22× faster than `packed` | 🔵 fork 26.44× faster than `tblis` | `!` between-start range over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n16_b16/n1/b1` | 0.006322 ± 0.0039227 (W 2.16795e-05) | 0.016882 ± 0.000231294 (W 0.000110079) | 0.239185 ± 0.0138592 (W 0.00847293) | 🔵 fork 2.67× faster than `packed` | 🔵 fork 37.83× faster than `tblis` | `!` between-start range over 5%; `p` position effect over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n16_b256/n1/b1` | 0.030727 ± 0.000586348 (W 0.000374545) | 0.073857 ± 0.00123661 (W 0.00137053) | 1.22148 ± 0.0223882 (W 0.00604789) | 🔵 fork 2.40× faster than `packed` | 🔵 fork 39.75× faster than `tblis` |  |
-| `ikb_knb_inb_n16_b64/n1/b1` | 0.023915 ± 0.0160412 (W 3.26236e-05) | 0.065842 ± 0.00213932 (W 0.00118268) | 0.907109 ± 0.00622857 (W 0.0237713) | 🔵 fork 2.75× faster than `packed` | 🔵 fork 37.93× faster than `tblis` | `!` between-start range over 5%; `p` position effect over 5% |
-| `ikb_knb_inb_n2_b16/n1/b1` | 0.000711 ± 3.27159e-05 (W 1.64712e-05) | 0.003096 ± 1.52753e-05 (W 1.62265e-05) | 0.031829 ± 0.00120788 (W 0.00179893) | 🔵 fork 4.35× faster than `packed` | 🔵 fork 44.77× faster than `tblis` | `!` between-start range over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n2_b256/n1/b1` | 0.008476 ± 0.000306573 (W 1.50433e-05) | 0.038632 ± 0.000744413 (W 0.00143991) | 0.391439 ± 0.00618481 (W 0.00591117) | 🔵 fork 4.56× faster than `packed` | 🔵 fork 46.18× faster than `tblis` | `!` between-start range over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n2_b64/n1/b1` | 0.002254 ± 8.2282e-05 (W 1.63799e-05) | 0.010449 ± 0.000109697 (W 1.48762e-05) | 0.104113 ± 0.00108835 (W 0.0017997) | 🔵 fork 4.64× faster than `packed` | 🔵 fork 46.19× faster than `tblis` | `!` between-start range over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n4_b16/n1/b1` | 0.000982 ± 3.05014e-05 (W 8.3666e-06) | 0.004017 ± 0.000176976 (W 1.9578e-05) | 0.070752 ± 0.000113578 (W 0.000951853) | 🔵 fork 4.09× faster than `packed` | 🔵 fork 72.05× faster than `tblis` | `!` between-start range over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n4_b256/n1/b1` | 0.012544 ± 0.000195244 (W 1.10136e-05) | 0.053901 ± 0.0158117 (W 0.00116848) | 0.402379 ± 0.0065625 (W 0.00691165) | 🔵 fork 4.30× faster than `packed` | 🔵 fork 32.08× faster than `tblis` | `!` between-start range over 5%; `p` position effect over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n4_b64/n1/b1` | 0.003246 ± 6.4291e-05 (W 7.07107e-06) | 0.014166 ± 0.000547419 (W 4.15933e-05) | 0.105426 ± 0.00101718 (W 0.00393396) | 🔵 fork 4.36× faster than `packed` | 🔵 fork 32.48× faster than `tblis` | `!` between-start range over 5%; dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n8_b16/n1/b1` | 0.001393 ± 3.09892e-05 (W 8.20366e-06) | 0.006752 ± 0.000142818 (W 6.49938e-05) | 0.167472 ± 0.000490561 (W 0.00305201) | 🔵 fork 4.85× faster than `packed` | 🔵 fork 120.22× faster than `tblis` | dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n8_b256/n1/b1` | 0.019125 ± 9.34719e-05 (W 4.44556e-05) | 0.096219 ± 0.0019991 (W 0.0004214) | 0.42954 ± 0.00355105 (W 0.00627639) | 🔵 fork 5.03× faster than `packed` | 🔵 fork 22.46× faster than `tblis` | dispatch-dominated (row under 20 us) |
-| `ikb_knb_inb_n8_b64/n1/b1` | 0.0051 ± 6.37992e-05 (W 2.60058e-05) | 0.025077 ± 0.000265016 (W 0.000150395) | 0.277356 ± 0.00715867 (W 0.00370593) | 🔵 fork 4.92× faster than `packed` | 🔵 fork 54.38× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| case | plan (ms) | tblis (ms) | vs `tblis` | notes |
+|---|---|---|---|---|
+| `ij_jk_ik_f64_n64/n1/b1` | 0.0172925 ± 7.14178e-05 (W 0.000580027) | 0.0345745 ± 0.00385444 (W 0.00231758) | 🔵 fork 2.00× faster than `tblis` | `!` between-start range over 5%; `p` position effect over 5%; dispatch-dominated (row under 20 us) |
+| `ij_jk_kl_il_n64/n1/b1` | 0.034504 ± 4.24264e-05 (W 2.35634e-05) | 0.0643145 ± 0.00118299 (W 0.00275097) | 🔵 fork 1.86× faster than `tblis` |  |
+| `ijk_jkl_il_8x16x8/n1/b1` | 0.000827 ± 7.07107e-06 (W 4.52533e-06) | 0.020593 ± 0.00033234 (W 0.000284946) | 🔵 fork 24.90× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n16_b16/n1/b1` | 0.006131 ± 1.41421e-05 (W 8.83677e-06) | 0.237856 ± 0.00889045 (W 0.0086884) | 🔵 fork 38.80× faster than `tblis` | `!` between-start range over 5%; dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n16_b256/n1/b1` | 0.030562 ± 3.53553e-05 (W 0.000319368) | 1.23459 ± 0.0166616 (W 0.00836432) | 🔵 fork 40.40× faster than `tblis` |  |
+| `ikb_knb_inb_n16_b64/n1/b1` | 0.0235535 ± 8.41457e-05 (W 3.83966e-05) | 0.935297 ± 0.0180227 (W 0.0220441) | 🔵 fork 39.71× faster than `tblis` |  |
+| `ikb_knb_inb_n2_b16/n1/b1` | 0.000711 ± 0 (W 1.04348e-05) | 0.032796 ± 0.000432749 (W 0.00279103) | 🔵 fork 46.13× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n2_b256/n1/b1` | 0.0082055 ± 0.000297692 (W 1.0423e-05) | 0.397077 ± 0.00760847 (W 0.00677122) | 🔵 fork 48.39× faster than `tblis` | `!` between-start range over 5%; dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n2_b64/n1/b1` | 0.002204 ± 8.48528e-05 (W 2.93387e-05) | 0.10516 ± 0.00213193 (W 0.00154837) | 🔵 fork 47.71× faster than `tblis` | `!` between-start range over 5%; dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n4_b16/n1/b1` | 0.0009765 ± 7.77817e-06 (W 7.83368e-06) | 0.069344 ± 4.94975e-05 (W 0.00118229) | 🔵 fork 71.01× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n4_b256/n1/b1` | 0.0125935 ± 8.55599e-05 (W 1.45335e-05) | 0.408062 ± 0.00102743 (W 0.00566896) | 🔵 fork 32.40× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n4_b64/n1/b1` | 0.003321 ± 7.07107e-06 (W 6.63209e-06) | 0.109824 ± 0.00185686 (W 0.00266439) | 🔵 fork 33.07× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n8_b16/n1/b1` | 0.0014125 ± 1.48492e-05 (W 1.11832e-05) | 0.168493 ± 0.00276337 (W 0.00246216) | 🔵 fork 119.29× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n8_b256/n1/b1` | 0.0193965 ± 0.000594677 (W 7.78794e-05) | 0.427589 ± 0.00335098 (W 0.00686542) | 🔵 fork 22.04× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n8_b64/n1/b1` | 0.004894 ± 6.36396e-05 (W 4.34835e-05) | 0.283121 ± 0.00512228 (W 0.00900804) | 🔵 fork 57.85× faster than `tblis` | dispatch-dominated (row under 20 us) |
 
 ## per-shape, c64, 1T (CPU 4)
 
-| case | plan (ms) | packed (ms) | tblis (ms) | vs `packed` | vs `tblis` | notes |
-|---|---|---|---|---|---|---|
-| `ij_jk_ik_c64_n32/n1/b1` | 0.008967 ± 5.19615e-05 (W 1.41421e-05) | 0.013355 ± 0.00015308 (W 1.52381e-05) | 0.024796 ± 0.000120268 (W 4.50555e-05) | 🔵 fork 1.49× faster than `packed` | 🔵 fork 2.77× faster than `tblis` | dispatch-dominated (row under 20 us) |
-| `mps_chain_L32_chi16/n1/b1` | 0.167262 ± 0.000513135 (W 0.00187553) | 0.307252 ± 0.000884269 (W 0.00242258) | 0.900487 ± 0.00285531 (W 0.00139016) | 🔵 fork 1.84× faster than `packed` | 🔵 fork 5.38× faster than `tblis` |  |
-| `mps_chain_L32_chi32/n1/b1` | 1.1625 ± 0.0122708 (W 0.00425509) | 1.58181 ± 0.00448416 (W 0.00217407) | 2.54616 ± 0.00766733 (W 0.00917997) | 🔵 fork 1.36× faster than `packed` | 🔵 fork 2.19× faster than `tblis` |  |
-| `mps_chain_L32_chi4/n1/b1` | 0.03238 ± 0.000501209 (W 0.000445953) | 0.087583 ± 0.00194387 (W 0.000228648) | 0.52104 ± 0.00562169 (W 0.00190875) | 🔵 fork 2.70× faster than `packed` | 🔵 fork 16.09× faster than `tblis` |  |
-| `mps_chain_L32_chi64/n1/b1` | 10.9295 ± 0.0190125 (W 0.0141624) | 10.9098 ± 0.0466757 (W 0.0531107) | 13.7951 ± 0.217075 (W 0.0470089) | · | 🔵 fork 1.26× faster than `tblis` |  |
-| `mps_chain_L32_chi8/n1/b1` | 0.061334 ± 0.00140885 (W 0.000324824) | 0.131234 ± 0.00114122 (W 0.000599357) | 0.593204 ± 0.00641238 (W 0.00260204) | 🔵 fork 2.14× faster than `packed` | 🔵 fork 9.67× faster than `tblis` |  |
+| case | plan (ms) | tblis (ms) | vs `tblis` | notes |
+|---|---|---|---|---|
+| `ij_jk_ik_c64_n32/n1/b1` | 0.0090165 ± 5.58614e-05 (W 1.14958e-05) | 0.024796 ± 2.82843e-05 (W 6.05679e-05) | 🔵 fork 2.75× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `mps_chain_L32_chi16/n1/b1` | 0.16677 ± 7.07107e-07 (W 0.00149344) | 0.902882 ± 0.00165109 (W 0.000922655) | 🔵 fork 5.41× faster than `tblis` |  |
+| `mps_chain_L32_chi32/n1/b1` | 1.16337 ± 0.000226274 (W 0.00370002) | 2.55319 ± 0.00716936 (W 0.0088201) | 🔵 fork 2.19× faster than `tblis` |  |
+| `mps_chain_L32_chi4/n1/b1` | 0.031428 ± 0.000353553 (W 0.000315529) | 0.523002 ± 0.00109107 (W 0.00140626) | 🔵 fork 16.64× faster than `tblis` |  |
+| `mps_chain_L32_chi64/n1/b1` | 10.894 ± 0.00289843 (W 0.0152492) | 13.7744 ± 0.0833757 (W 0.0606757) | 🔵 fork 1.26× faster than `tblis` |  |
+| `mps_chain_L32_chi8/n1/b1` | 0.060502 ± 0.000581242 (W 0.000773789) | 0.59756 ± 0.00423628 (W 0.00192466) | 🔵 fork 9.88× faster than `tblis` |  |
 
 ## per-shape, c64, 4T (CPU 4-7)
 
-| case | plan (ms) | packed (ms) | tblis (ms) | vs `packed` | vs `tblis` | notes |
-|---|---|---|---|---|---|---|
-| `ij_jk_ik_c64_n32/n1/b1` | 0.009017 ± 8.54225e-05 (W 1.64317e-05) | 0.013475 ± 3e-05 (W 4.10755e-05) | 0.024265 ± 0.0020939 (W 0.00167489) | 🔵 fork 1.49× faster than `packed` | 🔵 fork 2.69× faster than `tblis` | `!` between-start range over 5%; `p` position effect over 5%; dispatch-dominated (row under 20 us) |
-| `mps_chain_L32_chi16/n1/b1` | 0.167542 ± 0.00196321 (W 0.000464231) | 0.308835 ± 0.00204946 (W 0.00222023) | 1.24855 ± 0.0655203 (W 0.0195045) | 🔵 fork 1.84× faster than `packed` | 🔵 fork 7.45× faster than `tblis` | `!` between-start range over 5% |
-| `mps_chain_L32_chi32/n1/b1` | 1.16859 ± 0.00294051 (W 0.00243916) | 1.58637 ± 0.00104663 (W 0.0021976) | 1.91784 ± 0.0689343 (W 0.0163201) | 🔵 fork 1.36× faster than `packed` | 🔵 fork 1.64× faster than `tblis` | `!` between-start range over 5% |
-| `mps_chain_L32_chi4/n1/b1` | 0.0324 ± 0.00172424 (W 0.000326599) | 0.088775 ± 0.00149661 (W 0.000739885) | 0.963705 ± 0.0390305 (W 0.00349278) | 🔵 fork 2.74× faster than `packed` | 🔵 fork 29.74× faster than `tblis` | `!` between-start range over 5% |
-| `mps_chain_L32_chi64/n1/b1` | 3.96992 ± 0.0297125 (W 0.0933855) | 3.98066 ± 0.0874452 (W 0.0450319) | 5.5633 ± 0.0646773 (W 0.030059) | · | 🔵 fork 1.40× faster than `tblis` |  |
-| `mps_chain_L32_chi8/n1/b1` | 0.060733 ± 0.00117251 (W 0.00118461) | 0.13471 ± 0.00185185 (W 0.00158633) | 1.14422 ± 0.0556097 (W 0.027762) | 🔵 fork 2.22× faster than `packed` | 🔵 fork 18.84× faster than `tblis` | `!` between-start range over 5% |
+| case | plan (ms) | tblis (ms) | vs `tblis` | notes |
+|---|---|---|---|---|
+| `ij_jk_ik_c64_n32/n1/b1` | 0.0089965 ± 4.31335e-05 (W 2.03568e-05) | 0.023704 ± 0.000666095 (W 0.0019987) | 🔵 fork 2.63× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `mps_chain_L32_chi16/n1/b1` | 0.168502 ± 0.000523966 (W 0.00218172) | 1.36423 ± 0.0557448 (W 0.0139513) | 🔵 fork 8.10× faster than `tblis` | `!` between-start range over 5% |
+| `mps_chain_L32_chi32/n1/b1` | 1.1678 ± 0.00648275 (W 0.00241947) | 1.91434 ± 0.04721 (W 0.0222545) | 🔵 fork 1.64× faster than `tblis` |  |
+| `mps_chain_L32_chi4/n1/b1` | 0.032049 ± 0.000155563 (W 0.000311519) | 0.957202 ± 0.0513112 (W 0.00253892) | 🔵 fork 29.87× faster than `tblis` | `!` between-start range over 5% |
+| `mps_chain_L32_chi64/n1/b1` | 4.05505 ± 0.106823 (W 0.14407) | 5.56742 ± 0.0614476 (W 0.0175714) | 🔵 fork 1.37× faster than `tblis` |  |
+| `mps_chain_L32_chi8/n1/b1` | 0.0610185 ± 0.000446184 (W 0.000216776) | 1.2677 ± 0.0499868 (W 0.0231547) | 🔵 fork 20.78× faster than `tblis` | `!` between-start range over 5% |
 
 Not applicable to this population's shapes and reported as skipped: `ij_jk_ik_c64_n32/1`, `ij_jk_ik_f64_n64/1`, `ij_jk_kl_il_n64/1`, `ijk_jkl_il_8x16x8/1`, `ikb_knb_inb_n16_b16/1`, `ikb_knb_inb_n16_b256/1`, `ikb_knb_inb_n16_b64/1`, `ikb_knb_inb_n2_b16/1`, `ikb_knb_inb_n2_b256/1`, `ikb_knb_inb_n2_b64/1`, `ikb_knb_inb_n4_b16/1`, `ikb_knb_inb_n4_b256/1`, `ikb_knb_inb_n4_b64/1`, `ikb_knb_inb_n8_b16/1`, `ikb_knb_inb_n8_b256/1`, `ikb_knb_inb_n8_b64/1`, `mps_chain_L32_chi16/1`, `mps_chain_L32_chi32/1`, `mps_chain_L32_chi4/1`, `mps_chain_L32_chi64/1`, `mps_chain_L32_chi8/1`.
 
