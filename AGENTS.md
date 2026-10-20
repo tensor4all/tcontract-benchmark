@@ -1,5 +1,12 @@
 # Agent Workflow
 
+Before acting, read the shared benchmark rules, starting from
+`https://github.com/tensor4all/tensor4all-agent-rules/blob/main/rules/benchmark/measurement.md`
+(bind yourself off the measured cores, one measurement at a time, a discarded run stays
+discarded) and `.../rules/benchmark/index.md` for the rest (evidence, tables). Fallback:
+`../tensor4all-agent-rules/rules/benchmark/`. Load only the files your task touches.
+
+
 ## Source of truth for numbers
 
 Tracked result pages live under `result/<profile>/<suite>/<revision>.md`, one
