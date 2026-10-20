@@ -38,7 +38,6 @@ result_dir: result-v2/per-shape
 # not select it.)
 engines:
   plan: tprims
-  packed: tprims
   ttgt: openblas
   tblis: tblis
 
