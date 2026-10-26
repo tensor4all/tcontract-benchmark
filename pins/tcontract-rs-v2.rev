@@ -11,4 +11,6 @@
 # main (61a04eb) from 2026-10-19: the newest revision, five commits past the previous
 # pin. The last release tag v0.2.1 (eff101a) is seven commits *behind* the previous
 # pin, so pinning the tag would have been a downgrade.
-61a04eb1562c671775d1ce254212a598334d3dbb
+# `v0.6.0` (71a11a8) from 2026-10-27: the release on crates.io deps (tcontract-exec 0.6, threadteam 0.1,
+# strided 0.8); main is the same commit. tcontract-kernel stays at 0.3.0.
+71a11a80b454fec3e465c62dd00a6294d3254c1d
