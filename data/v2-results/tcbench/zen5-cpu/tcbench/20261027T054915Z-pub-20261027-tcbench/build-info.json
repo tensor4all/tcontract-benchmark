@@ -1,0 +1,48 @@
+{
+  "pin": {
+    "TPRIMS_REV": "71a11a80b454fec3e465c62dd00a6294d3254c1d",
+    "TPRIMS_DIRTY": "false",
+    "TPRIMS_DIR": "/home/shinaoka/projects/tensor4all/tcontract-benchmark/extern/tcontract-rs-v2",
+    "BIN_DIR": "/home/shinaoka/projects/tensor4all/tcontract-benchmark/target/tcontract-rev/71a11a80b454/release",
+    "BUILD_FEATURES": "blas,tblis"
+  },
+  "admission": {
+    "harness": {
+      "commit": "d6e613b60c587e82ed50e37dbc1a2f1d15e7bd82",
+      "dirty": false,
+      "outputs_dirty": false,
+      "excluded_outputs": [
+        "data/v2-results/tcbench",
+        "result-v2/tcbench"
+      ]
+    },
+    "toolkit": {
+      "commit": "467573e6e3e405b8ec30b3b61d096c1d0c9893c3",
+      "dirty": false,
+      "measured_path": "/home/shinaoka/projects/tensor4all/campaign-toolkit"
+    },
+    "argv": [
+      "scripts/v2/record_run.py",
+      "tcbench",
+      "zen5-cpu",
+      "tcbench",
+      "--aa",
+      "3",
+      "--reps",
+      "5",
+      "--prime-ms",
+      "250",
+      "--external-provider-json",
+      "/tmp/tmp.MUn3muUn4e",
+      "--label",
+      "pub-20261027-tcbench"
+    ]
+  },
+  "binary": {
+    "path": "/home/shinaoka/projects/tensor4all/tcontract-benchmark/target/tcontract-rev/71a11a80b454/release/tcbench",
+    "sha256": "0eb4eecc7871df9724e19b91551e5fa2216878fe6462fbcbc3a56ade7089c09c"
+  },
+  "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.0\nLLVM version: 23.1.1\n",
+  "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)\nrelease: 1.99.0\ncommit-hash: 5f94df4789f005f9a352888e8355ffc645b7ed0e\ncommit-date: 2026-08-27\nhost: x86_64-unknown-linux-gnu\nlibgit2: 1.9.6 (sys:0.21.0 vendored)\nlibcurl: 8.21.0-DEV (sys:0.4.90+curl-8.21.0 vendored ssl:OpenSSL/3.6.3)\nssl: OpenSSL 3.6.3 9 Jun 2026\nos: Ubuntu 24.4.0 (noble) [64-bit]\n",
+  "env": {}
+}
