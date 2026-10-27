@@ -15,4 +15,3 @@ for campaign in tcbench per-shape; do
         --aa $AA --reps 5 --prime-ms 250 --external-provider-json "$PROVIDERS" \
         --label "pub-$(date -u +%Y%m%d)-$campaign"
 done
-python3 scripts/v2/gen_site.py
