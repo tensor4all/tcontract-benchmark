@@ -1,0 +1,137 @@
+# `per-shape` on `zen5-cpu`
+
+- tcontract-rs commit: `71a11a80b454fec3e465c62dd00a6294d3254c1d`
+- features: `tblis`
+- tprims rows: `tprims` (the provider in the measured revision; see library above)
+- external providers: `tblis` 2.0 @ `b16a732939d8454021e0a0f0097cf1cc1dd3ab19` tag `v2.0-beta2` sha256 `de00bf1552c15f9c4a5d3157f02c149b81aef0909107c51cbb54ba4b8e9b5827` (TBLIS 2.0, configuration zen3; bundled BLIS 358e689cadd6757f564a2992cf46a2f7d6fa6bb0; built with ./configure --prefix=/home/shinaoka/projects/tensor4all/tcontract-benchmark/target/tblis-v2.0-beta2 --with-blis-config-family=zen3 (cmake, Unix Makefiles, Release); libtblis.so sha256 de00bf1552c15f9c)
+- harness commit: `8fe6895b29f4e7f472e04f0127abeeeee1a66528`
+- toolkit commit: `467573e6e3e405b8ec30b3b61d096c1d0c9893c3`
+- measured binary SHA-256: `ebd9ce52fa4449956c5fd09a7b86361aa90b6b595ae877365d196874ec0e5c79`
+- hardware profile: `zen5-cpu`
+- host role: `development` — **provisional**: recorded on a development host, superseded by the measurement host's dataset
+- timestamp: `2026-10-27T06:04:10.743956Z`
+- timing policy: v2, median of 5 reps, priming 250 ms (time-based, identical on every row)
+- guards: idle window 3 s, max busy 5.0% including SMT siblings, 3 attempts
+- command: `scripts/v2/record_run.py per-shape zen5-cpu per-shape --aa 2 --reps 5 --prime-ms 250 --external-provider-json /tmp/tmp.N2NQ9x39gX --label pub-20261027-per-shape`
+- raw data: `data/v2-results/per-shape/zen5-cpu/per-shape/20261027T060248Z-pub-20261027-per-shape/`
+
+## What was measured
+
+- **Workload** — Small and large batched GEMMs, a two-step chain and the steps of a 32-site MPS chain, at fixed extents. One timed call is the whole program (a chain of pairwise steps), not one step.
+  Source: The corpus is defined by `benchmarks/benchmarks/lukbench/corpus.rs` in the measured revision (`pins/tcontract-rs-v2.rev`); it carries the case definitions recorded from tensor4all/tcontract-rs#61.
+  Known blind spot: Each case fixes its own dtype (f64 or c64); the suite declares both, and lukbench's census reports the wrong-dtype cells as skipped rather than dropping the case.
+  Known blind spot: The declared identity is the numeric sentinel `n = 1`; the final step's real extents are the harness's own report, not the toolkit's identity.
+  Known blind spot: One size per case: a ratio here says nothing about a neighbouring size, and the set is not a sweep.
+  Known blind spot: `tblis` is an external baseline linked from its own prefix (`TBLIS_ROOT`, see `docs/v2-layout.md`), not the measured checkout; its revision is recorded through the campaign TBLIS collector (`scripts/tblis_providers_json.py`).
+  Known blind spot: The harness's census CSV carries no corpus `group` column, so the corpus's own group labels and each case's native dtype and final-step extents are not part of this declaration; they remain facts of the recorded revision's `corpus.rs`.
+- **Rows** — one row per engine in every table below:
+  - `plan` — This library with its planner choosing the route per case.
+    Identity: the measured tcontract-rs revision in this run's manifest (`library.commit`), pinned by `pins/tcontract-rs-v2.rev`
+    As measured: `tprims` (the provider in the measured revision; see library above)
+  - `tblis` — Actual C++ TBLIS through the direct FFI adapter, as the independent third-party reference implementation. Pinned by release tag, not by a local revision: `benchmarks/scripts/build_tblis.sh` of the measured checkout builds it from the tag and writes the PROVENANCE this repository records.
+    Identity: TBLIS v2.0-beta2 (the only tagged 2.0; its commit and the bundled BLIS revision are recorded per run, from `scripts/tblis_providers_json.py`)
+    Caveat: Needs an install prefix (`TBLIS_ROOT`), and TBLIS 2.x builds through CMake, so the prefix cannot be made inside a bare checkout. The page repeats the tag, commit, bundled BLIS revision and artifact hash the manifest recorded.
+    As measured: `tblis` 2.0 @ `b16a732939d8454021e0a0f0097cf1cc1dd3ab19` tag `v2.0-beta2` sha256 `de00bf1552c15f9c4a5d3157f02c149b81aef0909107c51cbb54ba4b8e9b5827` (TBLIS 2.0, configuration zen3; bundled BLIS 358e689cadd6757f564a2992cf46a2f7d6fa6bb0; built with ./configure --prefix=/home/shinaoka/projects/tensor4all/tcontract-benchmark/target/tblis-v2.0-beta2 --with-blis-config-family=zen3 (cmake, Unix Makefiles, Release); libtblis.so sha256 de00bf1552c15f9c)
+
+## Hardware
+
+- CPU: `AMD Ryzen AI 9 HX 470`
+- logical CPUs: `24`
+- L3: `24 MiB (2 instances)`
+- L3 domains: `0-3: 16 MiB shared; 4-11: 8 MiB shared`
+- OS / arch: `Linux 7.0.0-38-generic` / `x86_64`
+- hostname: `shinaoka-EVO-X1Pro`
+- CPU sets: 1T -> `4`, 4T -> `4-7`
+
+Every timed cell matches a successful verification census, including operation variants.
+Each cell is median of process medians ± sample SD of those medians; W is the median
+within-process sample SD. All values are milliseconds. These are descriptive spreads,
+not confidence intervals. The between-process spread includes the rotating-order schedule.
+Each process retains 5 chronological calls; 2 complete process sets are recorded.
+Spread guide (computed from this run's own rows): per-engine between-start range median 0.75%, worst 8.06% among cells of 1 us or more (a sub-microsecond row is timer and scheduler jitter, not kernel time); 4 of 84 engine cells exceed 5% and carry `!`; median within-process relative SD 0.64%. A cell whose `±`, `!` or `p` is as large as the difference you are reading is not evidence of a regression.
+The `vs plan` column is the rotation-averaged ratio
+exp(mean over starts of log(engine median / plan median)),
+with the per-start ratios beside it: `R > 1`
+means the engine was slower than that first-declared row in that start. It removes a
+row-position
+effect only under one position effect shared by the engines and stable across starts,
+and only where every declared engine has a measured row (`*` marks a cell where one has
+no row, so no ratio there is position-balanced). `!` marks a cell where some engine's own
+per-start median range exceeds 5% of its median, and `p` a balanced cell whose estimated
+position-effect ratio exceeds 1.05. Flagged cells are retained, not discarded; the
+between-start variation can exceed the difference being compared.
+The `vs` columns mark only differences larger than the spread this run recorded for those
+two rows (combined between-start SD, floored at 5%), always with the measured library as the subject:
+`🔵 <row> X faster than <row>` / `🔴 <row> X slower than <row>` (the subject is the first column of the table, the compared row is named in
+the cell, not only in the column header), `·` inside the band, `-` that row is not
+measured in this arm. `notes` carries the cell warnings (`*` a declared row has no measurement,
+`!` between-start range over 5%, `p` position effect over 5%, dispatch-dominated means the
+row is under 20 us so 4T/8T pay thread-region start-up). Per-start ratios and every
+chronological sample are in the run directory named at the top of this page (`run*.csv`).
+These describe the recorded revisions; they are not a regression claim.
+
+## per-shape, f64, 1T (CPU 4)
+
+| case | plan (ms) | tblis (ms) | vs `tblis` | notes |
+|---|---|---|---|---|
+| `ij_jk_ik_f64_n64/n1/b1` | 0.017207 ± 2.12132e-05 (W 1.8386e-05) | 0.047975 ± 3.53553e-05 (W 0.000133937) | 🔵 tcontract 2.79× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ij_jk_kl_il_n64/n1/b1` | 0.034455 ± 0.000155563 (W 2.13844e-05) | 0.0967005 ± 0.000509824 (W 0.000821648) | 🔵 tcontract 2.81× faster than `tblis` |  |
+| `ijk_jkl_il_8x16x8/n1/b1` | 0.000837 ± 7.07107e-06 (W 1.20286e-05) | 0.0159495 ± 7.14178e-05 (W 0.000123105) | 🔵 tcontract 19.06× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n16_b16/n1/b1` | 0.0059615 ± 2.89914e-05 (W 7.01938e-06) | 0.121282 ± 0.00108329 (W 0.000825963) | 🔵 tcontract 20.34× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n16_b256/n1/b1` | 0.0981785 ± 0.000389616 (W 0.000944146) | 1.87904 ± 0.0170724 (W 0.00152456) | 🔵 tcontract 19.14× faster than `tblis` |  |
+| `ikb_knb_inb_n16_b64/n1/b1` | 0.023759 ± 2.12132e-05 (W 2.899e-05) | 0.474153 ± 0.00687873 (W 0.00181723) | 🔵 tcontract 19.96× faster than `tblis` |  |
+| `ikb_knb_inb_n2_b16/n1/b1` | 0.000761 ± 0 (W 1.85864e-05) | 0.088451 ± 0.000715592 (W 0.000443762) | 🔵 tcontract 116.23× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n2_b256/n1/b1` | 0.009052 ± 6.36396e-05 (W 2.83129e-05) | 1.36656 ± 0.0181281 (W 0.00173527) | 🔵 tcontract 150.97× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n2_b64/n1/b1` | 0.002404 ± 0 (W 1.56199e-05) | 0.34192 ± 0.00242255 (W 0.00131234) | 🔵 tcontract 142.23× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n4_b16/n1/b1` | 0.0010165 ± 2.19203e-05 (W 1.64851e-05) | 0.090179 ± 0.000906511 (W 0.000718344) | 🔵 tcontract 88.72× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n4_b256/n1/b1` | 0.0132 ± 0.000247487 (W 0.000522525) | 1.40834 ± 0.0154376 (W 0.00451903) | 🔵 tcontract 106.69× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n4_b64/n1/b1` | 0.003456 ± 4.24264e-05 (W 3.80865e-05) | 0.353818 ± 0.00380353 (W 0.00163087) | 🔵 tcontract 102.38× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n8_b16/n1/b1` | 0.0014225 ± 7.07107e-07 (W 9.49542e-06) | 0.097207 ± 0.000729734 (W 0.00132209) | 🔵 tcontract 68.34× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n8_b256/n1/b1` | 0.019842 ± 2.12132e-05 (W 7.31212e-05) | 1.50739 ± 0.014898 (W 0.00178145) | 🔵 tcontract 75.97× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n8_b64/n1/b1` | 0.00559 ± 0.000240416 (W 4.82131e-05) | 0.378393 ± 0.00301157 (W 0.00135621) | 🔵 tcontract 67.69× faster than `tblis` | `!` between-start range over 5%; dispatch-dominated (row under 20 us) |
+
+## per-shape, f64, 4T (CPU 4-7)
+
+| case | plan (ms) | tblis (ms) | vs `tblis` | notes |
+|---|---|---|---|---|
+| `ij_jk_ik_f64_n64/n1/b1` | 0.017277 ± 9.19239e-05 (W 2.13775e-05) | 0.032972 ± 0.000254558 (W 0.00195156) | 🔵 tcontract 1.91× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ij_jk_kl_il_n64/n1/b1` | 0.034575 ± 7.07107e-05 (W 0.000733064) | 0.0681475 ± 9.82878e-05 (W 0.0024938) | 🔵 tcontract 1.97× faster than `tblis` |  |
+| `ijk_jkl_il_8x16x8/n1/b1` | 0.0008465 ± 7.77817e-06 (W 5.37362e-06) | 0.021911 ± 0.000127279 (W 0.000355525) | 🔵 tcontract 25.88× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n16_b16/n1/b1` | 0.005986 ± 2.12132e-05 (W 0.000708612) | 0.227737 ± 0.0095919 (W 0.00993976) | 🔵 tcontract 38.04× faster than `tblis` | `!` between-start range over 5%; dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n16_b256/n1/b1` | 0.030126 ± 0.000141421 (W 0.00077604) | 1.22615 ± 0.0121361 (W 0.00955192) | 🔵 tcontract 40.70× faster than `tblis` |  |
+| `ikb_knb_inb_n16_b64/n1/b1` | 0.023765 ± 7.07107e-05 (W 1.8695e-05) | 0.917493 ± 0.0522616 (W 0.0179046) | 🔵 tcontract 38.61× faster than `tblis` | `!` between-start range over 5% |
+| `ikb_knb_inb_n2_b16/n1/b1` | 0.000771 ± 0 (W 7.47225e-06) | 0.0320645 ± 0.000474469 (W 0.00147355) | 🔵 tcontract 41.59× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n2_b256/n1/b1` | 0.0089665 ± 1.48492e-05 (W 4.53872e-05) | 0.397899 ± 0.000516895 (W 0.00484354) | 🔵 tcontract 44.38× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n2_b64/n1/b1` | 0.002405 ± 0 (W 1.55869e-05) | 0.105548 ± 0.00238012 (W 0.0025123) | 🔵 tcontract 43.89× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n4_b16/n1/b1` | 0.001017 ± 7.07107e-06 (W 1.80911e-05) | 0.069761 ± 0.000581242 (W 0.00142547) | 🔵 tcontract 68.59× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n4_b256/n1/b1` | 0.0132805 ± 0.000276479 (W 8.75894e-05) | 0.401487 ± 0.00241618 (W 0.00586652) | 🔵 tcontract 30.23× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n4_b64/n1/b1` | 0.003487 ± 2.82843e-05 (W 2.41543e-05) | 0.107877 ± 0.00026163 (W 0.00304253) | 🔵 tcontract 30.94× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n8_b16/n1/b1` | 0.0014225 ± 7.07107e-07 (W 1.52044e-05) | 0.167298 ± 0.00230234 (W 0.00170548) | 🔵 tcontract 117.61× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `ikb_knb_inb_n8_b256/n1/b1` | 0.020428 ± 0.000694379 (W 5.61286e-05) | 0.431007 ± 0.000666095 (W 0.00560222) | 🔵 tcontract 21.10× faster than `tblis` |  |
+| `ikb_knb_inb_n8_b64/n1/b1` | 0.0054805 ± 5.58614e-05 (W 2.75677e-05) | 0.285033 ± 0.00134562 (W 0.00664143) | 🔵 tcontract 52.01× faster than `tblis` | dispatch-dominated (row under 20 us) |
+
+## per-shape, c64, 1T (CPU 4)
+
+| case | plan (ms) | tblis (ms) | vs `tblis` | notes |
+|---|---|---|---|---|
+| `ij_jk_ik_c64_n32/n1/b1` | 0.008987 ± 1.41421e-05 (W 2.1405e-05) | 0.0243805 ± 2.19203e-05 (W 7.12875e-05) | 🔵 tcontract 2.71× faster than `tblis` | dispatch-dominated (row under 20 us) |
+| `mps_chain_L32_chi16/n1/b1` | 0.168035 ± 0.000892369 (W 0.0021218) | 0.891769 ± 0.00109107 (W 0.000622915) | 🔵 tcontract 5.31× faster than `tblis` |  |
+| `mps_chain_L32_chi32/n1/b1` | 1.16373 ± 0.000432042 (W 0.00093103) | 2.51906 ± 0.00415072 (W 0.00437544) | 🔵 tcontract 2.16× faster than `tblis` |  |
+| `mps_chain_L32_chi4/n1/b1` | 0.03198 ± 0.000127279 (W 0.000226942) | 0.513176 ± 0.00196151 (W 0.00177398) | 🔵 tcontract 16.05× faster than `tblis` |  |
+| `mps_chain_L32_chi64/n1/b1` | 10.8319 ± 0.0557207 (W 0.0269924) | 13.4141 ± 0.0548503 (W 0.0272213) | 🔵 tcontract 1.24× faster than `tblis` |  |
+| `mps_chain_L32_chi8/n1/b1` | 0.061525 ± 0.00131805 (W 0.000361795) | 0.58748 ± 0.0017706 (W 0.00164111) | 🔵 tcontract 9.55× faster than `tblis` |  |
+
+## per-shape, c64, 4T (CPU 4-7)
+
+| case | plan (ms) | tblis (ms) | vs `tblis` | notes |
+|---|---|---|---|---|
+| `ij_jk_ik_c64_n32/n1/b1` | 0.009002 ± 2.12132e-05 (W 9.1833e-06) | 0.0239405 ± 0.00102743 (W 0.00243786) | 🔵 tcontract 2.66× faster than `tblis` | `!` between-start range over 5%; dispatch-dominated (row under 20 us) |
+| `mps_chain_L32_chi16/n1/b1` | 0.168837 ± 0.000241123 (W 0.0015891) | 1.34008 ± 0.0262188 (W 0.0151986) | 🔵 tcontract 7.94× faster than `tblis` |  |
+| `mps_chain_L32_chi32/n1/b1` | 1.1608 ± 0.00191272 (W 0.00116323) | 1.92444 ± 0.00501551 (W 0.0191165) | 🔵 tcontract 1.66× faster than `tblis` |  |
+| `mps_chain_L32_chi4/n1/b1` | 0.032516 ± 6.36396e-05 (W 0.000294343) | 0.96688 ± 0.0124691 (W 0.00596861) | 🔵 tcontract 29.74× faster than `tblis` |  |
+| `mps_chain_L32_chi64/n1/b1` | 4.02967 ± 0.0820357 (W 0.171699) | 5.56528 ± 0.120694 (W 0.0380945) | 🔵 tcontract 1.38× faster than `tblis` |  |
+| `mps_chain_L32_chi8/n1/b1` | 0.0607135 ± 0.000127986 (W 0.000346258) | 1.22105 ± 0.0267074 (W 0.0208923) | 🔵 tcontract 20.11× faster than `tblis` |  |
+
+Not applicable to this population's shapes and reported as skipped: `ij_jk_ik_c64_n32/1`, `ij_jk_ik_f64_n64/1`, `ij_jk_kl_il_n64/1`, `ijk_jkl_il_8x16x8/1`, `ikb_knb_inb_n16_b16/1`, `ikb_knb_inb_n16_b256/1`, `ikb_knb_inb_n16_b64/1`, `ikb_knb_inb_n2_b16/1`, `ikb_knb_inb_n2_b256/1`, `ikb_knb_inb_n2_b64/1`, `ikb_knb_inb_n4_b16/1`, `ikb_knb_inb_n4_b256/1`, `ikb_knb_inb_n4_b64/1`, `ikb_knb_inb_n8_b16/1`, `ikb_knb_inb_n8_b256/1`, `ikb_knb_inb_n8_b64/1`, `mps_chain_L32_chi16/1`, `mps_chain_L32_chi32/1`, `mps_chain_L32_chi4/1`, `mps_chain_L32_chi64/1`, `mps_chain_L32_chi8/1`.
+
+Repeated process sets describe observed repeatability under the recorded order schedule; they are not a paired baseline/candidate experiment and do not establish equal performance between engines.
