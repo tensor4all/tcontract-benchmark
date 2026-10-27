@@ -1,8 +1,0 @@
-# The pinned revision of the shared campaign toolkit that the timing-v2 campaigns run
-# against. The same revision is named in `requirements.txt`; keep the two in step.
-#
-# Toolkit main `5a3ae9a` ("Merge pull request #19 ... feat/build-features-loader")
-# carries the two prerequisites workstream A needed here: the vendor-less recording
-# path with external providers (389710d) and the suite `features` / campaign
-# `loader_paths` build/loader contract (46c3c7c).
-77bc6e7328a2f78860d7ae7e3525b5a1b5ed1f3b

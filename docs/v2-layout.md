@@ -23,8 +23,8 @@ generations name `zen5-cpu`.
 
 ## Timing-v2 (toolkit-owned)
 
-Owned by `campaign_toolkit`, pinned in `pins/campaign-toolkit.rev` and in
-`requirements.txt`:
+Owned by `campaign_toolkit`, pinned in
+`requirements.txt` (the one toolkit pin):
 
 - `benchmarks/campaign-tcbench.yaml`, `benchmarks/campaign-per-shape.yaml` — the two
   descriptors, one per harness (`tcbench`, `lukbench`). Select one with
