@@ -8,12 +8,12 @@ provider (here `tblis`) unless it is told that provider's revision, so the
 payload is a JSON list with one `tblis` entry carrying
 `name`/`version`/`commit`/`path`/`note`/`tag`/`sha256`.
 
-The identity is not reimplemented here: it is the legacy timing-v1 collector
-`tblis_identity()` and its `providers_for()` entry in `scripts/record_run.py`,
-which read `$TBLIS_ROOT/PROVENANCE` (written by
-`extern/tcontract-rs/benchmarks/scripts/build_tblis.sh`). `$TBLIS_ROOT` is
-checked first so a missing prefix fails with its own name rather than as a
-recorder admission refusal several steps later.
+The identity is read from `$TBLIS_ROOT/PROVENANCE` (written by
+`extern/tcontract-rs/benchmarks/scripts/build_tblis.sh`), with `TBLIS_*` environment
+variables filling fields it leaves out; the entry is the one the legacy timing-v1
+recorder wrote, moved here when that recorder was removed (tensor4all-meta#76 D10).
+`$TBLIS_ROOT` is checked first so a missing prefix fails with its own name rather than
+as a recorder admission refusal several steps later.
 """
 import argparse
 import json
@@ -21,9 +21,53 @@ import os
 import pathlib
 import sys
 
-SCRIPTS = pathlib.Path(__file__).resolve().parent
-sys.path.insert(0, str(SCRIPTS))
-import record_run  # noqa: E402  the legacy timing-v1 collector, reused verbatim
+
+
+def tblis_identity():
+    """TBLIS revision, from $TBLIS_ROOT/PROVENANCE or the environment."""
+    root = os.environ.get("TBLIS_ROOT")
+    fields = {}
+    if root:
+        prov = pathlib.Path(root) / "PROVENANCE"
+        if prov.exists():
+            for line in prov.read_text().splitlines():
+                if "=" in line and not line.startswith("#"):
+                    k, _, v = line.partition("=")
+                    fields[k.strip()] = v.strip()
+    for key, env in (("version", "TBLIS_VERSION"), ("commit", "TBLIS_COMMIT"),
+                     ("blis_commit", "TBLIS_BLIS_COMMIT"), ("config", "TBLIS_CONFIG"),
+                     ("tag", "TBLIS_TAG"), ("sha256", "TBLIS_SHA256")):
+        if env in os.environ and not fields.get(key):
+            fields[key] = os.environ[env]
+    return root, fields
+
+
+def tblis_entry():
+    """The `tblis` provider entry; refuses when its revision cannot be stated."""
+    root, fields = tblis_identity()
+    if not root or not fields.get("commit"):
+        sys.exit(
+            "ERROR: the suite measures the tblis arm, but its identity is not recorded.\n"
+            "Write $TBLIS_ROOT/PROVENANCE with at least `commit=`, `version=`, "
+            "`blis_commit=` and `config=`, or set TBLIS_COMMIT and friends.\n"
+            "Nothing is published from an arm whose revision cannot be stated.")
+    note = f"TBLIS {fields.get('version', '?')}, configuration {fields.get('config', '?')}"
+    if fields.get("blis_commit"):
+        note += f"; bundled BLIS {fields['blis_commit']}"
+    if fields.get("build"):
+        note += f"; built with {fields['build']}"
+    if fields.get("sha256"):
+        note += f"; libtblis.so sha256 {fields['sha256'][:16]}"
+    entry = {"name": "tblis", "version": fields.get("version"), "commit": fields["commit"],
+             "path": root, "note": note}
+    # A tag says which release a build came from, and a hash says which bytes
+    # were linked; a commit alone says neither of those things for a built
+    # native library. Both are optional so an older PROVENANCE still records.
+    if fields.get("tag"):
+        entry["tag"] = fields["tag"]
+    if fields.get("sha256"):
+        entry["sha256"] = fields["sha256"]
+    return entry
 
 
 def main(argv=None):
@@ -41,9 +85,7 @@ def main(argv=None):
         sys.exit(f"ERROR: {provenance} does not exist; TBLIS_ROOT must name a prefix that "
                  f"build_tblis.sh installed (see docs/v2-layout.md)")
 
-    entries = record_run.providers_for(["tblis"])
-    if len(entries) != 1 or entries[0].get("name") != "tblis" or not entries[0].get("commit"):
-        sys.exit("ERROR: the legacy TBLIS collector did not yield one TBLIS entry with a commit")
+    entries = [tblis_entry()]
 
     payload = json.dumps(entries, indent=2) + "\n"
     if args.out:
