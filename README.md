@@ -6,10 +6,11 @@ every cell visible rather than implied.
 
 | | |
 |---|---|
-| Latest results | [`result/INDEX.md`](result/INDEX.md) — generated table of contents over the per-revision pages |
-| Result layout | [`docs/results.md`](docs/results.md) |
+| Results site | [tensor4all.org/tcontract-benchmark](https://tensor4all.org/tcontract-benchmark/) — both campaigns' pages, charts and history |
+| Latest results | [`result-v2/tcbench/INDEX.md`](result-v2/tcbench/INDEX.md), [`result-v2/per-shape/INDEX.md`](result-v2/per-shape/INDEX.md) — generated; older pages in each `HISTORY.md` |
+| Result layout | [`docs/v2-layout.md`](docs/v2-layout.md); the frozen timing-v1 tree in [`docs/results.md`](docs/results.md) |
 | Timing policy | [`docs/timing-policy.md`](docs/timing-policy.md) |
-| Reference revision | [`pins/tcontract-rs.rev`](pins/tcontract-rs.rev) — what `status` is measured against |
+| Reference revision | [`pins/tcontract-rs-v2.rev`](pins/tcontract-rs-v2.rev) — what `status` is measured against |
 | Design record | [`docs/worklog.md`](docs/worklog.md) — decisions, fixed failures, open items |
 
 ## How it works
@@ -21,14 +22,15 @@ measure a different revision of the library than the one it was written against;
 building it in place makes the recorded commit describe both.
 
 ```bash
-./scripts/setup_extern_deps.sh                     # clone tcontract-rs at pins/tcontract-rs.rev
-./scripts/setup_extern_deps.sh /path/to/checkout   # or symlink a local checkout
+./scripts/setup_v2_extern_deps.sh                     # clone tcontract-rs at pins/tcontract-rs-v2.rev
+./scripts/setup_v2_extern_deps.sh /path/to/checkout   # or symlink a local checkout
 
 # record one cell: build, verify, measure, validate, publish, reindex
-python3 scripts/record_run.py zen5-cpu tcbench
+# (the TBLIS row needs its provider payload first; see docs/v2-layout.md)
+python3 scripts/v2/record_run.py tcbench zen5-cpu tcbench --external-provider-json target/tblis-providers.json
 
 # check that the committed index is what the generator produces
-python3 scripts/gen_index.py --check
+python3 scripts/v2/gen_index.py tcbench --check
 ```
 
 ## What this repository is not

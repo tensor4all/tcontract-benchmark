@@ -1,42 +1,46 @@
 name: ci
 on: [push, pull_request]
-# The measurement itself runs locally: `scripts/record_run.py` builds, verifies and times the
+# The measurement itself runs locally: `scripts/v2/record_run.py` builds, verifies and times the
 # pinned checkout on the host that owns the numbers, and refuses to publish otherwise, so the
 # harness's buildability is proven where it matters (and gated again in the source repository's
 # own CI, which builds the harness target on every PR there). What is left for this repository is
-# content: the declarations, every recorded manifest, and the generated index. That is one small
-# job on the smallest runner, and it is the only required check on `main`.
+# content: the declarations, every recorded manifest, and the generated indexes of both timing-v2
+# campaigns. That is one small job on the smallest runner, and it is the only required check on
+# `main`. The legacy timing-v1 evidence (`data/results/`, `result/`) is frozen and not regenerated.
 jobs:
   index:
     runs-on: ubuntu-slim
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # campaign-check-generated compares against origin/main
       - name: Python deps
         run: python3 -m pip install --quiet -r requirements.txt
       - name: Checkout the reference revision
-        run: ./scripts/setup_extern_deps.sh
+        run: ./scripts/setup_v2_extern_deps.sh
+      # Each step runs once per campaign, with that campaign's descriptor selected.
       - name: Declarations are well formed
         run: |
-          python3 - <<'PY'
-          import json, yaml, jsonschema, pathlib
-          root = pathlib.Path('.')
-          run = json.loads((root/'schemas/benchmark-run.schema.json').read_text())
-          suite = json.loads((root/'schemas/benchmark-suite.schema.json').read_text())
-          jsonschema.Draft202012Validator.check_schema(run)
-          jsonschema.Draft202012Validator.check_schema(suite)
-          names = {p['name'] for p in yaml.safe_load((root/'benchmarks/profiles.yaml').read_text())['profiles']}
-          for f in (root/'benchmarks/suites').glob('*.yaml'):
-              data = yaml.safe_load(f.read_text())
-              jsonschema.validate(data, suite)
-              for p in data['required_profiles'] + data.get('optional_profiles', []):
-                  assert p in names, f'{f}: unknown profile {p}'
-          print('declarations ok')
-          PY
+          for c in tcbench per-shape; do
+            CAMPAIGN_DESCRIPTOR=benchmarks/campaign-$c.yaml python3 -m campaign_toolkit.declarations
+          done
       - name: Every recorded run manifest validates
         run: |
           shopt -s nullglob
-          files=(data/results/*/*/*/run.yaml)
-          if [ ${#files[@]} -eq 0 ]; then echo "no runs recorded yet"; exit 0; fi
-          python3 scripts/validate_run.py "${files[@]}"
+          for c in tcbench per-shape; do
+            files=(data/v2-results/$c/*/*/*/run.yaml)
+            if [ ${#files[@]} -eq 0 ]; then echo "$c: no runs recorded yet"; continue; fi
+            python3 scripts/v2/validate_run.py $c "${files[@]}"
+          done
       - name: Index is current, required cells present
-        run: python3 scripts/gen_index.py --check
+        run: |
+          for c in tcbench per-shape; do python3 scripts/v2/gen_index.py $c --check; done
+      - name: Nothing generated was edited by hand
+        # every published page is its run's report.md byte for byte, and the runs changed against
+        # main regenerate their report.md from their CSVs (the indexes are checked by the step above)
+        run: |
+          for c in tcbench per-shape; do
+            CAMPAIGN_DESCRIPTOR=benchmarks/campaign-$c.yaml campaign-check-generated --base origin/main --no-index
+          done
+      - name: Pins are the stack's
+        run: campaign-sync-pins --check --repo tcontract-benchmark

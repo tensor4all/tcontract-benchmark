@@ -1,5 +1,9 @@
 # Result layout
 
+> This describes the **legacy timing-v1** layout (`data/results/`, `result/`), kept as
+> frozen history; its scripts and `schemas/` were removed (tensor4all-meta#76 D10). The
+> timing-v2 campaigns are laid out in [`v2-layout.md`](v2-layout.md).
+
 `suite_id` identifies the workload; `target_profile` identifies the machine
 (`benchmarks/profiles.yaml`). They are the two axes of every cell.
 

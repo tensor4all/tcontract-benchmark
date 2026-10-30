@@ -108,3 +108,8 @@ report:
     reported as skipped. A multi-step program (the MPS chain) has no equivalent matrix
     shape: its declared identity is the numeric sentinel `n = 1`, and the final step's
     real extents travel in the harness's own `case_m`/`case_n`/`case_k` columns.
+
+# The landing page's per-case chart: one dot per named case and engine row on a log time
+# axis. The representative trend cases are the tcbench campaign's (tensor4all-meta#76 D4).
+figures:
+  cases: [per-shape]

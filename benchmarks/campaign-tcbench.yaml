@@ -4,7 +4,7 @@ id: tcbench
 # The first of this repository's two timing-v2 campaigns. The measured repository is
 # `tcontract-rs`, and the harness (`tcbench`) is built out of the same checkout as the
 # library it measures, so the recorded commit describes both. The legacy timing-v1
-# campaign keeps its own descriptor-free scripts and `pins/tcontract-rs.rev`; this
+# campaign is frozen evidence (`data/results/`, `result/`, `pins/tcontract-rs.rev`); this
 # descriptor and `campaign-per-shape.yaml` pin the v2 revision separately.
 measured:
   name: tcontract-rs
@@ -130,3 +130,21 @@ report:
     `n = 1`: tcbench resolves its extents from a tensor-size target with rank-dependent
     rounding, so the resolved extents are reported beside the declared spec rather than
     presented as geometry.
+
+# The landing page's per-case chart: one dot per case and engine row on a log time axis
+# (the corpus has no common size axis to draw a throughput curve against).
+figures:
+  cases: [tcbench]
+
+# Representative cases followed across pins (tensor4all-meta#76 D4): one matrix-multiply
+# shaped contraction and one higher-order (CCSD(T)-type) contraction, every engine row, at
+# 1T and the suite's largest budget.
+trend:
+  - suite: tcbench
+    case: tcbench:ij-ik-kj/n1/b1 f64
+    engines: [plan, tblis, ttgt]
+    threads: [1, 4]
+  - suite: tcbench
+    case: tcbench:abcijk-ijma-mkbc/n1/b1 f64
+    engines: [plan, tblis, ttgt]
+    threads: [1, 4]

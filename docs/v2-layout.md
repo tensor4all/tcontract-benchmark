@@ -1,22 +1,21 @@
 # Timing-v2 layout: which tree owns what
 
-This repository carries two generations of the campaign at once. The historical
-timing-v1 evidence and its scripts are unchanged and stay authoritative for the numbers
-they recorded; the new timing-v2 campaigns live beside them and are owned by the shared
-toolkit.
+This repository carries two generations of the campaign. The historical timing-v1
+evidence stays authoritative for the numbers it recorded, as frozen history; the
+timing-v2 campaigns are the live ones and are owned by the shared toolkit.
 
-## Legacy timing-v1 (untouched)
+## Legacy timing-v1 (frozen)
 
-Owned by this repository's own copies of the recorder/report/index scripts and by the
-committed evidence:
+The committed evidence only. Its recorder/report/index scripts and `schemas/` were
+removed (tensor4all-meta#76 D10); nothing regenerates or validates it any more.
 
 - `data/results/**` — raw v1 runs, one directory per `(profile, suite, timestamp)`.
-- `result/**` — v1 pages and the generated `result/INDEX.md`.
-- `scripts/{record_run,report_run,validate_run,gen_index,publish_report}.py`,
-  `schemas/*.json` — the v1 pipeline. CI runs `validate_run.py` and `gen_index.py --check`.
-- `benchmarks/suites/{tcbench,per-shape}.yaml` — the v1 declarations.
-- `pins/tcontract-rs.rev` — the v1 reference revision.
-- `scripts/setup_extern_deps.sh`, `scripts/build_for_tprims_rev.sh` — shared helpers.
+- `result/**` — v1 pages and the `result/INDEX.md` the v1 pipeline last generated. The
+  Pages site links it from its History section.
+- `benchmarks/suites/{tcbench,per-shape}.yaml` — the v1 declarations the runs name.
+- `pins/tcontract-rs.rev` — the v1 reference revision (still in the stack's pins).
+- `scripts/setup_extern_deps.sh` — materialise `extern/tcontract-rs` at that revision
+  (the TBLIS build below runs from it); `scripts/build_for_tprims_rev.sh` is shared.
 
 `benchmarks/profiles.yaml` is shared: a profile is a fact about a machine, and both
 generations name `zen5-cpu`.
@@ -42,10 +41,14 @@ Owned by `campaign_toolkit`, pinned in
 - `scripts/v2/*.py` — the timing-v2 entry points, one shim per toolkit module. They
   take the campaign id first and set `CAMPAIGN_DESCRIPTOR` for it, e.g.
   `python3 scripts/v2/record_run.py tcbench ...` / `... per-shape ...`. They sit under
-  `scripts/v2/` so they never shadow the legacy timing-v1 `scripts/*.py`.
+  `scripts/v2/` (the layout predates the removal of the v1 `scripts/*.py`).
+- `scripts/v2/gen_site.py` — the Pages site: each campaign's toolkit site under
+  `result-v2/<campaign>/` (landing page, history, HTML pages, and the charts its
+  descriptor declares under `figures:` and `trend:`) and `result-v2/index.html` over
+  both. Generated on every deploy, never committed.
 
-`result/README.md` carries a links-only pointer to the two v2 indexes. `result/INDEX.md`
-is the v1 index and is never rewritten by the v2 pipeline.
+CI checks both campaigns: declarations, every run manifest, `gen_index --check`,
+`campaign-check-generated` and `campaign-sync-pins --check`.
 
 ## The TBLIS external reference
 
@@ -72,8 +75,8 @@ config_family=zen3
 sha256=de00bf1552c15f9c4a5d3157f02c149b81aef0909107c51cbb54ba4b8e9b5827
 ```
 
-Recording reads that file through `scripts/tblis_providers_json.py`, which reuses the
-legacy `tblis_identity()`/`providers_for()` collector and refuses to emit a payload
+Recording reads that file through `scripts/tblis_providers_json.py` (the collector the
+legacy v1 recorder used, moved there), which refuses to emit a payload
 when `$TBLIS_ROOT` is unset or carries no `PROVENANCE`. Export `TBLIS_ROOT` for the
 build (cargo's `tblis` feature needs it) and for the measured process (the descriptor's
 `loader_paths` put `$TBLIS_ROOT/{lib,lib64}` on `LD_LIBRARY_PATH`).
