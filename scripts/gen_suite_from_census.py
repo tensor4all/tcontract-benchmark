@@ -310,7 +310,8 @@ def build_suite(harness, args, rows):
         "runs": [
             {
                 "threads": threads,
-                "cpu_sets": [_cpu_set_for(t) for t in threads],
+                # The sets are zen5-cpu's; every other profile is pinned by its own thread_rows.
+                "cpu_sets": {"zen5-cpu": [_cpu_set_for(t) for t in threads]},
                 "dtypes": dtypes,
                 "engines": engines,
                 "populations": [

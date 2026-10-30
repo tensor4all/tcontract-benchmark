@@ -70,8 +70,9 @@ runs:
   - 1
   - 4
   cpu_sets:
-  - '4'
-  - 4-7
+    zen5-cpu:
+    - '4'
+    - 4-7
   dtypes:
   - f64
   - c64
