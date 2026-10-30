@@ -44,7 +44,7 @@ COMMON = dict(
     threads=[1, 4],
     cpu_sets=["4", "4-7"],
     stale_after=20,
-    optional_profiles=["zen5-cpu"],
+    optional_profiles=["zen5-cpu", "zen2-cpu"],
 )
 
 HARNESSES = {

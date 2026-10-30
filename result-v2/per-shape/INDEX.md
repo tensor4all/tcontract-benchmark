@@ -19,7 +19,9 @@ rather than being implied by the other arm's page.
 | suite | profile | vendor | revision | version | date | coverage | status | page |
 |---|---|---|---|---|---|---|---|---|
 | `per-shape` | `zen5-cpu` (optional) | - | `71a11a80b454` | - | 2026-10-27 | full | current | [result-v2/per-shape/zen5-cpu/per-shape/71a11a80b454-timing-v2.md](zen5-cpu/per-shape/71a11a80b454-timing-v2.md) |
+| `per-shape` | `zen2-cpu` (optional) | - | - | - | - | - | missing | - |
 | `tcbench` | `zen5-cpu` (optional) | - | - | - | - | - | missing | - |
+| `tcbench` | `zen2-cpu` (optional) | - | - | - | - | - | missing | - |
 
 `missing` is a normal cell, not an error: the campaign is not run on every
 profile for every commit. A cell is listed here only with a page measured at the

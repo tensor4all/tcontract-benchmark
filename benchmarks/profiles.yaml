@@ -11,3 +11,7 @@ profiles:
     cpu: AMD Ryzen AI 9 HX 470
     logical_cpus: 24
     l3: "0-3: 16 MiB shared; 4-11: 8 MiB shared"
+  # The measurement host (tensor4all-meta#76 D5), resolved against
+  # `campaign_toolkit/profiles/zen2-cpu.yaml`. Every suite lists it as optional: it is
+  # measured when the stack's versions move, not on the weekly schedule.
+  - zen2-cpu
