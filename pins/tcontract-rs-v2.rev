@@ -13,4 +13,6 @@
 # pin, so pinning the tag would have been a downgrade.
 # `v0.6.0` (71a11a8) from 2026-10-27: the release on crates.io deps (tcontract-exec 0.6, threadteam 0.1,
 # strided 0.8); main is the same commit. tcontract-kernel stays at 0.3.0.
-71a11a80b454fec3e465c62dd00a6294d3254c1d
+# `v0.9.0` (9f793ed) from 2026-10-30: the stack release (campaign-toolkit b71624b): tcontract-exec
+# and tcontract 0.9 on threadteam 0.2, strided 0.9 and t4a-faer 0.27. tcontract-kernel stays at 0.3.0.
+9f793ede6b8076fd7ce2251594a9552ad66aa339
