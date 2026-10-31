@@ -1,0 +1,57 @@
+# threads: requested=1 pool=1 budget=1
+host        : shinaoka-EVO-X1Pro
+target      : x86_64 / linux
+cpu features: avx2 fma avx512f avx512dq 
+caches      : L1=48KiB/12-way/2sh L2=1024KiB/16-way/2sh L3=8192KiB/16-way/16sh (via sysfs)
+baselines   : tblis=true
+tblis       : abi 2.x, 1 thread(s)
+
+verifying 21 cases, one untimed pass per arm (--size is accepted and ignored; --reps and --prime-ms do not apply)
+
+                 case | dtype | steps |    m |  n |   k | engine |  rel_err | status 
+----------------------+-------+-------+------+----+-----+--------+----------+--------
+   ikb_knb_inb_n2_b16 |   f64 |     1 |   32 |  2 |   2 |   plan | 9.12e-17 |     ok 
+   ikb_knb_inb_n2_b16 |   f64 |     1 |   32 |  2 |   2 |  tblis | 9.12e-17 |     ok 
+   ikb_knb_inb_n4_b16 |   f64 |     1 |   64 |  4 |   4 |   plan | 1.06e-16 |     ok 
+   ikb_knb_inb_n4_b16 |   f64 |     1 |   64 |  4 |   4 |  tblis | 1.06e-16 |     ok 
+   ikb_knb_inb_n8_b16 |   f64 |     1 |  128 |  8 |   8 |   plan | 1.90e-16 |     ok 
+   ikb_knb_inb_n8_b16 |   f64 |     1 |  128 |  8 |   8 |  tblis | 1.90e-16 |     ok 
+  ikb_knb_inb_n16_b16 |   f64 |     1 |  256 | 16 |  16 |   plan | 2.86e-16 |     ok 
+  ikb_knb_inb_n16_b16 |   f64 |     1 |  256 | 16 |  16 |  tblis | 2.86e-16 |     ok 
+   ikb_knb_inb_n2_b64 |   f64 |     1 |  128 |  2 |   2 |   plan | 1.91e-16 |     ok 
+   ikb_knb_inb_n2_b64 |   f64 |     1 |  128 |  2 |   2 |  tblis | 1.91e-16 |     ok 
+   ikb_knb_inb_n4_b64 |   f64 |     1 |  256 |  4 |   4 |   plan | 1.86e-16 |     ok 
+   ikb_knb_inb_n4_b64 |   f64 |     1 |  256 |  4 |   4 |  tblis | 1.86e-16 |     ok 
+   ikb_knb_inb_n8_b64 |   f64 |     1 |  512 |  8 |   8 |   plan | 1.95e-16 |     ok 
+   ikb_knb_inb_n8_b64 |   f64 |     1 |  512 |  8 |   8 |  tblis | 1.95e-16 |     ok 
+  ikb_knb_inb_n16_b64 |   f64 |     1 | 1024 | 16 |  16 |   plan | 2.36e-16 |     ok 
+  ikb_knb_inb_n16_b64 |   f64 |     1 | 1024 | 16 |  16 |  tblis | 2.36e-16 |     ok 
+  ikb_knb_inb_n2_b256 |   f64 |     1 |  512 |  2 |   2 |   plan | 1.42e-16 |     ok 
+  ikb_knb_inb_n2_b256 |   f64 |     1 |  512 |  2 |   2 |  tblis | 1.42e-16 |     ok 
+  ikb_knb_inb_n4_b256 |   f64 |     1 | 1024 |  4 |   4 |   plan | 1.96e-16 |     ok 
+  ikb_knb_inb_n4_b256 |   f64 |     1 | 1024 |  4 |   4 |  tblis | 1.96e-16 |     ok 
+  ikb_knb_inb_n8_b256 |   f64 |     1 | 2048 |  8 |   8 |   plan | 2.41e-16 |     ok 
+  ikb_knb_inb_n8_b256 |   f64 |     1 | 2048 |  8 |   8 |  tblis | 2.41e-16 |     ok 
+ ikb_knb_inb_n16_b256 |   f64 |     1 | 4096 | 16 |  16 |   plan | 3.26e-16 |     ok 
+ ikb_knb_inb_n16_b256 |   f64 |     1 | 4096 | 16 |  16 |  tblis | 3.26e-16 |     ok 
+    ijk_jkl_il_8x16x8 |   f64 |     1 |    8 |  8 | 128 |   plan | 2.57e-16 |     ok 
+    ijk_jkl_il_8x16x8 |   f64 |     1 |    8 |  8 | 128 |  tblis | 2.57e-16 |     ok 
+     ij_jk_ik_c64_n32 |   c64 |     1 |   32 | 32 |  32 |   plan | 4.61e-16 |     ok 
+     ij_jk_ik_c64_n32 |   c64 |     1 |   32 | 32 |  32 |  tblis | 3.76e-16 |     ok 
+     ij_jk_ik_f64_n64 |   f64 |     1 |   64 | 64 |  64 |   plan | 3.41e-16 |     ok 
+     ij_jk_ik_f64_n64 |   f64 |     1 |   64 | 64 |  64 |  tblis | 3.41e-16 |     ok 
+      ij_jk_kl_il_n64 |   f64 |     2 |   64 | 64 |  64 |   plan | 4.56e-16 |     ok 
+      ij_jk_kl_il_n64 |   f64 |     2 |   64 | 64 |  64 |  tblis | 4.56e-16 |     ok 
+   mps_chain_L32_chi4 |   c64 |    64 |    4 |  4 |   8 |   plan | 1.01e-15 |     ok 
+   mps_chain_L32_chi4 |   c64 |    64 |    4 |  4 |   8 |  tblis | 1.46e-15 |     ok 
+   mps_chain_L32_chi8 |   c64 |    64 |    8 |  8 |  16 |   plan | 3.86e-15 |     ok 
+   mps_chain_L32_chi8 |   c64 |    64 |    8 |  8 |  16 |  tblis | 6.09e-15 |     ok 
+  mps_chain_L32_chi16 |   c64 |    64 |   16 | 16 |  32 |   plan | 1.93e-15 |     ok 
+  mps_chain_L32_chi16 |   c64 |    64 |   16 | 16 |  32 |  tblis | 1.31e-15 |     ok 
+  mps_chain_L32_chi32 |   c64 |    64 |   32 | 32 |  64 |   plan | 3.11e-15 |     ok 
+  mps_chain_L32_chi32 |   c64 |    64 |   32 | 32 |  64 |  tblis | 2.51e-15 |     ok 
+  mps_chain_L32_chi64 |   c64 |    64 |   64 | 64 | 128 |   plan | 4.79e-15 |     ok 
+  mps_chain_L32_chi64 |   c64 |    64 |   64 | 64 | 128 |  tblis | 4.52e-15 |     ok 
+wrote /home/shinaoka/projects/tensor4all/tcontract-benchmark/data/v2-results/per-shape/zen5-cpu/per-shape/20261030T155542Z-weekly-20261030-per-shape/verify-per-shape-1t.csv
+
+all comparisons within tolerance
