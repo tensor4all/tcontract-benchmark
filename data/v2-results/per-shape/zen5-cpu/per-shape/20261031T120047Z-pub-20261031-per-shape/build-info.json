@@ -1,0 +1,52 @@
+{
+  "pin": {
+    "TPRIMS_REV": "9f793ede6b8076fd7ce2251594a9552ad66aa339",
+    "TPRIMS_DIRTY": "false",
+    "TPRIMS_DIR": "/home/shinaoka/projects/tensor4all/tcontract-benchmark/extern/tcontract-rs-v2",
+    "BIN_DIR": "/home/shinaoka/projects/tensor4all/tcontract-benchmark/target/tcontract-rev/9f793ede6b80/release",
+    "BUILD_FEATURES": "tblis"
+  },
+  "admission": {
+    "harness": {
+      "commit": "4f7f935ac58126107a8c7f098b684fa809d9b4b7",
+      "dirty": false,
+      "outputs_dirty": false,
+      "excluded_outputs": [
+        "data/v2-results/per-shape",
+        "result-v2/per-shape"
+      ],
+      "excluded_sibling_outputs": [
+        "data/v2-results/tcbench",
+        "result-v2/tcbench"
+      ]
+    },
+    "toolkit": {
+      "commit": "b71624bef111ce941bddaedcce3fdb6eab40f9eb",
+      "dirty": false,
+      "measured_path": "/home/shinaoka/.local/state/toolkit-b71624be"
+    },
+    "argv": [
+      "scripts/v2/record_run.py",
+      "per-shape",
+      "zen5-cpu",
+      "per-shape",
+      "--aa",
+      "2",
+      "--reps",
+      "5",
+      "--prime-ms",
+      "250",
+      "--external-provider-json",
+      "/tmp/tmp.9C5AuzRU0f",
+      "--label",
+      "pub-20261031-per-shape"
+    ]
+  },
+  "binary": {
+    "path": "/home/shinaoka/projects/tensor4all/tcontract-benchmark/target/tcontract-rev/9f793ede6b80/release/lukbench",
+    "sha256": "d58043e7e73b59b64eac9c9841528665708ad6fd8cd9d5b310d10f92a1449001"
+  },
+  "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.0\nLLVM version: 23.1.1\n",
+  "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)\nrelease: 1.99.0\ncommit-hash: 5f94df4789f005f9a352888e8355ffc645b7ed0e\ncommit-date: 2026-08-27\nhost: x86_64-unknown-linux-gnu\nlibgit2: 1.9.6 (sys:0.21.0 vendored)\nlibcurl: 8.21.0-DEV (sys:0.4.90+curl-8.21.0 vendored ssl:OpenSSL/3.6.3)\nssl: OpenSSL 3.6.3 9 Jun 2026\nos: Ubuntu 24.4.0 (noble) [64-bit]\n",
+  "env": {}
+}

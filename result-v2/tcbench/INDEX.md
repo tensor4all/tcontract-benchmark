@@ -6,7 +6,7 @@ this file is what the generator produces.
 Older pages (3): [HISTORY.md](HISTORY.md).
 
 - Reference revision (`pins/tcontract-rs-v2.rev`): `9f793ede6b8076fd7ce2251594a9552ad66aa339`
-- Newest recorded run: `2026-10-27T06:01:39.250335Z`
+- Newest recorded run: `2026-10-31T12:00:42.613773Z`
 - Every page below is one `(suite, hardware profile, revision, vendor arm)` and carries
   its commit, its hardware and the vendor library it linked itself.
 
@@ -20,7 +20,7 @@ rather than being implied by the other arm's page.
 |---|---|---|---|---|---|---|---|---|
 | `per-shape` | `zen5-cpu` (optional) | - | - | - | - | - | missing | - |
 | `per-shape` | `zen2-cpu` (optional) | - | - | - | - | - | missing | - |
-| `tcbench` | `zen5-cpu` (optional) | - | - | - | - | - | missing | - |
+| `tcbench` | `zen5-cpu` (optional) | - | `9f793ede6b80` | - | 2026-10-31 | full | current | [result-v2/tcbench/zen5-cpu/tcbench/9f793ede6b80-timing-v2.md](zen5-cpu/tcbench/9f793ede6b80-timing-v2.md) |
 | `tcbench` | `zen2-cpu` (optional) | - | - | - | - | - | missing | - |
 
 `missing` is a normal cell, not an error: the campaign is not run on every
