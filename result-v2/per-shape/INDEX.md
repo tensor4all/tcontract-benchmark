@@ -6,7 +6,7 @@ this file is what the generator produces.
 Older pages (3): [HISTORY.md](HISTORY.md).
 
 - Reference revision (`pins/tcontract-rs-v2.rev`): `9f793ede6b8076fd7ce2251594a9552ad66aa339`
-- Newest recorded run: `2026-10-27T06:04:10.743956Z`
+- Newest recorded run: `2026-10-31T12:02:10.230746Z`
 - Every page below is one `(suite, hardware profile, revision, vendor arm)` and carries
   its commit, its hardware and the vendor library it linked itself.
 
@@ -18,7 +18,7 @@ rather than being implied by the other arm's page.
 
 | suite | profile | vendor | revision | version | date | coverage | status | page |
 |---|---|---|---|---|---|---|---|---|
-| `per-shape` | `zen5-cpu` (optional) | - | - | - | - | - | missing | - |
+| `per-shape` | `zen5-cpu` (optional) | - | `9f793ede6b80` | - | 2026-10-31 | full | current | [result-v2/per-shape/zen5-cpu/per-shape/9f793ede6b80-timing-v2.md](zen5-cpu/per-shape/9f793ede6b80-timing-v2.md) |
 | `per-shape` | `zen2-cpu` (optional) | - | - | - | - | - | missing | - |
 | `tcbench` | `zen5-cpu` (optional) | - | - | - | - | - | missing | - |
 | `tcbench` | `zen2-cpu` (optional) | - | - | - | - | - | missing | - |
