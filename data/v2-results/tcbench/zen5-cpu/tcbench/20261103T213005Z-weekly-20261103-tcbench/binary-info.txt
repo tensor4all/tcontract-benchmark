@@ -1,0 +1,9 @@
+# threads: requested=1 pool=1 budget=1
+caches      : L1=48KiB/12-way/2sh L2=1024KiB/16-way/2sh L3=16384KiB/16-way/8sh (via sysfs), blocking=legacy
+l3 domains  : t1=1 t4=1 t8=2 t16=4
+baselines   : tblis=true blas=openblas
+provider=tprims
+provider_version=0.1.0
+threads=1
+threads_effective=1
+tblis=2.x
