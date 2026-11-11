@@ -18,7 +18,7 @@ import pathlib
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
-CAMPAIGNS = ("tcbench", "per-shape")
+CAMPAIGNS = ("tcbench", "per-shape", "qcbench")
 
 
 def run(module):

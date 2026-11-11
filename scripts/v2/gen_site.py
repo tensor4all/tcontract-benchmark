@@ -7,7 +7,7 @@ Nothing it writes is committed (see `.gitignore`); the Pages workflow runs it on
 the committed `data/`, `result-v2/` and `pins/`. Each campaign's site (`result-v2/<campaign>/`:
 its landing page, history, the HTML copy of every page and the charts its descriptor declares) is
 the toolkit's (`campaign_toolkit.site`), written with that campaign's descriptor selected, each in
-its own process. What is this repository's own is `result-v2/index.html`, which links the two
+its own process. What is this repository's own is `result-v2/index.html`, which links the
 campaigns and the frozen timing-v1 pages (`result/INDEX.md`, history only).
 """
 import argparse
@@ -23,6 +23,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 CAMPAIGNS = {
     "tcbench": "tcbench: the TCCG contraction corpus",
     "per-shape": "per-shape: named contraction cases (lukbench)",
+    "qcbench": "qcbench: QC binary contractions at fixed aspect ratios",
 }
 
 
