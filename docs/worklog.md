@@ -25,6 +25,12 @@ descriptor, so the engines map is the union of the rows any suite may select; th
 per-shape descriptor already carries `ttgt` for the same reason. Which rows a suite
 actually measures stays in the suite.
 
+Moving the shared pin has a visible cost: the `tcbench` and `per-shape` pages
+measured at `9f793ede` are no longer at the reference revision, so the regenerated
+indexes move them to `HISTORY.md` and list their cells as `missing` until the next
+`zen5-cpu` recording. That is the index's currency rule doing its job (a pin move
+without a re-measure is expected), not a lost page; the history keeps the evidence.
+
 The recording host is `epyc-9575f` (AMD EPYC 9575F: 128 logical CPUs, eight L3
 domains, 251 GiB), added as a `development` profile. It is a shared, scheduler-managed
 build server, so its cells are its own and not comparable with `zen5-cpu`/`zen2-cpu`;
