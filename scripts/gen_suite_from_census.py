@@ -215,6 +215,81 @@ HARNESSES = {
             ),
         },
     ),
+    "qcbench": dict(
+        suite_id="qcbench",
+        regime="qcbench",
+        rows=["plan", "tblis"],
+        # The TBLIS baseline only: a `blas` build makes the shared verifier run its TTGT
+        # arm unconditionally, which is a 2A+2B+3C peak and not this suite's declaration.
+        features=["tblis"],
+        optional_profiles=["zen5-cpu", "zen2-cpu", "epyc-9575f"],
+        description=(
+            "The 24-case QC binary-contraction corpus, measured by `qcbench` out of the pinned "
+            "`tcontract-rs` checkout. One family per case id, three aspect-ratio classes "
+            "(`ov_03`, `ov_10`, `ov_20`), f64 only. The extents are fixed by the harness's "
+            "`EXTENTS` and are aspect-ratio classes, not molecules; the declared identity shape "
+            "is the numeric sentinel `n = 1`, echoed into the census and not a matrix dimension."
+        ),
+        invalidated_by=[
+            "crates/tcontract-kernel/**",
+            "crates/tcontract/**",
+            "crates/tcontract-exec/**",
+            "benchmarks/benchmarks/qcbench/**",
+            "benchmarks/src/**",
+            "Cargo.toml",
+            "Cargo.lock",
+        ],
+        workloads=dict(
+            name="QC binary-contraction corpus",
+            description=(
+                "One binary (two-operand) contraction per case, transcribed from nine QC paper "
+                "routes at fixed occupied/virtual/auxiliary extents: RCCSD, RCCSD(T), EOM-IP, "
+                "EOM-EA, CCSD analytic gradient, RI-HF energy and gradients, TDHF/CIS response "
+                "and MO RI-J/K response. The three ratios stand for the cc-pVDZ/cc-pVTZ/cc-pVQZ "
+                "rung medians of a 5,239-molecule NAO statistics panel."
+            ),
+            source=(
+                "The corpus is defined by `benchmarks/benchmarks/qcbench/corpus.rs` in the "
+                "measured revision (`pins/tcontract-rs-v2.rev`); each case names the paper it "
+                "was transcribed from in the corpus README, and the transcription material lives "
+                "in the benchmark job's `out/real_corpus/*/CORPUS.md`."
+            ),
+            known_blind_spots=[
+                "One binary contraction per timed call: permutations, denominators and forms with "
+                "more than two operands are metadata, never separate timed cases.",
+                "Every case is f64 with unit batch; a c64/c128 benchmark is out of scope, and a "
+                "cost proportional to batch elements is invisible.",
+                "The extents are aspect-ratio classes derived from an 8 GiB whole-binary budget, "
+                "not a molecule; the binding case is the (T) o^3 v^3 output and the verify peak "
+                "is A+B+2C (a blas build would add the TTGT arm).",
+                "`tblis` is an external baseline linked from its own prefix (`TBLIS_ROOT`), not "
+                "the measured checkout; its revision is recorded through the campaign TBLIS "
+                "collector (`scripts/tblis_providers_json.py`).",
+                "The harness's census CSV carries no corpus `group` column, so the ratio classes "
+                "are declared by this suite and the resolved extents remain facts of the "
+                "measured revision's `corpus.rs`.",
+            ],
+        ),
+        engines_doc={
+            "plan": dict(
+                provider="tprims",
+                summary="This library with its planner choosing the route per case.",
+                identity="the measured tcontract-rs revision in this run's manifest "
+                         "(`library.commit`), pinned by `pins/tcontract-rs-v2.rev`",
+            ),
+            "tblis": dict(
+                provider="tblis",
+                summary="Actual C++ TBLIS through the direct FFI adapter, as the independent "
+                        "third-party reference implementation. Pinned by release tag, not by a "
+                        "local revision.",
+                identity="TBLIS v2.0-beta2 (the only tagged 2.0; its commit and the bundled BLIS "
+                         "revision are recorded per run, from `scripts/tblis_providers_json.py`)",
+                caveat="Needs an install prefix (`TBLIS_ROOT`), and TBLIS 2.x builds through CMake. "
+                       "The page repeats the tag, commit, bundled BLIS revision and artifact hash "
+                       "the manifest recorded.",
+            ),
+        },
+    ),
 }
 
 
@@ -302,7 +377,7 @@ def build_suite(harness, args, rows):
         "stale_after": COMMON["stale_after"],
         # No run exists yet, so the cell is optional; the first recorded cell moves it to required.
         "required_profiles": [],
-        "optional_profiles": list(COMMON["optional_profiles"]),
+        "optional_profiles": list(spec.get("optional_profiles", COMMON["optional_profiles"])),
         "features": list(spec["features"]),
         "family_groups": family_groups,
         "workloads": {k: Block(v) if isinstance(v, str) else v

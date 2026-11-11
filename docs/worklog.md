@@ -3,6 +3,37 @@
 Design decisions, what was rejected, and what is still open. Measurements live
 in `result/`; this file holds the reasoning.
 
+## 2026-11-11 — `qcbench` becomes the third v2 campaign
+
+`qcbench` (the 24-case QC binary-contraction harness in `tcontract-rs`, merged as
+tensor4all/tcontract-rs#187 at `ebf0e50`) gets a campaign: a fourth harness binary, a
+third descriptor (`benchmarks/campaign-qcbench.yaml`), a generated suite, and the
+`epyc-9575f` hardware profile. The measured binary publishes only `plan` and `tblis`;
+the forced-packed route and TTGT are verification arms, not rows.
+
+The measured revision could not be chosen here. No tcontract release contains #187
+(v0.12.0 predates it), and `pins/tcontract-rs-v2.rev` is written by
+`campaign-sync-pins` from the stack inside the pinned toolkit. campaign-toolkit#61
+therefore names tcontract-rs main at `ebf0e50` with no version and no tag, as #57 did
+for tenferro-rs; this PR bumps the toolkit pin to that merge commit and lets
+`campaign-sync-pins` write the pin rather than typing it.
+
+The descriptor declares `engines: {plan, ttgt, tblis}` even though this campaign
+measures only two. The three v2 suites share `benchmarks/suites-v2`, and the
+declaration checker validates every suite in the directory against the active
+descriptor, so the engines map is the union of the rows any suite may select; the
+per-shape descriptor already carries `ttgt` for the same reason. Which rows a suite
+actually measures stays in the suite.
+
+The recording host is `epyc-9575f` (AMD EPYC 9575F: 128 logical CPUs, eight L3
+domains, 251 GiB), added as a `development` profile. It is a shared, scheduler-managed
+build server, so its cells are its own and not comparable with `zen5-cpu`/`zen2-cpu`;
+the role moves to `measurement` only after boost-off is verified and an exclusive
+allocation is the norm. No cell is recorded in this change: the host's 64 physical
+cores were busy with another user's job and CPU boost was on, which the recorder
+refuses. The suite and the empty index are the wiring; the first page is a separate
+recording.
+
 ## 2026-10-19 — the v2 campaign runs on the shared toolkit
 
 The toolkit pin moves from a feature-branch revision to its main (`95caeef`), which carries the

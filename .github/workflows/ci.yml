@@ -21,25 +21,25 @@ jobs:
       # Each step runs once per campaign, with that campaign's descriptor selected.
       - name: Declarations are well formed
         run: |
-          for c in tcbench per-shape; do
+          for c in tcbench per-shape qcbench; do
             CAMPAIGN_DESCRIPTOR=benchmarks/campaign-$c.yaml python3 -m campaign_toolkit.declarations
           done
       - name: Every recorded run manifest validates
         run: |
           shopt -s nullglob
-          for c in tcbench per-shape; do
+          for c in tcbench per-shape qcbench; do
             files=(data/v2-results/$c/*/*/*/run.yaml)
             if [ ${#files[@]} -eq 0 ]; then echo "$c: no runs recorded yet"; continue; fi
             python3 scripts/v2/validate_run.py $c "${files[@]}"
           done
       - name: Index is current, required cells present
         run: |
-          for c in tcbench per-shape; do python3 scripts/v2/gen_index.py $c --check; done
+          for c in tcbench per-shape qcbench; do python3 scripts/v2/gen_index.py $c --check; done
       - name: Nothing generated was edited by hand
         # every published page is its run's report.md byte for byte, and the runs changed against
         # main regenerate their report.md from their CSVs (the indexes are checked by the step above)
         run: |
-          for c in tcbench per-shape; do
+          for c in tcbench per-shape qcbench; do
             CAMPAIGN_DESCRIPTOR=benchmarks/campaign-$c.yaml campaign-check-generated --base origin/main --no-index
           done
       - name: Pins are the stack's

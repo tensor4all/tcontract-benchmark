@@ -1,9 +1,10 @@
-# The measured revision of the timing-v2 campaigns (`benchmarks/campaign-tcbench.yaml`
-# and `benchmarks/campaign-per-shape.yaml`).
+# The measured revision of the timing-v2 campaigns (`benchmarks/campaign-tcbench.yaml`,
+# `benchmarks/campaign-per-shape.yaml` and `benchmarks/campaign-qcbench.yaml`).
 #
-# `tcontract-rs` main at the revision that carries the timing-v2 evidence contract for
-# both harnesses: 953a2ff9 landed the `tcbench` contract (tensor4all/tcontract-rs#127)
-# and 7738bf43 the `lukbench` one (tensor4all/tcontract-rs#128), which is this commit.
+# `tcontract-rs` main at the revision that carries the `qcbench` harness
+# (tensor4all/tcontract-rs#187, squash ebf0e50). It is written by
+# `campaign-sync-pins` from the stack in the pinned campaign-toolkit
+# (campaign-toolkit#61 names it because no release contains the harness yet).
 #
 # Kept apart from `pins/tcontract-rs.rev` (the legacy timing-v1 reference) on purpose:
 # moving that pin would make the committed legacy `result/INDEX.md` stale, and the
@@ -15,4 +16,4 @@
 # strided 0.8); main is the same commit. tcontract-kernel stays at 0.3.0.
 # `v0.9.0` (9f793ed) from 2026-10-30: the stack release (campaign-toolkit b71624b): tcontract-exec
 # and tcontract 0.9 on threadteam 0.2, strided 0.9 and t4a-faer 0.27. tcontract-kernel stays at 0.3.0.
-9f793ede6b8076fd7ce2251594a9552ad66aa339
+ebf0e50bc5b26c727eaf22213bd41900c17872c8

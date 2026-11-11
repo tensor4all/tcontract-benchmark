@@ -15,3 +15,27 @@ profiles:
   # `campaign_toolkit/profiles/zen2-cpu.yaml`. Every suite lists it as optional: it is
   # measured when the stack's versions move, not on the weekly schedule.
   - zen2-cpu
+  # The QC benchmark's recording candidate (2026-11-11). A shared, scheduler-managed
+  # build server owned by a colleague, not a dedicated measurement box: the qcbench
+  # cells recorded here are this profile's own and are not comparable with zen5-cpu or
+  # zen2-cpu. The role is `development` until boost-off is verified and the owner agrees
+  # to treat it as a measurement host.
+  - name: epyc-9575f
+    description: >-
+      AMD EPYC 9575F (Zen 5), 1 socket, 64 physical / 128 logical cores, 256 MiB
+      L3 in 8 instances: each 8-core CCX shares 32 MiB, exposed as CPUs
+      8k..8k+7 and their SMT siblings 8k+64..8k+71, so a thread set must be
+      stated together with its L3 domain. Single NUMA node. A shared
+      scheduler-managed build server; measuring needs an exclusive allocation,
+      the measured domain idle, and CPU boost off.
+    cpu: AMD EPYC 9575F 64-Core Processor
+    logical_cpus: 128
+    l3: "32 MiB per 8-core CCX (CPUs 8k-8k+7 plus SMT siblings 8k+64-8k+71), 8 CCXs"
+    smt: {threads_per_core: 2, sibling_offset: 64}
+    role: development
+    power:
+      cpufreq_boost: "0"
+      governor: performance
+    thread_rows:
+      - {threads: 1, measured: "0", observer: "8-63,72-127"}
+      - {threads: 4, measured: "0-3", observer: "8-63,72-127"}
