@@ -16,6 +16,19 @@ jobs:
           fetch-depth: 0  # campaign-check-generated compares against origin/main
       - name: Python deps
         run: python3 -m pip install --quiet -r requirements.txt
+      - name: Link preflight declaration, and a hidden library fails
+        # benchmarks/link-preflight.yaml is what record_run checks before every build. The runner has no
+        # vendor libraries, so the tblis arm, with its prefix pointed at an empty directory, must fail and
+        # name the library (the real pass is checked on the measurement host, at campaign start).
+        run: |
+          campaign-link-preflight --config benchmarks/link-preflight.yaml --validate
+          empty="$(mktemp -d)"; mkdir -p "$empty/lib"
+          if TBLIS_ROOT="$empty" campaign-link-preflight --config benchmarks/link-preflight.yaml \
+              --arm tblis > /tmp/link-preflight-negative.txt; then
+            echo "the link preflight passed with the tblis libraries hidden"; exit 1
+          fi
+          cat /tmp/link-preflight-negative.txt
+          grep -q 'the linker cannot find libtblis.so' /tmp/link-preflight-negative.txt
       - name: Checkout the reference revision
         run: ./scripts/setup_v2_extern_deps.sh
       # Each step runs once per campaign, with that campaign's descriptor selected.
