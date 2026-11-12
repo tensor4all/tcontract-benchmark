@@ -8,16 +8,18 @@ on: [push, pull_request]
 # campaigns. That is one small job on the smallest runner, and it is the only required check on
 # `main`. The legacy timing-v1 evidence (`data/results/`, `result/`) is frozen and not regenerated.
 jobs:
-  index:
-    runs-on: ubuntu-slim
+  link-preflight:
+    # Its own job: the probe links with rustc and cc, which the ubuntu-slim index runner does not have.
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          fetch-depth: 0  # campaign-check-generated compares against origin/main
+          python-version: '3.12'
       - name: Python deps
         run: python3 -m pip install --quiet -r requirements.txt
       - name: Link preflight declaration, and a hidden library fails
-        # benchmarks/link-preflight.yaml is what record_run checks before every build. The runner has no
+        # benchmarks/link-preflight.yaml is what record_run checks before every build. This runner has no
         # vendor libraries, so the tblis arm, with its prefix pointed at an empty directory, must fail and
         # name the library (the real pass is checked on the measurement host, at campaign start).
         run: |
@@ -29,6 +31,15 @@ jobs:
           fi
           cat /tmp/link-preflight-negative.txt
           grep -q 'the linker cannot find libtblis.so' /tmp/link-preflight-negative.txt
+
+  index:
+    runs-on: ubuntu-slim
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # campaign-check-generated compares against origin/main
+      - name: Python deps
+        run: python3 -m pip install --quiet -r requirements.txt
       - name: Checkout the reference revision
         run: ./scripts/setup_v2_extern_deps.sh
       # Each step runs once per campaign, with that campaign's descriptor selected.
