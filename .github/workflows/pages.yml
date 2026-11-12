@@ -34,6 +34,14 @@ jobs:
           python-version: '3.12'
       - name: Install the pinned toolkit
         run: python -m pip install --quiet -r requirements.txt
+      - name: Every pin has a current recording
+        run: |
+          for c in tcbench per-shape; do
+            CAMPAIGN_DESCRIPTOR=benchmarks/campaign-$c.yaml campaign-check-pin-recorded
+          done
+          campaign-check-pin-recorded --pin pins/tcontract-rs.rev \
+            --evidence 'data/results/*/*/*/run.yaml' --commit-field tprims.commit \
+            --page 'result/{target_profile}/{suite_id}/{commit:.12}.md'
       - name: Write the site
         # generated on every deploy from the committed data, result and pins; not committed
         run: python scripts/v2/gen_site.py

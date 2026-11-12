@@ -1,1 +1,10 @@
-8abfa38aa1de3bd0f55d65751afa8ce6c0a4e590
+# The measured revision of the frozen timing-v1 campaign (`data/results/`, `result/`).
+#
+# `0df08df` (tprims-rs #101, 2026-10-10): the revision the newest v1 pages were measured at
+# (tcbench `20261010T145751Z` and per-shape `20261010T152119Z`, both clean). On 2026-10-11 the pin
+# was moved to the rename merge `8abfa38` (tcontract-rs #108, ten commits later) without a
+# recording, so the v1 index showed its pages "5 behind" a revision nothing was measured at. It is
+# back at the measured revision on 2026-11-13; the v1 campaign is frozen and this pin does not move
+# again. `result/INDEX.md` was regenerated with the v1 generator as of f626501^ (its last version).
+# CI fails a pin no publication was measured at (`campaign-check-pin-recorded`).
+0df08df4651413c629903b378eae2c3685716bbd
