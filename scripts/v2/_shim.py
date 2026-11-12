@@ -2,10 +2,11 @@
 """Common body of the timing-v2 shims under `scripts/v2/`.
 
 A timing-v2 entry point is the toolkit's, parameterised by a descriptor. This
-repository carries two descriptors (`benchmarks/campaign-tcbench.yaml` and
-`benchmarks/campaign-per-shape.yaml`), so each shim takes the campaign id as its
-first argument, sets `CAMPAIGN_DESCRIPTOR` to that campaign's descriptor, and
-hands the remaining arguments to the toolkit entry point unchanged:
+repository carries three descriptors (`benchmarks/campaign-tcbench.yaml`,
+`benchmarks/campaign-per-shape.yaml` and `benchmarks/campaign-qcbench.yaml`), so
+each shim takes the campaign id as its first argument, sets
+`CAMPAIGN_DESCRIPTOR` to that campaign's descriptor, and hands the remaining
+arguments to the toolkit entry point unchanged:
 
     scripts/v2/record_run.py <campaign> <toolkit args...>
 

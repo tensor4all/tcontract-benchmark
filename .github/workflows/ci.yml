@@ -4,7 +4,7 @@ on: [push, pull_request]
 # pinned checkout on the host that owns the numbers, and refuses to publish otherwise, so the
 # harness's buildability is proven where it matters (and gated again in the source repository's
 # own CI, which builds the harness target on every PR there). What is left for this repository is
-# content: the declarations, every recorded manifest, and the generated indexes of both timing-v2
+# content: the declarations, every recorded manifest, and the generated indexes of the timing-v2
 # campaigns. That is one small job on the smallest runner, and it is the only required check on
 # `main`. The legacy timing-v1 evidence (`data/results/`, `result/`) is frozen and not regenerated.
 jobs:
