@@ -35,6 +35,19 @@ jobs:
       - name: Index is current, required cells present
         run: |
           for c in tcbench per-shape; do python3 scripts/v2/gen_index.py $c --check; done
+      - name: Every pin has a current recording
+        # Fails, with no exception, when a pin names a revision no publication was measured at, or
+        # when the newest publication was measured elsewhere: record at the pin, or keep the pin at
+        # the last measured revision. The two v2 campaigns read their descriptors (gen_index --check
+        # runs the same rule); the frozen v1 tree has no descriptor, so its manifests and pages are
+        # named directly.
+        run: |
+          for c in tcbench per-shape; do
+            CAMPAIGN_DESCRIPTOR=benchmarks/campaign-$c.yaml campaign-check-pin-recorded
+          done
+          campaign-check-pin-recorded --pin pins/tcontract-rs.rev \
+            --evidence 'data/results/*/*/*/run.yaml' --commit-field tprims.commit \
+            --page 'result/{target_profile}/{suite_id}/{commit:.12}.md'
       - name: Nothing generated was edited by hand
         # every published page is its run's report.md byte for byte, and the runs changed against
         # main regenerate their report.md from their CSVs (the indexes are checked by the step above)
