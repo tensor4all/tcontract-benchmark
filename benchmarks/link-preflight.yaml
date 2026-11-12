@@ -1,0 +1,34 @@
+# The shared libraries this campaign's harnesses (tcbench, lukbench) link, checked by
+# campaign-toolkit's link preflight (campaign-toolkit README, "The link preflight") before any build
+# or timing: `record_run` runs the arms of the features the suite builds with (`blas`, `tblis`), and a
+# periodic refresh runs every arm once per host at its start. Both descriptors
+# (campaign-tcbench.yaml, campaign-per-shape.yaml) share this file.
+#
+# Each arm mirrors one link line of tcontract-rs `benchmarks/build.rs` on Linux. Keep it in step:
+# a library added there and not here is a library the preflight does not check.
+arms:
+  tblis:
+    source: tcontract-rs benchmarks/build.rs (feature tblis, GNU runtime); TBLIS_ROOT per docs/v2-layout.md
+    when: {feature: tblis}
+    env:
+      # build_tblis.sh installs into target/tblis-<version> of this checkout (docs/v2-layout.md).
+      TBLIS_ROOT:
+        required: true
+        hint_glob: "target/tblis-*"
+        fix: "extern/tcontract-rs/benchmarks/scripts/build_tblis.sh target/tblis-v2.0-beta2 && export TBLIS_ROOT=$PWD/target/tblis-v2.0-beta2"
+    search: ["$TBLIS_ROOT/lib", "$TBLIS_ROOT/lib64"]
+    # TBLIS itself, the C++ runtime it was built with, and OpenMP (TBLIS pulls it in through TCI).
+    libs: [tblis, stdc++, gomp]
+    # The descriptors' `loader_paths`: the recorder prepends them to LD_LIBRARY_PATH for the harness.
+    loader_paths: ["$TBLIS_ROOT/lib", "$TBLIS_ROOT/lib64"]
+    fix:
+      tblis: "export TBLIS_ROOT={prefix}   (or build it: extern/tcontract-rs/benchmarks/scripts/build_tblis.sh)"
+  blas:
+    source: tcontract-rs benchmarks/build.rs (feature blas, not Accelerate)
+    when: {feature: blas}
+    # build.rs searches OPENBLAS_ROOT, or else BLAS_ROOT, when one is set; otherwise only the
+    # linker's default directories (a system libopenblas).
+    search: ["$OPENBLAS_ROOT/lib", "$OPENBLAS_ROOT/lib64", "$BLAS_ROOT/lib", "$BLAS_ROOT/lib64"]
+    libs: [openblas]
+    fix:
+      openblas: "export OPENBLAS_ROOT={prefix} and LD_LIBRARY_PATH={dir}  (or install the distribution's libopenblas)"
