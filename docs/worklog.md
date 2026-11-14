@@ -3,6 +3,44 @@
 Design decisions, what was rejected, and what is still open. Measurements live
 in `result/`; this file holds the reasoning.
 
+## 2026-11-15 — the v2 evidence moves to a045446 on epyc-9575f
+
+The shared `pins/tcontract-rs-v2.rev` cannot move ahead of its evidence
+(`campaign-check-pin-recorded`, from the 2026-10-30 stack): a pin must name a
+revision with a publication, and the newest publication must be at it. qcbench
+needs `a045446` (the harness does not exist at `9f793ede`), so the pin can only
+move if **all three** v2 campaigns have a publication there. The Zen5 host that
+produced the `9f793ede` pages is not available; the calibrated replacement is
+`epyc-9575f`, whose `bench` partition (root-owned Prolog/Epilog, `Exclusive=NODE`)
+sets `boost=0` and all governors to `performance` for the job and restores the
+daily baseline afterwards.
+
+The generator now lists `epyc-9575f` as an optional profile for tcbench and
+per-shape as well (qcbench already did), and all three suites were regenerated
+from a census at `a045446` with the declared rows (tcbench `plan,ttgt,tblis`;
+per-shape and qcbench `plan,tblis`). Recordings: reps 5, prime 1500 ms, 1T/4T,
+f64+c64 for tcbench/per-shape and f64 for qcbench, inside the `bench` partition.
+
+- tcbench and per-shape: `data/v2-results/{tcbench,per-shape}/epyc-9575f/`;
+  their pages replace the Zen5 pages as current, which move to `HISTORY.md`.
+- qcbench: its first page, `data/v2-results/qcbench/epyc-9575f/`.
+- Every manifest records `cpufreq_boost 0`, governor `performance`, the 1T/4T
+  CPU sets and the idle guard.
+
+The toolkit side: campaign-toolkit#65 named `a045446` in the stack, and #67
+dropped the `measured: 9f793ede` hold once the pages existed; this repository
+then moved `requirements.txt` to that merge (`7332de7`) and
+`campaign-sync-pins` wrote `pins/tcontract-rs-v2.rev = a045446`.
+`gen_index --write` regenerated the three indexes; `declarations` (×3),
+`gen_index --check` (×3), `campaign-check-pin-recorded` (×3),
+`campaign-sync-pins --check` and `campaign-check-generated` all pass locally.
+
+The cells are `role: development` and remain provisional by design: the node is
+a shared, scheduler-managed server, so these numbers are the epyc profile's own
+and are not comparable with the Zen5 or Zen2 cells. The plain
+`boost=1`/`schedutil` baseline is restored between runs by the Epilog, and a
+concurrent `research` job is left queued rather than preempted.
+
 ## 2026-11-11 — `qcbench` becomes the third v2 campaign
 
 `qcbench` (the 24-case QC binary-contraction harness in `tcontract-rs`, merged as
