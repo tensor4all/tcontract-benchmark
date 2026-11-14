@@ -56,6 +56,7 @@ HARNESSES = {
         # baseline; the suite's `features` is what the recorder exports as
         # `BENCH_FEATURES`, so both have to be named or the harness refuses the row.
         features=["blas", "tblis"],
+        optional_profiles=["zen5-cpu", "zen2-cpu", "epyc-9575f"],
         description=(
             "The TCCG 49-case tensor-contraction corpus, measured by `tcbench` out of the pinned "
             "`tcontract-rs` checkout. One family per case id. The declared identity shape is the "
@@ -142,6 +143,7 @@ HARNESSES = {
         regime="per-shape",
         rows=["plan", "packed", "tblis"],
         features=["tblis"],
+        optional_profiles=["zen5-cpu", "zen2-cpu", "epyc-9575f"],
         description=(
             "The 21-case per-shape contraction corpus, measured by `lukbench` out of the pinned "
             "`tcontract-rs` checkout. One family per case id. The cases are the shapes, so the "
