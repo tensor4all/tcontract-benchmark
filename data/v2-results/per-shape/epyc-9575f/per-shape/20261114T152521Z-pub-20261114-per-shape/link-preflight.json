@@ -1,0 +1,56 @@
+{
+  "schema": "link-preflight/1",
+  "time": "2026-11-14T15:25:16Z",
+  "host": "ps",
+  "profile": null,
+  "config": {
+    "path": "/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/benchmarks/link-preflight.yaml",
+    "sha256": "d8ac61e4aab1bac28ebecc4f800609b0f0df454a9bdc8d64c39effd71cafc6a9"
+  },
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1",
+  "rustflags": [],
+  "arms": [
+    {
+      "arm": "tblis",
+      "source": "tcontract-rs benchmarks/build.rs (feature tblis, GNU runtime); TBLIS_ROOT per docs/v2-layout.md",
+      "libs": [
+        "tblis",
+        "stdc++",
+        "gomp"
+      ],
+      "env": {
+        "TBLIS_ROOT": "/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2"
+      },
+      "env_notes": [],
+      "search": [
+        {
+          "entry": "$TBLIS_ROOT/lib",
+          "path": "/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2/lib",
+          "status": "searched"
+        },
+        {
+          "entry": "$TBLIS_ROOT/lib64",
+          "path": "/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2/lib64",
+          "status": "absent"
+        }
+      ],
+      "library_path": null,
+      "rpath": false,
+      "loader_paths": [
+        "/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2/lib",
+        "/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2/lib64",
+        "/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2/lib",
+        "/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2/lib64"
+      ],
+      "ld_library_path": "/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2/lib:/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2/lib64:/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2/lib:/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2/lib64:/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2/lib:/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2/lib64:/home/ningyuan/opt/openblas-lp64/lib",
+      "missing": [],
+      "ok": true,
+      "stage": null,
+      "command": "rustc --edition 2021 -C opt-level=0 -C debuginfo=0 -L native=/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2/lib -C link-arg=-Wl,--push-state,--no-as-needed -C link-arg=-ltblis -C link-arg=-lstdc++ -C link-arg=-lgomp -C link-arg=-Wl,--pop-state /tmp/link-preflight-w0xhjvpt/tblis.rs -o /tmp/link-preflight-w0xhjvpt/probe-tblis",
+      "stderr": null,
+      "seconds": 0.054
+    }
+  ],
+  "ok": true,
+  "text": "link preflight on ps: /home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/benchmarks/link-preflight.yaml\n  OK   tblis  [tcontract-rs benchmarks/build.rs (feature tblis, GNU runtime); TBLIS_ROOT per docs/v2-layout.md]  (0.054 s)\nLINK PREFLIGHT OK"
+}

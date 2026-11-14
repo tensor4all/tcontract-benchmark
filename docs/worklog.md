@@ -3,6 +3,81 @@
 Design decisions, what was rejected, and what is still open. Measurements live
 in `result/`; this file holds the reasoning.
 
+## 2026-11-15 — the v2 evidence moves to a045446 on epyc-9575f
+
+The shared `pins/tcontract-rs-v2.rev` cannot move ahead of its evidence
+(`campaign-check-pin-recorded`, from the 2026-10-30 stack): a pin must name a
+revision with a publication, and the newest publication must be at it. qcbench
+needs `a045446` (the harness does not exist at `9f793ede`), so the pin can only
+move if **all three** v2 campaigns have a publication there. The Zen5 host that
+produced the `9f793ede` pages is not available; the calibrated replacement is
+`epyc-9575f`, whose `bench` partition (root-owned Prolog/Epilog, `Exclusive=NODE`)
+sets `boost=0` and all governors to `performance` for the job and restores the
+daily baseline afterwards.
+
+The generator now lists `epyc-9575f` as an optional profile for tcbench and
+per-shape as well (qcbench already did), and all three suites were regenerated
+from a census at `a045446` with the declared rows (tcbench `plan,ttgt,tblis`;
+per-shape and qcbench `plan,tblis`). Recordings: reps 5, prime 1500 ms, 1T/4T,
+f64+c64 for tcbench/per-shape and f64 for qcbench, inside the `bench` partition.
+
+- tcbench and per-shape: `data/v2-results/{tcbench,per-shape}/epyc-9575f/`;
+  their pages replace the Zen5 pages as current, which move to `HISTORY.md`.
+- qcbench: its first page, `data/v2-results/qcbench/epyc-9575f/`.
+- Every manifest records `cpufreq_boost 0`, governor `performance`, the 1T/4T
+  CPU sets and the idle guard.
+
+The toolkit side: campaign-toolkit#65 named `a045446` in the stack, and #67
+dropped the `measured: 9f793ede` hold once the pages existed; this repository
+then moved `requirements.txt` to that merge (`7332de7`) and
+`campaign-sync-pins` wrote `pins/tcontract-rs-v2.rev = a045446`.
+`gen_index --write` regenerated the three indexes; `declarations` (×3),
+`gen_index --check` (×3), `campaign-check-pin-recorded` (×3),
+`campaign-sync-pins --check` and `campaign-check-generated` all pass locally.
+
+The cells are `role: development` and remain provisional by design: the node is
+a shared, scheduler-managed server, so these numbers are the epyc profile's own
+and are not comparable with the Zen5 or Zen2 cells. The plain
+`boost=1`/`schedutil` baseline is restored between runs by the Epilog, and a
+concurrent `research` job is left queued rather than preempted.
+
+## 2026-11-11 — `qcbench` becomes the third v2 campaign
+
+`qcbench` (the 24-case QC binary-contraction harness in `tcontract-rs`, merged as
+tensor4all/tcontract-rs#187 at `ebf0e50`) gets a campaign: a fourth harness binary, a
+third descriptor (`benchmarks/campaign-qcbench.yaml`), a generated suite, and the
+`epyc-9575f` hardware profile. The measured binary publishes only `plan` and `tblis`;
+the forced-packed route and TTGT are verification arms, not rows.
+
+The measured revision could not be chosen here. No tcontract release contains #187
+(v0.12.0 predates it), and `pins/tcontract-rs-v2.rev` is written by
+`campaign-sync-pins` from the stack inside the pinned toolkit. campaign-toolkit#61
+therefore names tcontract-rs main at `ebf0e50` with no version and no tag, as #57 did
+for tenferro-rs; this PR bumps the toolkit pin to that merge commit and lets
+`campaign-sync-pins` write the pin rather than typing it.
+
+The descriptor declares `engines: {plan, ttgt, tblis}` even though this campaign
+measures only two. The three v2 suites share `benchmarks/suites-v2`, and the
+declaration checker validates every suite in the directory against the active
+descriptor, so the engines map is the union of the rows any suite may select; the
+per-shape descriptor already carries `ttgt` for the same reason. Which rows a suite
+actually measures stays in the suite.
+
+Moving the shared pin has a visible cost: the `tcbench` and `per-shape` pages
+measured at `9f793ede` are no longer at the reference revision, so the regenerated
+indexes move them to `HISTORY.md` and list their cells as `missing` until the next
+`zen5-cpu` recording. That is the index's currency rule doing its job (a pin move
+without a re-measure is expected), not a lost page; the history keeps the evidence.
+
+The recording host is `epyc-9575f` (AMD EPYC 9575F: 128 logical CPUs, eight L3
+domains, 251 GiB), added as a `development` profile. It is a shared, scheduler-managed
+build server, so its cells are its own and not comparable with `zen5-cpu`/`zen2-cpu`;
+the role moves to `measurement` only after boost-off is verified and an exclusive
+allocation is the norm. No cell is recorded in this change: the host's 64 physical
+cores were busy with another user's job and CPU boost was on, which the recorder
+refuses. The suite and the empty index are the wiring; the first page is a separate
+recording.
+
 ## 2026-10-19 — the v2 campaign runs on the shared toolkit
 
 The toolkit pin moves from a feature-branch revision to its main (`95caeef`), which carries the
