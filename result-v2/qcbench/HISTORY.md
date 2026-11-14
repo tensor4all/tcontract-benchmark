@@ -7,10 +7,14 @@ Every page not selected for the index's Cells table, newest first and grouped by
 revisions it measured. The current pages are in [INDEX.md](INDEX.md).
 
 - Reference revision (`pins/tcontract-rs-v2.rev`): `ebf0e50bc5b26c727eaf22213bd41900c17872c8`
-- Newest recorded run: `none`
+- Newest recorded run: `2026-11-14T16:38:39.853952Z`
 - Every page below is one `(suite, hardware profile, revision, vendor arm)` and carries
   its commit, its hardware and the vendor library it linked itself.
 
 ## Older pages
 
-No older pages.
+### `a04544630144`: version -
+
+| suite | profile | vendor | revision | version | date | coverage | status | page |
+|---|---|---|---|---|---|---|---|---|
+| `qcbench` | `epyc-9575f` | - | `a04544630144` | - | 2026-11-14 | full | current | [result-v2/qcbench/epyc-9575f/qcbench/a04544630144-timing-v2.md](epyc-9575f/qcbench/a04544630144-timing-v2.md) |

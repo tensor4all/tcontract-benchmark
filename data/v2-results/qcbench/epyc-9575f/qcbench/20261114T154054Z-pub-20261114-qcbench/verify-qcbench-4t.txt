@@ -1,0 +1,91 @@
+# threads: requested=4 pool=4 budget=4
+host        : ps
+target      : x86_64 / linux
+cpu features: avx2 fma avx512f avx512dq 
+tuning class: amd512 (menu isa Avx512; compiled order, no measurement on this class), default menu f64=avx512.f64.real.24x8 f32=avx512.f32.real.48x8 c64=avx512.c64.planar.16x6 c32=avx512.c32.planar.32x6
+caches      : L1=48KiB/12-way/2sh L2=1024KiB/16-way/2sh L3=32768KiB/16-way/16sh (via sysfs), blocking=legacy
+l3 domains  : t1=1
+baselines   : tblis=true blas=false
+tblis       : abi 2.x, 4 thread(s)
+
+verifying 72 cases at 0 MiB nominal size
+
+                                  case | dtype |      m |      n |     k |   plan |  packed | vs ttgt | vs tblis | status 
+---------------------------------------+-------+--------+--------+-------+--------+---------+---------+----------+--------
+                         ov_03/b_tau.A |   f64 |   1431 |    153 |  1431 |   faer |   0.0e0 |       - |    0.0e0 |     ok 
+                         ov_03/b_tau.A |   c64 |   1431 |    153 |  1431 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                         ov_03/b_tau.A |   f64 |   1431 |    153 |  1431 |   faer | 6.9e-16 |       - |  6.9e-16 |     ok 
+                         ov_03/b_tau.S |   f64 |   1431 |    153 |  1485 |   faer | 7.1e-16 |       - |  7.1e-16 |     ok 
+             ov_03/T.connected.virtual |   f64 |  52488 |  17496 |    54 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+            ov_03/T.connected.occupied |   f64 |  17496 |  52488 |    18 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                      ov_03/I6.t1_oovv |   f64 |     18 |  17496 |    54 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                    ov_03/sigma2.wovvo |   f64 |    972 |     18 |   972 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                    ov_03/sigma2.woooo |   f64 |    324 |     54 |   324 |   faer | 3.9e-16 |       - |  3.9e-16 |     ok 
+                   ov_03/sigma2.w_abcd |   f64 |   2916 |     18 |  2916 |   faer | 7.1e-16 |       - |  7.1e-16 |     ok 
+                   ov_03/sigma2.w_alcj |   f64 |    972 |     54 |   972 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                   ov_03/sigma2.w_bljc |   f64 |    972 |     54 |   972 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                   ov_03/sigma2.w_lbdj |   f64 |    972 |     54 |   972 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                      ov_03/gamma.abcd |   f64 |   2556 |   1431 |  1431 |   faer | 6.9e-16 |       - |  6.9e-16 |     ok 
+                      ov_03/gamma.aibc |   f64 |   5184 |    972 |  2916 |   faer | 7.1e-16 |       - |  7.1e-16 |     ok 
+                       ov_03/df.factor |   f64 |   5184 |    270 |   270 |   faer | 1.8e-16 |       - |  1.8e-16 |     ok 
+                 ov_03/exchange.matrix |   f64 |     72 |     72 |  4860 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+     ov_03/exchange.occupied_transform |   f64 |  19440 |     18 |    72 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+           ov_03/gradient.Y_transform2 |   f64 |     72 |  19440 |    18 |   faer |   0.0e0 |       - |    0.0e0 |     ok 
+                      ov_03/gradient.X |   f64 |    270 |    324 |   270 |   faer | 1.8e-16 |       - |  1.8e-16 |     ok 
+                 ov_03/gradient.Z_pair |   f64 |    270 |    270 |   324 |   faer | 3.9e-16 |       - |  3.9e-16 |     ok 
+ ov_03/response.exchange.occupied_half |   f64 |     18 |  19440 |    72 |   faer |   0.0e0 |       - |    0.0e0 |     ok 
+     ov_03/response.exchange.transform |   f64 |  19440 |     18 |    72 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+        ov_03/response.exchange.metric |   f64 |    270 |    324 |   270 |   faer | 1.8e-16 |       - |  1.8e-16 |     ok 
+                           ov_03/K.aux |   f64 |  14580 |     18 |    54 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                        ov_03/K.matrix |   f64 |     54 |     18 |  4860 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                         ov_10/b_tau.A |   f64 |   4950 |     45 |  4950 |   faer | 7.3e-16 |       - |  7.3e-16 |     ok 
+                         ov_10/b_tau.S |   f64 |   4950 |     45 |  5050 |   faer | 7.4e-16 |       - |  7.4e-16 |     ok 
+             ov_10/T.connected.virtual |   f64 | 100000 |  10000 |   100 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+            ov_10/T.connected.occupied |   f64 |  10000 | 100000 |    10 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                      ov_10/I6.t1_oovv |   f64 |     10 |  10000 |   100 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                    ov_10/sigma2.wovvo |   f64 |   1000 |     10 |  1000 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                    ov_10/sigma2.woooo |   f64 |    100 |    100 |   100 |   faer |   0.0e0 |       - |    0.0e0 |     ok 
+                   ov_10/sigma2.w_abcd |   f64 |  10000 |     10 | 10000 |   faer | 7.6e-16 |       - |  7.6e-16 |     ok 
+                   ov_10/sigma2.w_alcj |   f64 |   1000 |    100 |  1000 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                   ov_10/sigma2.w_bljc |   f64 |   1000 |    100 |  1000 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                   ov_10/sigma2.w_lbdj |   f64 |   1000 |    100 |  1000 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                      ov_10/gamma.abcd |   f64 |   5995 |   4950 |  4950 |   faer | 7.3e-16 |       - |  7.3e-16 |     ok 
+                      ov_10/gamma.aibc |   f64 |  12100 |   1000 | 10000 |   faer | 7.6e-16 |       - |  7.6e-16 |     ok 
+                       ov_10/df.factor |   f64 |  12100 |    282 |   282 |   faer | 2.5e-16 |       - |  2.5e-16 |     ok 
+                 ov_10/exchange.matrix |   f64 |    110 |    110 |  2820 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+     ov_10/exchange.occupied_transform |   f64 |  31020 |     10 |   110 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+           ov_10/gradient.Y_transform2 |   f64 |    110 |  31020 |    10 |   faer |   0.0e0 |       - |    0.0e0 |     ok 
+                      ov_10/gradient.X |   f64 |    282 |    100 |   282 |   faer | 2.4e-16 |       - |  2.4e-16 |     ok 
+                 ov_10/gradient.Z_pair |   f64 |    282 |    282 |   100 |   faer |   0.0e0 |       - |    0.0e0 |     ok 
+ ov_10/response.exchange.occupied_half |   f64 |     10 |  31020 |   110 |   faer |   0.0e0 |       - |    0.0e0 |     ok 
+     ov_10/response.exchange.transform |   f64 |  31020 |     10 |   110 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+        ov_10/response.exchange.metric |   f64 |    282 |    100 |   282 |   faer | 2.4e-16 |       - |  2.4e-16 |     ok 
+                           ov_10/K.aux |   f64 |  28200 |     10 |   100 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                        ov_10/K.matrix |   f64 |    100 |     10 |  2820 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                         ov_20/b_tau.A |   f64 |   9730 |     21 |  9730 |   faer | 7.7e-16 |       - |  7.7e-16 |     ok 
+                         ov_20/b_tau.S |   f64 |   9730 |     21 |  9870 |   faer | 7.6e-16 |       - |  7.6e-16 |     ok 
+             ov_20/T.connected.virtual |   f64 | 137200 |   6860 |   140 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+            ov_20/T.connected.occupied |   f64 |   6860 | 137200 |     7 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                      ov_20/I6.t1_oovv |   f64 |      7 |   6860 |   140 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                    ov_20/sigma2.wovvo |   f64 |    980 |      7 |   980 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                    ov_20/sigma2.woooo |   f64 |     49 |    140 |    49 |   faer |   0.0e0 |       - |    0.0e0 |     ok 
+                   ov_20/sigma2.w_abcd |   f64 |  19600 |      7 | 19600 |   faer | 8.0e-16 |       - |  8.0e-16 |     ok 
+                   ov_20/sigma2.w_alcj |   f64 |    980 |    140 |   980 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                   ov_20/sigma2.w_bljc |   f64 |    980 |    140 |   980 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                   ov_20/sigma2.w_lbdj |   f64 |    980 |    140 |   980 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                      ov_20/gamma.abcd |   f64 |  10731 |   9730 |  9730 |   faer | 7.6e-16 |       - |  7.6e-16 |     ok 
+                      ov_20/gamma.aibc |   f64 |  21609 |    980 | 19600 |   faer | 8.0e-16 |       - |  8.0e-16 |     ok 
+                       ov_20/df.factor |   f64 |  21609 |    329 |   329 |   faer | 4.0e-16 |       - |  4.0e-16 |     ok 
+                 ov_20/exchange.matrix |   f64 |    147 |    147 |  2303 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+     ov_20/exchange.occupied_transform |   f64 |  48363 |      7 |   147 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+           ov_20/gradient.Y_transform2 |   f64 |    147 |  48363 |     7 |   faer |   0.0e0 |       - |    0.0e0 |     ok 
+                      ov_20/gradient.X |   f64 |    329 |     49 |   329 |   faer | 4.0e-16 |       - |  4.0e-16 |     ok 
+                 ov_20/gradient.Z_pair |   f64 |    329 |    329 |    49 |   faer |   0.0e0 |       - |    0.0e0 |     ok 
+ ov_20/response.exchange.occupied_half |   f64 |      7 |  48363 |   147 |   faer |   0.0e0 |       - |    0.0e0 |     ok 
+     ov_20/response.exchange.transform |   f64 |  48363 |      7 |   147 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+        ov_20/response.exchange.metric |   f64 |    329 |     49 |   329 |   faer | 4.0e-16 |       - |  4.0e-16 |     ok 
+                           ov_20/K.aux |   f64 |  46060 |      7 |   140 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+                        ov_20/K.matrix |   f64 |    140 |      7 |  2303 | packed |   0.0e0 |       - |    0.0e0 |     ok 
+wrote /home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/data/v2-results/qcbench/epyc-9575f/qcbench/20261114T154054Z-pub-20261114-qcbench/verify-qcbench-4t.csv
+
+all comparisons within tolerance
