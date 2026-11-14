@@ -45,7 +45,7 @@ def main(argv=None):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>{site.CSS}</style></head><body>
 <h1>tcontract benchmark results</h1>
-<p>Two timing-v2 campaigns measure <a href="https://github.com/tensor4all/tcontract-rs">tcontract-rs</a>
+<p>Three timing-v2 campaigns measure <a href="https://github.com/tensor4all/tcontract-rs">tcontract-rs</a>
 at the pinned revision, each with its own pages, charts and history.</p>
 <ul>{items}</ul>
 <h2>History</h2>
