@@ -6,7 +6,7 @@ every cell visible rather than implied.
 
 | | |
 |---|---|
-| Results site | [tensor4all.org/tcontract-benchmark](https://tensor4all.org/tcontract-benchmark/) — both campaigns' pages, charts and history |
+| Results site | [tensor4all.org/tcontract-benchmark](https://tensor4all.org/tcontract-benchmark/) — every campaign's pages, charts and history |
 | Latest results | [`result-v2/tcbench/INDEX.md`](result-v2/tcbench/INDEX.md), [`result-v2/per-shape/INDEX.md`](result-v2/per-shape/INDEX.md), [`result-v2/qcbench/INDEX.md`](result-v2/qcbench/INDEX.md) — generated; older pages in each `HISTORY.md` |
 | Result layout | [`docs/v2-layout.md`](docs/v2-layout.md); the frozen timing-v1 tree in [`docs/results.md`](docs/results.md) |
 | Timing policy | [`docs/timing-policy.md`](docs/timing-policy.md) |
