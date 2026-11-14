@@ -6,24 +6,18 @@ this file is what the generator produces.
 Every page not selected for the index's Cells table, newest first and grouped by the
 revisions it measured. The current pages are in [INDEX.md](INDEX.md).
 
-- Reference revision (`pins/tcontract-rs-v2.rev`): `ebf0e50bc5b26c727eaf22213bd41900c17872c8`
+- Reference revision (`pins/tcontract-rs-v2.rev`): `a045446301442ebb7540c806d9914dccce62357a`
 - Newest recorded run: `2026-11-14T15:30:12.361460Z`
 - Every page below is one `(suite, hardware profile, revision, vendor arm)` and carries
   its commit, its hardware and the vendor library it linked itself.
 
 ## Older pages
 
-### `a04544630144`: version -
-
-| suite | profile | vendor | revision | version | date | coverage | status | page |
-|---|---|---|---|---|---|---|---|---|
-| `per-shape` | `epyc-9575f` | - | `a04544630144` | - | 2026-11-14 | full | current | [result-v2/per-shape/epyc-9575f/per-shape/a04544630144-timing-v2.md](epyc-9575f/per-shape/a04544630144-timing-v2.md) |
-
 ### `9f793ede6b80`: version -
 
 | suite | profile | vendor | revision | version | date | coverage | status | page |
 |---|---|---|---|---|---|---|---|---|
-| `per-shape` | `zen5-cpu` | - | `9f793ede6b80` | - | 2026-10-31 | full | 18 behind | [result-v2/per-shape/zen5-cpu/per-shape/9f793ede6b80-timing-v2.md](zen5-cpu/per-shape/9f793ede6b80-timing-v2.md) |
+| `per-shape` | `zen5-cpu` | - | `9f793ede6b80` | - | 2026-10-31 | full | 19 behind | [result-v2/per-shape/zen5-cpu/per-shape/9f793ede6b80-timing-v2.md](zen5-cpu/per-shape/9f793ede6b80-timing-v2.md) |
 
 ### `71a11a80b454`: version -
 
