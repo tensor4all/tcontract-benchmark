@@ -5,7 +5,7 @@ this file is what the generator produces.
 
 Older pages (5): [HISTORY.md](HISTORY.md).
 
-- Reference revision (`pins/tcontract-rs-v2.rev`): `a045446301442ebb7540c806d9914dccce62357a`
+- Reference revision (`pins/tcontract-rs-v2.rev`): `807183f57ce77622f0af197b8c4fa3dced9a84c5`
 - Newest recorded run: `2026-11-17T07:50:09.228094Z`
 - Every page below is one `(suite, hardware profile, revision, vendor arm)` and carries
   its commit, its hardware and the vendor library it linked itself.
@@ -20,7 +20,7 @@ rather than being implied by the other arm's page.
 |---|---|---|---|---|---|---|---|---|
 | `per-shape` | `zen5-cpu` (optional) | - | - | - | - | - | missing | - |
 | `per-shape` | `zen2-cpu` (optional) | - | - | - | - | - | missing | - |
-| `per-shape` | `epyc-9575f` (optional) | - | `a04544630144` | - | 2026-11-14 | full | current | [result-v2/per-shape/epyc-9575f/per-shape/a04544630144-timing-v2.md](epyc-9575f/per-shape/a04544630144-timing-v2.md) |
+| `per-shape` | `epyc-9575f` (optional) | - | `807183f57ce7` | - | 2026-11-17 | full | current | [result-v2/per-shape/epyc-9575f/per-shape/807183f57ce7-timing-v2.md](epyc-9575f/per-shape/807183f57ce7-timing-v2.md) |
 | `qcbench` | `zen5-cpu` (optional) | - | - | - | - | - | missing | - |
 | `qcbench` | `zen2-cpu` (optional) | - | - | - | - | - | missing | - |
 | `qcbench` | `epyc-9575f` (optional) | - | - | - | - | - | missing | - |
