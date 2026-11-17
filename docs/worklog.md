@@ -3,6 +3,25 @@
 Design decisions, what was rejected, and what is still open. Measurements live
 in `result/`; this file holds the reasoning.
 
+## 2026-11-17 — first zqcbench result: the c64 Coulomb gap
+
+The first zqcbench page (`807183f`, `epyc-9575f`, skx TBLIS, full coverage)
+shows the plan arm is not uniformly ahead on the complex c64 suite: it is
+slower than TBLIS in 97 of 210 family/thread cells, with geometric-mean
+plan/TBLIS 1.13 at 1T and 1.04 at 4T (plan 49.1 vs TBLIS 55.6 GF/s GM at 1T;
+180.0 vs 186.7 at 4T). The losses concentrate in the Coulomb-type
+contractions — `ov_10/somf.coulomb` 3.55x, `ov_10/jk.response.coulomb.matrix`
+3.47x, `ov_20/somf.coulomb` 3.43x, `ov_20/ri-krhf.coulomb.matrix` 3.19x at
+1T — while the plan is ahead on the batched `ri-krgw/sigma.contract`
+(0.64-0.74) and `cd-x2ceom/quartic.response_oovv` (0.65-0.72). On the real
+bench the qcbench plan is ahead on every family (GM 0.39-0.42), so the c64
+Coulomb path is the exposed gap.
+
+This is a descriptive first result: two process sets, the `epyc-9575f`
+`role: development` host, and 11 of 420 engine cells flagged with a
+between-start range over 5%; it is not a regression claim. The follow-up is
+the c64 naux kernel, not the harness.
+
 ## 2026-11-17 — the fourth v2 campaign: `zqcbench`
 
 `zqcbench` (the 35-case complex-orbital binary-contraction harness in
