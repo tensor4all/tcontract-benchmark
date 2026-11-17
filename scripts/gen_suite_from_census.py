@@ -51,7 +51,9 @@ HARNESSES = {
     "tcbench": dict(
         suite_id="tcbench",
         regime="tcbench",
-        rows=["plan", "packed", "ttgt", "tblis"],
+        # The suite publishes plan, ttgt and tblis; `packed` is a diagnostic the
+        # descriptor does not declare as an engine row, so it stays out of the census.
+        rows=["plan", "ttgt", "tblis"],
         # `blas` builds the OpenBLAS-backed `ttgt` engine and `tblis` the external
         # baseline; the suite's `features` is what the recorder exports as
         # `BENCH_FEATURES`, so both have to be named or the harness refuses the row.
@@ -141,7 +143,8 @@ HARNESSES = {
     "per-shape": dict(
         suite_id="per-shape",
         regime="per-shape",
-        rows=["plan", "packed", "tblis"],
+        # plan and tblis only, matching the per-shape descriptor (no packed row).
+        rows=["plan", "tblis"],
         features=["tblis"],
         optional_profiles=["zen5-cpu", "zen2-cpu", "epyc-9575f"],
         description=(
