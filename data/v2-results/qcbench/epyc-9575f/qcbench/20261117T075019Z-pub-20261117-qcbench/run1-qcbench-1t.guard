@@ -1,0 +1,6 @@
+pinned.sh: cpus=0 idle_window=3s max_busy=0.05 retries=3
+cpu0 busy=0.003
+cpu64 busy=0.000 (sibling)
+cpu0 busy=0.000
+cpu64 busy=0.000 (sibling)
+pinned.sh: cpus 0 idle before and after (attempt 1)

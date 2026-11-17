@@ -1,0 +1,56 @@
+{
+  "pin": {
+    "TPRIMS_REV": "807183f57ce77622f0af197b8c4fa3dced9a84c5",
+    "TPRIMS_DIRTY": "false",
+    "TPRIMS_DIR": "/home/ningyuan/projects/t4a_bench/scratch/tcontract-rs-807183f",
+    "BIN_DIR": "/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tcontract-rev/807183f57ce7/release",
+    "BUILD_FEATURES": "tblis"
+  },
+  "admission": {
+    "harness": {
+      "commit": "633af61544120e8dde5783e0010aff1fab20ee09",
+      "dirty": false,
+      "outputs_dirty": false,
+      "excluded_outputs": [
+        "data/v2-results/zqcbench",
+        "result-v2/zqcbench"
+      ],
+      "excluded_sibling_outputs": [
+        "data/v2-results/per-shape",
+        "data/v2-results/qcbench",
+        "data/v2-results/tcbench",
+        "result-v2/per-shape",
+        "result-v2/qcbench",
+        "result-v2/tcbench"
+      ]
+    },
+    "toolkit": {
+      "commit": "ccb3da4650aade26b210de534dee368be419575b",
+      "dirty": false,
+      "measured_path": "/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/.venv/src/campaign-toolkit"
+    },
+    "argv": [
+      "scripts/v2/record_run.py",
+      "zqcbench",
+      "epyc-9575f",
+      "zqcbench",
+      "--external-provider-json",
+      "target/tblis-providers.json",
+      "--reps",
+      "5",
+      "--aa",
+      "2",
+      "--prime-ms",
+      "1500",
+      "--label",
+      "pub-20261117-zqcbench"
+    ]
+  },
+  "binary": {
+    "path": "/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tcontract-rev/807183f57ce7/release/zqcbench",
+    "sha256": "b0bf0ff83c453ca51b83bbb1fbc88ee8fe8d7ef567b7e8d04f4b831ad412eeba"
+  },
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1\n",
+  "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)\nrelease: 1.99.1\ncommit-hash: 5f94df4789f005f9a352888e8355ffc645b7ed0e\ncommit-date: 2026-08-27\nhost: x86_64-unknown-linux-gnu\nlibgit2: 1.9.6 (sys:0.21.0 vendored)\nlibcurl: 8.21.0-DEV (sys:0.4.90+curl-8.21.0 vendored ssl:OpenSSL/3.6.3)\nssl: OpenSSL 3.6.3 9 Jun 2026\nos: Ubuntu 24.4.0 (noble) [64-bit]\n",
+  "env": {}
+}

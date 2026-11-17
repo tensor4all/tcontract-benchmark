@@ -1,0 +1,10 @@
+# threads: requested=1 pool=1 budget=1
+tuning class: amd512 (menu isa Avx512; compiled order, no measurement on this class), default menu f64=avx512.f64.real.24x8 f32=avx512.f32.real.48x8 c64=avx512.c64.planar.16x6 c32=avx512.c32.planar.32x6
+caches      : L1=48KiB/12-way/2sh L2=1024KiB/16-way/2sh L3=32768KiB/16-way/16sh (via sysfs), blocking=legacy
+l3 domains  : t1=1 t4=1 t8=1 t16=2 t32=4 t64=8 t128=16
+baselines   : tblis=true blas=openblas
+provider=tprims
+provider_version=0.1.1
+threads=1
+threads_effective=1
+tblis=2.x
