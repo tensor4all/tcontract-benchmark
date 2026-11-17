@@ -3,6 +3,30 @@
 Design decisions, what was rejected, and what is still open. Measurements live
 in `result/`; this file holds the reasoning.
 
+## 2026-11-17 — the fourth v2 campaign: `zqcbench`
+
+`zqcbench` (the 35-case complex-orbital binary-contraction harness in
+`tcontract-rs`, merged as tensor4all/tcontract-rs#199 at `807183f`) becomes the
+fourth timing-v2 campaign: `benchmarks/campaign-zqcbench.yaml`, the generated
+`benchmarks/suites-v2/zqcbench.yaml` (c64 only), the shim/site/CI entries, and
+the generated index under `result-v2/zqcbench/`. The measured revision moves to
+`807183f` for all four campaigns (stack PR campaign-toolkit#69, held at
+`a045446` until the first recording at `807183f`).
+
+This re-recording also carries the two corrections that were waiting on the
+campaign side:
+
+- The TBLIS substrate on the AVX-512 recording host is built with
+  `TBLIS_BLIS_CONFIG_FAMILY=skx`. The pinned BLIS has no Zen5/AVX-512
+  configuration, so a `zen3` build is AVX2-only and understates the external
+  baseline against plan's AVX-512 kernels; `skx` is the AVX-512 stand-in. The
+  `zen3` and `skx` pages are not mixed (see the benchmark job's
+  `docs/why-skx-on-zen5.md`).
+- `qcbench`'s suite is regenerated from the census at `807183f`, so it carries
+  the #197 unique-selection swap (`df_tdhf/response.exchange.metric` ->
+  `response.exchange.b_trial_pair`) and the vocabulary note; the `a045446`
+  qcbench page is history.
+
 ## 2026-11-15 — the v2 evidence moves to a045446 on epyc-9575f
 
 The shared `pins/tcontract-rs-v2.rev` cannot move ahead of its evidence

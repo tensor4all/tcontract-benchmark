@@ -24,6 +24,7 @@ CAMPAIGNS = {
     "tcbench": "tcbench: the TCCG contraction corpus",
     "per-shape": "per-shape: named contraction cases (lukbench)",
     "qcbench": "qcbench: QC binary contractions at fixed aspect ratios",
+    "zqcbench": "zqcbench: complex-orbital binary contractions at fixed aspect ratios",
 }
 
 
