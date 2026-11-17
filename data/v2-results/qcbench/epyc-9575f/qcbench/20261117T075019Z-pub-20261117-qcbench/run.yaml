@@ -1,0 +1,242 @@
+schema_version: 1
+target_profile: epyc-9575f
+suite_id: qcbench
+suite_file: benchmarks/suites-v2/qcbench.yaml
+suite_sha256: 31fe6522b75ddd92048b208a55e98fc66734e2f137aa0b3ddbefa42285eb408d
+timestamp: '2026-11-17T08:38:31.846124Z'
+command: scripts/v2/record_run.py qcbench epyc-9575f qcbench --external-provider-json
+  target/tblis-providers.json --reps 5 --aa 2 --prime-ms 1500 --label pub-20261117-qcbench
+library:
+  url: https://github.com/tensor4all/tcontract-rs
+  commit: 807183f57ce77622f0af197b8c4fa3dced9a84c5
+  dirty: false
+  features:
+  - tblis
+  measured_path: /home/ningyuan/projects/t4a_bench/scratch/tcontract-rs-807183f
+  version: null
+harness:
+  commit: 633af61544120e8dde5783e0010aff1fab20ee09
+  dirty: false
+  outputs_dirty: false
+  excluded_outputs:
+  - data/v2-results/qcbench
+  - result-v2/qcbench
+  excluded_sibling_outputs:
+  - data/v2-results/per-shape
+  - data/v2-results/tcbench
+  - data/v2-results/zqcbench
+  - result-v2/per-shape
+  - result-v2/tcbench
+  - result-v2/zqcbench
+toolkit:
+  commit: ccb3da4650aade26b210de534dee368be419575b
+  dirty: false
+  measured_path: /home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/.venv/src/campaign-toolkit
+verification_files:
+- verify-qcbench-1t.csv
+- verify-qcbench-4t.csv
+binary:
+  path: /home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tcontract-rev/807183f57ce7/release/qcbench
+  sha256: 378061819fa6d060031056d62569ece3096f54f754180ebb2cb032414870fcd9
+host:
+  power:
+    cpufreq_boost: '0'
+    governor: performance
+    scaling_max_freq_khz: '3300000'
+    smt:
+      active: '1'
+      control: 'on'
+  numa:
+    nodes: 1
+    cpulists:
+      '0': 0-127
+  role: development
+  hostname: ps
+  cpu: AMD EPYC 9575F 64-Core Processor
+  os: Linux 6.8.0-147-generic
+  arch: x86_64
+  logical_cpus: 128
+  l3: 256 MiB (8 instances)
+  l3_domains: 32 MiB per 8-core CCX (CPUs 8k-8k+7 plus SMT siblings 8k+64-8k+71),
+    8 CCXs
+  notes: 'AMD EPYC 9575F (Zen 5), 1 socket, 64 physical / 128 logical cores, 256 MiB
+    L3 in 8 instances: each 8-core CCX shares 32 MiB, exposed as CPUs 8k..8k+7 and
+    their SMT siblings 8k+64..8k+71, so a thread set must be stated together with
+    its L3 domain. Single NUMA node. A shared scheduler-managed build server; measuring
+    needs an exclusive allocation, the measured domain idle, and CPU boost off.'
+build:
+  toolchain:
+    rustc: 'rustc 1.99.1 (58cf8f9c3 2026-10-13)
+
+      binary: rustc
+
+      commit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67
+
+      commit-date: 2026-10-13
+
+      host: x86_64-unknown-linux-gnu
+
+      release: 1.99.1
+
+      LLVM version: 23.1.1
+
+      '
+    rustc_release: 1.99.1
+    rustflags: null
+    target_cpu: null
+threads:
+  counts:
+  - 1
+  - 4
+  cpu_sets:
+    '1': '0'
+    '4': 0-3
+  observer:
+    affinity: 8-63, 72-127
+    free_cpus: 8-63, 72-127
+    source: os.sched_getaffinity(0) in the recording process
+  env:
+    OMP_NUM_THREADS: null
+    RAYON_NUM_THREADS: null
+    OPENBLAS_NUM_THREADS: null
+    VECLIB_MAXIMUM_THREADS: null
+    MKL_NUM_THREADS: null
+  note: the vendor's budget is set by the harness from the row's thread count and
+    read back before each measurement; these variables were removed from the measured
+    process's environment so it cannot inherit a different one
+timing_policy:
+  version: 2
+  minimum_untimed_priming_ms: 1500
+  statistic: median
+  row_rotation_step: 1
+  repetitions: 5
+  notes: descriptive process medians under a rotating engine-order schedule; raw samples
+    and the verification census are retained
+guards:
+  idle_window_seconds: 3
+  max_busy_percent: 5.0
+  attempts: 3
+  sibling_aware: true
+  logs:
+  - run0-qcbench-1t.guard
+  - run0-qcbench-4t.guard
+  - run1-qcbench-1t.guard
+  - run1-qcbench-4t.guard
+  - verify-qcbench-1t.guard
+  - verify-qcbench-4t.guard
+providers:
+- name: tprims
+  version: null
+  commit: null
+  path: null
+  note: the provider in the measured revision; see library above
+- name: tblis
+  version: '2.0'
+  commit: b16a732939d8454021e0a0f0097cf1cc1dd3ab19
+  path: /home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2
+  note: TBLIS 2.0, configuration skx; bundled BLIS 358e689cadd6757f564a2992cf46a2f7d6fa6bb0;
+    built with ./configure --prefix=/home/ningyuan/projects/t4a_bench/workspace/tcontract-benchmark/target/tblis-v2.0-beta2
+    --with-blis-config-family=skx (cmake, Unix Makefiles, Release); libtblis.so sha256
+    a7ddb0fba1fcaf1d
+  tag: v2.0-beta2
+  sha256: a7ddb0fba1fcaf1d5b5661e2e3e9bdfaa6e718db48d692be4e1e98ce6dc09970
+invalidated_by:
+- crates/tcontract-kernel/**
+- crates/tcontract/**
+- crates/tcontract-exec/**
+- benchmarks/benchmarks/qcbench/**
+- benchmarks/src/**
+- Cargo.toml
+- Cargo.lock
+result_files:
+- run0-qcbench-1t.csv
+- run0-qcbench-4t.csv
+- run1-qcbench-1t.csv
+- run1-qcbench-4t.csv
+run_spec:
+  populations:
+  - regime: qcbench
+    families:
+    - ov_03/I6.t1_oovv
+    - ov_03/K.aux
+    - ov_03/K.matrix
+    - ov_03/T.connected.occupied
+    - ov_03/T.connected.virtual
+    - ov_03/b_tau.A
+    - ov_03/b_tau.S
+    - ov_03/df.factor
+    - ov_03/exchange.matrix
+    - ov_03/exchange.occupied_transform
+    - ov_03/gamma.abcd
+    - ov_03/gamma.aibc
+    - ov_03/gradient.X
+    - ov_03/gradient.Y_transform2
+    - ov_03/gradient.Z_pair
+    - ov_03/response.exchange.b_trial_pair
+    - ov_03/response.exchange.occupied_half
+    - ov_03/response.exchange.transform
+    - ov_03/sigma2.w_abcd
+    - ov_03/sigma2.w_alcj
+    - ov_03/sigma2.w_bljc
+    - ov_03/sigma2.w_lbdj
+    - ov_03/sigma2.woooo
+    - ov_03/sigma2.wovvo
+    - ov_10/I6.t1_oovv
+    - ov_10/K.aux
+    - ov_10/K.matrix
+    - ov_10/T.connected.occupied
+    - ov_10/T.connected.virtual
+    - ov_10/b_tau.A
+    - ov_10/b_tau.S
+    - ov_10/df.factor
+    - ov_10/exchange.matrix
+    - ov_10/exchange.occupied_transform
+    - ov_10/gamma.abcd
+    - ov_10/gamma.aibc
+    - ov_10/gradient.X
+    - ov_10/gradient.Y_transform2
+    - ov_10/gradient.Z_pair
+    - ov_10/response.exchange.b_trial_pair
+    - ov_10/response.exchange.occupied_half
+    - ov_10/response.exchange.transform
+    - ov_10/sigma2.w_abcd
+    - ov_10/sigma2.w_alcj
+    - ov_10/sigma2.w_bljc
+    - ov_10/sigma2.w_lbdj
+    - ov_10/sigma2.woooo
+    - ov_10/sigma2.wovvo
+    - ov_20/I6.t1_oovv
+    - ov_20/K.aux
+    - ov_20/K.matrix
+    - ov_20/T.connected.occupied
+    - ov_20/T.connected.virtual
+    - ov_20/b_tau.A
+    - ov_20/b_tau.S
+    - ov_20/df.factor
+    - ov_20/exchange.matrix
+    - ov_20/exchange.occupied_transform
+    - ov_20/gamma.abcd
+    - ov_20/gamma.aibc
+    - ov_20/gradient.X
+    - ov_20/gradient.Y_transform2
+    - ov_20/gradient.Z_pair
+    - ov_20/response.exchange.b_trial_pair
+    - ov_20/response.exchange.occupied_half
+    - ov_20/response.exchange.transform
+    - ov_20/sigma2.w_abcd
+    - ov_20/sigma2.w_alcj
+    - ov_20/sigma2.w_bljc
+    - ov_20/sigma2.w_lbdj
+    - ov_20/sigma2.woooo
+    - ov_20/sigma2.wovvo
+    n:
+    - '1'
+    batch:
+    - 1
+  dtypes:
+  - f64
+  engines:
+  - plan
+  - tblis
+  aa: 2
+  covers_declared_suite: true

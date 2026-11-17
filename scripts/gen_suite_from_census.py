@@ -51,7 +51,9 @@ HARNESSES = {
     "tcbench": dict(
         suite_id="tcbench",
         regime="tcbench",
-        rows=["plan", "packed", "ttgt", "tblis"],
+        # The suite publishes plan, ttgt and tblis; `packed` is a diagnostic the
+        # descriptor does not declare as an engine row, so it stays out of the census.
+        rows=["plan", "ttgt", "tblis"],
         # `blas` builds the OpenBLAS-backed `ttgt` engine and `tblis` the external
         # baseline; the suite's `features` is what the recorder exports as
         # `BENCH_FEATURES`, so both have to be named or the harness refuses the row.
@@ -141,7 +143,8 @@ HARNESSES = {
     "per-shape": dict(
         suite_id="per-shape",
         regime="per-shape",
-        rows=["plan", "packed", "tblis"],
+        # plan and tblis only, matching the per-shape descriptor (no packed row).
+        rows=["plan", "tblis"],
         features=["tblis"],
         optional_profiles=["zen5-cpu", "zen2-cpu", "epyc-9575f"],
         description=(
@@ -264,6 +267,88 @@ HARNESSES = {
                 "The extents are aspect-ratio classes derived from an 8 GiB whole-binary budget, "
                 "not a molecule; the binding case is the (T) o^3 v^3 output and the verify peak "
                 "is A+B+2C (a blas build would add the TTGT arm).",
+                "`tblis` is an external baseline linked from its own prefix (`TBLIS_ROOT`), not "
+                "the measured checkout; its revision is recorded through the campaign TBLIS "
+                "collector (`scripts/tblis_providers_json.py`).",
+                "The harness's census CSV carries no corpus `group` column, so the ratio classes "
+                "are declared by this suite and the resolved extents remain facts of the "
+                "measured revision's `corpus.rs`.",
+            ],
+        ),
+        engines_doc={
+            "plan": dict(
+                provider="tprims",
+                summary="This library with its planner choosing the route per case.",
+                identity="the measured tcontract-rs revision in this run's manifest "
+                         "(`library.commit`), pinned by `pins/tcontract-rs-v2.rev`",
+            ),
+            "tblis": dict(
+                provider="tblis",
+                summary="Actual C++ TBLIS through the direct FFI adapter, as the independent "
+                        "third-party reference implementation. Pinned by release tag, not by a "
+                        "local revision.",
+                identity="TBLIS v2.0-beta2 (the only tagged 2.0; its commit and the bundled BLIS "
+                         "revision are recorded per run, from `scripts/tblis_providers_json.py`)",
+                caveat="Needs an install prefix (`TBLIS_ROOT`), and TBLIS 2.x builds through CMake. "
+                       "The page repeats the tag, commit, bundled BLIS revision and artifact hash "
+                       "the manifest recorded.",
+            ),
+        },
+    ),
+    "zqcbench": dict(
+        suite_id="zqcbench",
+        regime="zqcbench",
+        rows=["plan", "tblis"],
+        # The TBLIS baseline only: a `blas` build makes the shared verifier run its TTGT
+        # arm unconditionally, which is a 2A+2B+3C peak and not this suite's declaration.
+        features=["tblis"],
+        optional_profiles=["zen5-cpu", "zen2-cpu", "epyc-9575f"],
+        description=(
+            "The 35-case complex-orbital QC binary-contraction corpus, measured by `zqcbench` "
+            "out of the pinned `tcontract-rs` checkout. One family per case id, three "
+            "aspect-ratio classes (`ov_03`, `ov_10`, `ov_20`), c64 only. The extents are fixed "
+            "by the harness's `EXTENTS` and are aspect-ratio classes, not molecules; the "
+            "declared identity shape is the numeric sentinel `n = 1`, echoed into the census "
+            "and not a matrix dimension."
+        ),
+        invalidated_by=[
+            "crates/tcontract-kernel/**",
+            "crates/tcontract/**",
+            "crates/tcontract-exec/**",
+            "benchmarks/benchmarks/zqcbench/**",
+            "benchmarks/src/**",
+            "Cargo.toml",
+            "Cargo.lock",
+        ],
+        workloads=dict(
+            name="Complex-orbital QC binary-contraction corpus",
+            description=(
+                "One binary (two-operand) contraction per case, transcribed from ten "
+                "complex-orbital paper routes at fixed occupied/virtual/auxiliary extents: "
+                "three two-component spinor routes (X2CAMF CCSD/EOM, two-component RI-JK), "
+                "five periodic k-space routes (periodic CCSD, GDF-HF, GW, BSE and the "
+                "per-k-point AO-to-MO staging) and two molecular spatial routes (SO-MF/CPSCF "
+                "and GHF/GKS response). The three ratios stand for the cc-pVDZ/cc-pVTZ/"
+                "cc-pVQZ rung medians of a 5,239-molecule NAO statistics panel. One family "
+                "(`ri-krgw/sigma.contract`) carries a batch index."
+            ),
+            source=(
+                "The corpus is defined by `benchmarks/benchmarks/zqcbench/corpus.rs` in the "
+                "measured revision (`pins/tcontract-rs-v2.rev`); each case names the paper it "
+                "was transcribed from in the corpus README, and the transcription material lives "
+                "in the benchmark job's `out/complex_corpus/*/CORPUS.md`."
+            ),
+            known_blind_spots=[
+                "One binary contraction per timed call: permutations, denominators and forms with "
+                "more than two operands are metadata, never separate timed cases.",
+                "Every case is c64; f64 is the real-orbital bench (`qcbench`), and the shared "
+                "verifier's known-value fixture is a dedicated 12-MAC product, not a corpus family.",
+                "The extents are aspect-ratio classes derived from a 12 GiB whole-binary c64 "
+                "budget, not a molecule; the binding case is the ao^4 exchange kernel "
+                "`somf/cpscf.exchange_response` and the verify peak is A+B+2C (a blas build "
+                "would add the TTGT arm).",
+                "The transcription is not machine-checked here: the corpus tests compare the "
+                "literals against a second copy, not against the papers.",
                 "`tblis` is an external baseline linked from its own prefix (`TBLIS_ROOT`), not "
                 "the measured checkout; its revision is recorded through the campaign TBLIS "
                 "collector (`scripts/tblis_providers_json.py`).",

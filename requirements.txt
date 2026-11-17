@@ -1,4 +1,4 @@
 pyyaml>=6
 # The shared timing-v2 toolkit. This line is the one toolkit pin (CI and the publish
 # preflight read it).
--e git+https://github.com/tensor4all/campaign-toolkit@fe8138e78ba3da2565b30b85b54442867c31b7f1#egg=campaign-toolkit
+-e git+https://github.com/tensor4all/campaign-toolkit@1e44c77e1912357e21f270cdb4056c1fc22a7aad#egg=campaign-toolkit

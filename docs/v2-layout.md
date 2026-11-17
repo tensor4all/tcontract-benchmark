@@ -26,10 +26,10 @@ Owned by `campaign_toolkit`, pinned in
 `requirements.txt` (the one toolkit pin):
 
 - `benchmarks/campaign-tcbench.yaml`, `benchmarks/campaign-per-shape.yaml`,
-  `benchmarks/campaign-qcbench.yaml` — the three descriptors, one per harness
-  (`tcbench`, `lukbench`, `qcbench`). Select one with
+  `benchmarks/campaign-qcbench.yaml`, `benchmarks/campaign-zqcbench.yaml` — the four
+  descriptors, one per harness (`tcbench`, `lukbench`, `qcbench`, `zqcbench`). Select one with
   `CAMPAIGN_DESCRIPTOR=benchmarks/campaign-<id>.yaml`.
-- `benchmarks/suites-v2/{tcbench,per-shape,qcbench}.yaml` — the frozen declarations,
+- `benchmarks/suites-v2/{tcbench,per-shape,qcbench,zqcbench}.yaml` — the frozen declarations,
   generated from the pinned harness's own census (see below).
 - `data/v2-results/<campaign>/**` — raw v2 runs.
 - `result-v2/<campaign>/**` and `result-v2/<campaign>/INDEX.md` — v2 pages and index,
@@ -49,23 +49,32 @@ Owned by `campaign_toolkit`, pinned in
   descriptor declares under `figures:` and `trend:`) and `result-v2/index.html` over
   both. Generated on every deploy, never committed.
 
-CI checks all three campaigns: declarations, every run manifest, `gen_index --check`,
+CI checks all four campaigns: declarations, every run manifest, `gen_index --check`,
 `campaign-check-generated` and `campaign-sync-pins --check`.
 
 ## The TBLIS external reference
 
-Both v2 suites measure `tblis`, a separately built native baseline declared as an
+The v2 suites measure `tblis`, a separately built native baseline declared as an
 external provider (`external_providers: [tblis]`), so its revision cannot come from
 the measured checkout. It is linked from a prefix this repository owns:
 
 ```sh
-TBLIS_BUILD_DIR=target/tblis-build-v2.0-beta2 \
+TBLIS_BUILD_DIR=target/tblis-build-v2.0-beta2 TBLIS_BLIS_CONFIG_FAMILY=skx \
     extern/tcontract-rs/benchmarks/scripts/build_tblis.sh target/tblis-v2.0-beta2
 ```
 
+The AVX-512 recording host (`epyc-9575f`) builds the prefix with
+`TBLIS_BLIS_CONFIG_FAMILY=skx`: the pinned BLIS has no Zen5/AVX-512 configuration,
+and a `zen3` build is AVX2-only, so it is not a capability-matched baseline against
+plan's AVX-512 kernels. `skx` is the AVX-512 stand-in (Intel-tuned, not Zen5-native);
+it must not be used on hosts without AVX-512 (`zen2-cpu`), and `zen3` and `skx`
+pages are not mixed. The benchmark job's `docs/why-skx-on-zen5.md` records the
+decision and the measured `zen3` vs `skx` delta.
+
 The build needs `cmake` (>= 3.23) on `PATH` and the network to fetch the pinned BLIS;
-the prefix (and the build tree) stay under `target/`, so they are not committed. The
-prefix produced here, `target/tblis-v2.0-beta2`, carries this `PROVENANCE`:
+the prefix (and the build tree) stay under `target/`, so they are not committed. A
+`zen3`/HPC2 prefix carries this `PROVENANCE` (the `epyc-9575f` prefix reads
+`config=skx` and its own hash; the collector records whichever prefix is used):
 
 ```
 version=2.0

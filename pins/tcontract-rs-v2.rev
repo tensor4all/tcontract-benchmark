@@ -16,4 +16,4 @@
 # strided 0.8); main is the same commit. tcontract-kernel stays at 0.3.0.
 # `v0.9.0` (9f793ed) from 2026-10-30: the stack release (campaign-toolkit b71624b): tcontract-exec
 # and tcontract 0.9 on threadteam 0.2, strided 0.9 and t4a-faer 0.27. tcontract-kernel stays at 0.3.0.
-a045446301442ebb7540c806d9914dccce62357a
+807183f57ce77622f0af197b8c4fa3dced9a84c5
