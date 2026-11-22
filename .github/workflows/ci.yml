@@ -48,6 +48,11 @@ jobs:
           for c in tcbench per-shape qcbench zqcbench; do
             CAMPAIGN_DESCRIPTOR=benchmarks/campaign-$c.yaml python3 -m campaign_toolkit.declarations
           done
+      - name: Suite declarations carry the shared granularity note
+        # The note is authored in the generator and committed in the four suites, and nothing
+        # regenerates them on a pull request (that needs a harness binary at the recorded
+        # revision), so this compares the two semantically and byte for byte.
+        run: python3 scripts/check_suite_declarations.py
       - name: Every recorded run manifest validates
         run: |
           shopt -s nullglob

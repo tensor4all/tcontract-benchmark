@@ -3,6 +3,26 @@
 Design decisions, what was rejected, and what is still open. Measurements live
 in `result/`; this file holds the reasoning.
 
+## 2026-11-22 — the pages say which granularity they measure
+
+The v1 pages carried a `prepare (µs)` column and the paragraph saying that the ratio compared a
+prepared plan with a one-shot call (campaign PR #12, tprims-rs #96). The v2 report rendered
+neither, so an engine table read "tcontract N× faster than `tblis`" with nothing saying that the
+two rows were measured at different granularities — and the excluded work is not negligible:
+`prepare_s` is above 5% of the timed call on 137-229 of the 588 tcbench rows, above 10% on 41 of
+288 qcbench rows, and 54-65% of the calling time at the median on per-shape.
+
+Every suite now declares the granularity, and `docs/timing-policy.md` states the arithmetic and
+the measured sizes. The declaration is general rather than per-suite so it survives the corpus
+changes it will outlive.
+
+No cell was re-recorded. The six current pages were re-rendered from their recorded runs
+(`report_run.py --run-dir`, then `publish_report.py`): each page differs from its previous
+version by the new blind-spot paragraph and nothing else, and the manifests keep the
+`suite_sha256` of the declaration they were measured under. The drift note `validate_run.py`
+prints for them is the intended record of that, not a failure — the grid (engines, thread
+budgets, dtypes, populations) did not change, only the text.
+
 ## 2026-11-17 — first zqcbench result: the c64 Coulomb gap
 
 The first zqcbench page (`807183f`, `epyc-9575f`, skx TBLIS, full coverage)
