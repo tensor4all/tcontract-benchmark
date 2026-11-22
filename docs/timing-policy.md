@@ -10,6 +10,30 @@ Steady-state operation execution. Inputs, layouts, plans, pools and provider
 handles are prepared before the clock starts. The clock stops after the
 operation and its completion synchronisation, with outputs still alive.
 
+## What a ratio means
+
+The engine rows are timed at the granularity their API offers, so a ratio between two of them is
+a **throughput** ratio, not a per-call one:
+
+- `plan` and `packed` time one execution of a `Plan` built before the clock. Per call the operation
+  costs `prepare_s + seconds`; the recorded row is the per-iteration cost of a program that performs
+  the same contraction repeatedly, with the same shape and layout each time.
+- `ttgt` and `tblis` time one call of their own entry point. `ttgt` has its scratch and its
+  M/N/K tables prepared outside (`prepare_s`), and nothing analytical excluded; `tblis` exposes no
+  prepared contraction at all, so the analysis it performs on every call is inside its number and
+  there is no separate figure to add.
+
+For a fixed problem with `P` plan construction, `E` one execution, and `A` the reference's own
+per-call analysis, the two rows are `P/N + E` and `A + K`. They coincide only as `N -> inf`. Every
+row carries `prepare_s` in the raw `run*.csv`, so the per-call figure is recoverable without a
+re-run, and the ratio is a statement about repeated execution.
+
+The excluded work is not always small. Across the committed v2 cells, `prepare_s` for the library
+rows is 1.2-2.2% of the timed call at the median on `tcbench`, but 137 and 229 of its 588 rows sit
+above 5% (worst 128%); 41 of 288 `qcbench` rows are above 10%; and on `per-shape` the median share
+is 54-65% (worst 664%). On that last suite the ratio reports what a loop of small contractions
+costs, not what one call costs.
+
 ## Priming
 
 At least 1.5 s of untimed, time-based priming per arm, and the same amount on

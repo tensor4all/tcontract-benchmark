@@ -25,6 +25,7 @@
   Known blind spot: Every case has unit batch, so a cost proportional to batch elements is invisible.
   Known blind spot: `tblis` is an external baseline linked from its own prefix (`TBLIS_ROOT`, see `docs/v2-layout.md`), not the measured checkout; its revision is recorded through the campaign TBLIS collector (`scripts/tblis_providers_json.py`).
   Known blind spot: The harness's census CSV carries no corpus `group` column and no resolved extents, so the corpus's own group labels and its resolved geometry are not part of this declaration; they remain facts of the recorded revision's `corpus.rs`.
+  Known blind spot: The library rows time one execution of a plan built before the clock, so a single call also pays the preparation recorded as `prepare_s` in the run CSV, and the ratio applies when the same shape and layout recur. Every other row times one call of its own entry point, and no reference here exposes a prepared contraction, so its per-call analysis is inside the time shown.
 - **Rows** — one row per engine in every table below:
   - `plan` — This library, with its planner choosing the route per case: the packed driver, the copy-free faer path, or the elementwise path for an all-batch case.
     Identity: the measured tcontract-rs revision in this run's manifest (`library.commit`), pinned by `pins/tcontract-rs-v2.rev`
