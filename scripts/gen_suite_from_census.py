@@ -41,11 +41,11 @@ CENSUS_HEADER = ["regime", "family", "dtype", "order", "m", "n", "k",
 # built before the clock and record that work per row as `prepare_s`; every other row is one
 # call of the reference's own entry point.
 GRANULARITY_NOTE = (
-    "The library rows time one execution of a plan built before the clock, so a single "
-    "call also pays the preparation recorded as `prepare_s` in the run CSV, and the ratio "
-    "applies when the same shape and layout recur. Every other row times one call of its "
-    "own entry point, and no reference here exposes a prepared contraction, so its per- "
-    "call analysis is inside the time shown. "
+    "The library rows time one execution of a plan built before the clock, so a single call also pays "
+    "the preparation recorded as `prepare_s` in the run CSV, and the ratio applies when the same "
+    "shape and layout recur. The reference rows time one call of their own entry point: `ttgt` has "
+    "its offset tables and scratch prepared outside the clock, counted in its `prepare_s`; `tblis` "
+    "exposes no prepared contraction, so the analysis it performs per call is inside its time."
 )
 
 COMMON = dict(

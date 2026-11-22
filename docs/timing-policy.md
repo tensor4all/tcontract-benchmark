@@ -23,10 +23,14 @@ a **throughput** ratio, not a per-call one:
   prepared contraction at all, so the analysis it performs on every call is inside its number and
   there is no separate figure to add.
 
-For a fixed problem with `P` plan construction, `E` one execution, and `A` the reference's own
-per-call analysis, the two rows are `P/N + E` and `A + K`. They coincide only as `N -> inf`. Every
-row carries `prepare_s` in the raw `run*.csv`, so the per-call figure is recoverable without a
-re-run, and the ratio is a statement about repeated execution.
+For a fixed problem let `P` be the plan's construction, `E` one prepared execution, `A` the
+reference's own per-call analysis and `K` its execution. A program that performs the contraction
+`N` times costs `P + N*E` against `N*(A + K)`; per iteration that is `P/N + E` against `A + K`.
+At `N = 1` the prepared side is `P + E`, and as `N` grows the `P/N` term vanishes and it tends to
+`E`. The rows are therefore compared at `N -> inf`, and they are not the same quantity at
+`N = 1` — an accidental equality at some finite `N` says nothing about either limit. Every row
+carries `prepare_s` in the raw `run*.csv`, so the per-call figure is recoverable without a
+re-run.
 
 The excluded work is not always small. Across the committed v2 cells, `prepare_s` for the library
 rows is 1.2-2.2% of the timed call at the median on `tcbench`, but 137 and 229 of its 588 rows sit
