@@ -28,9 +28,11 @@ reference's own per-call analysis and `K` its execution. A program that performs
 `N` times costs `P + N*E` against `N*(A + K)`; per iteration that is `P/N + E` against `A + K`.
 At `N = 1` the prepared side is `P + E`, and as `N` grows the `P/N` term vanishes and it tends to
 `E`. The rows are therefore compared at `N -> inf`, and they are not the same quantity at
-`N = 1` — an accidental equality at some finite `N` says nothing about either limit. Every row
-carries `prepare_s` in the raw `run*.csv`, so the per-call figure is recoverable without a
-re-run.
+`N = 1`: an accidental equality at some finite `N` says nothing about either limit. A concrete
+case, `P = 4`, `E = 2`, `A = 2`, `K = 2`, gives a prepared per-iteration cost of 6 at `N = 1`,
+4 at `N = 2` and a limit of 2, against a reference cost of 4 at every `N` — equal at `N = 2`, and
+only there. Every row carries `prepare_s` in the raw `run*.csv`, so the per-call figure is
+recoverable without a re-run.
 
 The excluded work is not always small. Across the committed v2 cells, `prepare_s` for the library
 rows is 1.2-2.2% of the timed call at the median on `tcbench`, but 137 and 229 of its 588 rows sit
